@@ -1,0 +1,76 @@
+Dans le configurateur V1, l'utilisateur peut ajouter des symboles (= illustrations) sur son gobelet. A tester ici : 
+https://www.atelierdugobelet.fr/fr/delai-j10-standard/4689-gobelets-personnalises-25-33cl-impression-digitale-photo-j10-ouvres.html
+
+Problème : le parcours de la liste de symboles n'est pas optimisé, il est difficile de parcourir les catégories, donc les utilisateurs s'en servent peu. 
+Et il n'y a pas d'outil en backoffice pour les gérer.
+
+Pour la prochaine version du configurateur (V2), il faudrait un gestionnaire de symboles avancé. 
+Cela permettra de créer, modifier, supprimer, gérer les symboles plus facilement.
+
+A un symbole correspond un fichier SVG. 
+On doit pouvoir l'uploader depuis le gestionnaire. 
+A l'upload, il doit y avoir une détection de problème sur les fichiers. 
+Exemple de problèmes à détecter :
+- Est-ce que le fichier contient plusieurs couleurs (correspond aux attributs fill dans le fichier svg) ? Puisque les fichiers doivent être strictement monochromes
+- Est-ce que la couleur « fill » est autre que #000000 ? Puisque seule la couleur #000000 est autorisée
+Idéalement l'upload doit être fait en drag'n'drop, et encore mieux s'il y a un multi-upload (= on glisse une sélection de fichiers).
+Le nom du fichier doit être une chaîne aléatoire sur 8 caractères (lettres minuscules+ chiffres) + tiret + l'identifiant du symbole. 
+Ex : 9dyw5tub-407.svg
+
+Chaque chaîne aléatoire doit être unique (pas de doublon). 
+Si plusieurs versions d'un même symbole (après modification), la chaîne aléatoire doit être conservée. 
+Ex : 9dyw5tub-407.svg, 9dyw5tub-512.svg, 9dyw5tub-699.svg
+
+Tous les symboles doivent être uploadés dans un même dossier (= pas de sous-dossier).
+
+On doit pouvoir entrer une liste de mots clés (pour le décrire), séparés par une virgule. 
+Les mots clés doivent pouvoir être entrés pour toutes les langues de nos sites à savoir (code ISO / langue) :
+- EN / Anglais
+- DE / Allemand
+- ES / Espagnol
+- FR / Français
+- IT / Italien
+- PT / Portugais
+
+Chaque symbole doit avoir une taille par défaut. 
+Cela permet ensuite de savoir si au chargement du symbole il couvrira toute la surface, ou la moitié etc.
+Par défaut, cette taille doit être à 50%.
+
+Les symboles sont classés dans des catégories. 
+Un même symbole peut être dans plusieurs catégories. 
+Une catégorie doit avoir un nom (impossible d'avoir deux noms identiques). 
+Elles peuvent être ordonnées (idéalement avec un système JS draggable). 
+Comme les listes de mots clés, les catégories sont multilingues.
+
+Chaque symbole peut être actif ou inactif. 
+Par défaut, il est inactif.
+
+Pour chaque symbole, on doit pouvoir afficher des statistiques à savoir :
+- La liste des personnalisations contenant ce symbole (dans le champ perso_obj de la table toolzik_imprimetcom_v2.configurateur_personalisations) et leur nombre
+- La liste des commandes avec ce symbole (cf. la fonction utilisée dans le projet de recherche sur les gobelets à thèmes fait en octobre) et leur nombre
+- La suppression d'un symbole depuis l'admin ne doit pas entraîner la suppression du fichier ni son entrée en base de données. 
+C'est important car si des personnalisations ont été effectuées avec l'ancienne version, il ne faut pas qu'elles soient dénaturées.
+
+On doit pouvoir modifier un symbole (ex : le reuploader, changer les mots clés etc). 
+Idéalement les modifications se font directement dans la liste des symboles (plutôt que d'ouvrir une fenêtre d'édition). 
+La modification d'un symbole doit entraîner la « suppression » de l'ancienne version.
+
+Dans l'interface, on doit pouvoir trouver un symbole rapidement (il y en a plus de 600). 
+Pour cela, il faut un moteur de recherche sur les mots clés et un filtre sur les catégories. 
+On doit aussi pouvoir faire un certain nombre de tâches d'un clic (ex : activer/désactiver un symbole). 
+On doit pouvoir faire une sélection multiple, par exemple pour supprimer. 
+On doit aussi pouvoir facilement visualiser et télécharger le symbole.
+
+En fin de projet, il faut prévoir une connexion à l'interface admin via un couple login/mot de passe. 
+De plus l'outil ne doit pouvoir être utilisé que depuis les locaux d'Imprim et com ou de chez Greg, sans utiliser les classes Loguy.
+
+Le projet doit être totalement indépendant de Loguy. 
+Seule une copie de la classe DB est autorisée. 
+Pas d'include de toutes les classes Loguy mais juste une copie du fichier DB dans le projet, et include uniquement de ce fichier.
+
+On doit pouvoir paramétrer facilement le chemin du dossier où sont stockés les symboles ainsi que les noms des tables utilisées.
+Interdiction d'utiliser le CDN CSS d'Imprim et com, ça doit bien être un outil totalement indépendant.
+
+Les questions ou échanges doivent se faire prioritairement dans GitHub.
+
+Un zip avec les fichiers SVG utilisés dans le configurateur V1 est téléchargeable à l'adresse suivante : http://devt.loguy.fr/tmp/julien/cliparts-configurateur-v1.zip

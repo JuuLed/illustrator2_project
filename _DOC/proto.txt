@@ -1,0 +1,31 @@
+1. GET all : /illustrator2/index.php/symbols
+- Description : Récupérer tous les symboles.
+- Méthode : GET
+- Paramètres : Aucun
+- Réponse : Liste des symboles
+
+2. POST : /illustrator2/index.php/symbols
+- Description : Créer un nouveau symbole.
+- Méthode : POST
+- Paramètres : Aucun
+- Corps de la requête : Objet JSON représentant les détails du symbole à créer
+- Réponse : Le symbole créé
+
+3.GET by ID : /illustrator2/index.php/symbols/{id}
+- Description : Récupérer un symbole spécifique par son ID.
+- Méthode : GET
+- Paramètres : {id} est l'identifiant du symbole
+- Réponse : Détails du symbole correspondant à l'ID
+
+4.PUT by ID : /illustrator2/index.php/symbols/{id}
+- Description : Mettre à jour un symbole spécifique par son ID.
+- Méthode : PUT
+- Paramètres : {id} est l'identifiant du symbole
+- Corps de la requête : Objet JSON représentant les détails du symbole à mettre à jour
+- Réponse : Le symbole mis à jour
+
+5.DELETE by ID : /illustrator2/index.php/symbols/{id}
+- Description : Supprimer un symbole spécifique par son ID.
+- Méthode : DELETE
+- Paramètres : {id} est l'identifiant du symbole
+- Réponse : Confirmation de la suppression du symbole

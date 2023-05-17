@@ -1,0 +1,48 @@
+CAHIER DES CHARGES :
+
+Gestionnaire de symboles avancé
+
+- Un gestionnaire qui permettra de créer, modifier, supprimer, et gérer les symboles de manière plus facile et intuitive.
+- Un système d'upload de fichiers SVG, avec une détection de problèmes sur les fichiers.
+Les problèmes à détecter sont liés aux couleurs et au format du fichier.
+- Les fichiers SVG doivent être strictement monochromes avec la couleur "fill" uniquement en #000000.
+- La possibilité d'upload des fichiers par glisser-déposer et le multiupload.
+- Chaque fichier uploadé doit avoir un nom unique constitué d'une chaîne aléatoire de 8 caractères 
+(lettres minuscules et chiffres) suivie d'un tiret et de l'identifiant du symbole.
+- Tous les symboles doivent être uploadés dans un même dossier.
+- La possibilité d'ajouter une liste de mots-clés pour décrire chaque symbole, dans différentes langues : 
+anglais, allemand, espagnol, français, italien et portugais.
+- Chaque symbole doit avoir une taille par défaut, qui sera de 50% par défaut.
+- Les symboles sont classés par catégories, qui peuvent être ordonnées de manière intuitive avec un système JS draggable.
+		__________________________________________________
+
+Interface utilisateur
+
+- Une interface utilisateur qui permet de trouver rapidement un symbole parmi plus de 600, avec un moteur de recherche sur les mots-clés et un filtre sur les catégories.
+- La possibilité d'effectuer certaines tâches en un seul clic, comme activer/désactiver un symbole, ou faire une sélection multiple pour la suppression.
+- La possibilité de visualiser et de télécharger facilement le symbole.
+- Une authentification via un couple login/mot de passe, et un accès restreint à certains utilisateurs seulement.
+		__________________________________________________
+
+Statistiques
+
+- Pour chaque symbole, la possibilité d'afficher des statistiques comme la liste des personnalisations contenant ce symbole et leur nombre, 
+ainsi que la liste des commandes avec ce symbole et leur nombre.
+		__________________________________________________
+
+Gestion des modifications et suppressions
+
+- La possibilité de modifier un symbole sans altérer les versions précédentes.
+- La suppression d'un symbole depuis l'admin ne doit pas entraîner la suppression du fichier ni son entrée en base de données.
+		__________________________________________________
+
+Indépendance du projet
+
+- Le projet doit être indépendant et ne doit pas utiliser le CDN CSS d'Imprim et com.
+- Seule une copie de la classe DB est autorisée pour la gestion de la base de données.
+- Possibilité de paramétrer le chemin du dossier où sont stockés les symboles ainsi que les noms des tables utilisées.
+		__________________________________________________
+
+Communication
+
+- Les échanges doivent se faire principalement via GitHub.
