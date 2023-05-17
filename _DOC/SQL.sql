@@ -9,7 +9,6 @@ CREATE TABLE `symbols` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-
 CREATE TABLE `keywords` (
   `keyword_id` int(11) NOT NULL AUTO_INCREMENT,
   `symbol_id` int(11) NOT NULL,
@@ -26,7 +25,6 @@ CREATE TABLE `categories` (
   PRIMARY KEY (`category_id`),
   UNIQUE (`category_name`, `lang`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 CREATE TABLE `symbol_category` (
   `symbol_id` int(11) NOT NULL,
