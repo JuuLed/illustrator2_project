@@ -1,3 +1,7 @@
+token : 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
+
+
+
 Dans le configurateur V1, l'utilisateur peut ajouter des symboles (= illustrations) sur son gobelet. A tester ici : 
 https://www.atelierdugobelet.fr/fr/delai-j10-standard/4689-gobelets-personnalises-25-33cl-impression-digitale-photo-j10-ouvres.html
 
