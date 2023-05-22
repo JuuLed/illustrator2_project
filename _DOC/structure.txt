@@ -1,0 +1,25 @@
+illustrator2_project/
+├── back/
+│   ├── config/
+│   │   └── database.php
+│   ├── controllers/
+│   │   └── SymbolsController.php
+│   ├── models/
+│   │   ├── Category.php
+│   │   ├── Keyword.php
+│   │   └── Symbol.php
+│   └── index.php
+└── front/
+    ├── css/
+    │   └── style.css
+    ├── js/
+    │   └── script.js
+    ├── views/
+    │   ├── navbar.php
+    │   ├── home.php
+    │   ├── symbols.php
+    │   ├── upload.php
+    │   ├── edit.php
+    │   ├── stats.php
+    │   └── login.php
+    └── index.php
