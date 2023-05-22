@@ -28,21 +28,11 @@ class Keyword {
         $stmt->execute([$lang, $keyword, $keywordId]);
         return $stmt->rowCount();
     }
-	public function deleteKeywordsBySymbol($symbolId) {
-        $stmt = $this->pdo->prepare("DELETE FROM keywords WHERE symbol_id = ?");
-        $stmt->execute([$symbolId]);
-        return $stmt->rowCount();
-    }
+
     public function deleteKeyword($keywordId) {
         $stmt = $this->pdo->prepare("DELETE FROM keywords WHERE keyword_id = ?");
         $stmt->execute([$keywordId]);
         return $stmt->rowCount();
-    }
-
-    public function getKeywordsByLanguage($lang) {
-        $stmt = $this->pdo->prepare("SELECT * FROM keywords WHERE lang = ?");
-        $stmt->execute([$lang]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function getKeywordsBySymbol($symbolId) {
@@ -50,4 +40,9 @@ class Keyword {
         $stmt->execute([$symbolId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+	public function deleteKeywordsBySymbol($symbolId) {
+		$stmt = $this->pdo->prepare("DELETE FROM keywords WHERE symbol_id = ?");
+		$stmt->execute([$symbolId]);
+	}
+	
 }

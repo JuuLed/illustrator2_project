@@ -3,7 +3,9 @@ illustrator2_project/
 │   ├── config/
 │   │   └── database.php
 │   ├── controllers/
-│   │   └── SymbolsController.php
+│   │   ├── SymbolsController.php
+│   │   ├── CategoryController.php
+│   │   └── KeywordController.php
 │   ├── models/
 │   │   ├── Category.php
 │   │   ├── Keyword.php

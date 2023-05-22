@@ -40,29 +40,26 @@ class Symbol {
     }
 
     public function updateSymbol($id, $data) {
-        $validation = $this->validateSymbolData($data);
-        if ($validation === true) {
-            $stmt = $this->pdo->prepare("UPDATE symbols SET name_file = ?, active = ?, size = ? WHERE symbol_id = ?");
-            $stmt->execute([$data['name_file'], $data['active'], $data['size'], $id]);
-
-            // Delete old associations between the symbol and categories
-            $stmt = $this->pdo->prepare("DELETE FROM symbol_category WHERE symbol_id = ?");
-            $stmt->execute([$id]);
-
-            // Insert new associations between the symbol and categories
-            if (isset($data['categories']) && is_array($data['categories'])) {
-                foreach ($data['categories'] as $categoryId) {
-                    $stmt = $this->pdo->prepare("INSERT INTO symbol_category (symbol_id, category_id) VALUES (?, ?)");
-                    $stmt->execute([$id, $categoryId]);
-                }
-            }
-
-            return $stmt->rowCount();
-        } else {
-            http_response_code(400);
-            return ['error' => 'Invalid data', 'details' => $validation];
-        }
-    }
+		$validation = $this->validateSymbolData($data);
+		if ($validation === true) {
+			$stmt = $this->pdo->prepare("UPDATE symbols SET name_file = COALESCE(?, name_file), active = COALESCE(?, active), size = COALESCE(?, size) WHERE symbol_id = ?");
+			$stmt->execute([$data['name_file'], $data['active'], $data['size'], $id]);
+	
+			// Update the categories and keywords
+			if (isset($data['categories']) && is_array($data['categories'])) {
+				$this->updateCategories($id, $data['categories']);
+			}
+			if (isset($data['keywords']) && is_array($data['keywords'])) {
+				$this->updateKeywords($id, $data['keywords']);
+			}
+	
+			return $stmt->rowCount();
+		} else {
+			http_response_code(400);
+			return ['error' => 'Invalid data', 'details' => $validation];
+		}
+	}
+	
 
     public function deleteSymbol($id) {
         $stmt = $this->pdo->prepare("UPDATE symbols SET deleted = TRUE WHERE symbol_id = ?");

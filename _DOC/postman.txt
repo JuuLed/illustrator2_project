@@ -1,0 +1,37 @@
+POST :
+	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/
+	{
+	"name_file": "example_symbol",
+	"active": 1,
+	"size": 50,
+	"categories": [1, 2, 3],
+	"keywords": {
+		"en": "illustration",
+		"fr": "illustration",
+		"es": "ilustración"
+	}
+	}
+
+PUT :
+	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
+	{
+	"name_file": "example_symbol",
+	"active": 1,
+	"size": 50,
+	"categories": [1, 2, 3],
+	"keywords": {
+		"en": "illustration",
+		"fr": "illustration",
+		"es": "ilustración"
+	}
+	}
+
+
+DELETE :
+	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
+
+
+GET ALL :
+	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/
+GET :
+	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
