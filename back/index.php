@@ -7,11 +7,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit; // Si c'est une requête de type OPTIONS, on termine le script ici.
 }
 
-require_once './controllers/SymbolsController.php';
+require_once './controllers/SymbolController.php';
 require_once './controllers/CategoryController.php';
 require_once './controllers/KeywordController.php';
 
-$symbolsController = new SymbolsController();
+$symbolController = new SymbolController();
 $categoryController = new CategoryController();
 $keywordController = new KeywordController();
 
@@ -31,10 +31,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($route) {
     case 'symbols':
         if ($method === 'GET') {
-            $response = $symbolsController->getAllSymbols();
+            $response = $symbolController->getAllSymbols();
         } elseif ($method === 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
-            $response = $symbolsController->createSymbol($data);
+            $response = $symbolController->createSymbol($data);
         } else {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
@@ -43,12 +43,12 @@ switch ($route) {
     case preg_match('/^symbols\/\d+$/', $route) ? true : false:
         $id = explode('/', $route)[1];
         if ($method === 'GET') {
-            $response = $symbolsController->getSymbol($id);
+            $response = $symbolController->getSymbol($id);
         } elseif ($method === 'PUT') {
             $data = json_decode(file_get_contents('php://input'), true);
-            $response = $symbolsController->updateSymbol($id, $data);
+            $response = $symbolController->updateSymbol($id, $data);
         } elseif ($method === 'DELETE') {
-            $response = $symbolsController->deleteSymbol($id);
+            $response = $symbolController->deleteSymbol($id);
         } else {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);

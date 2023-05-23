@@ -3,8 +3,9 @@ illustrator2_project/
 │   ├── config/
 │   │   └── database.php
 │   ├── controllers/
-│   │   ├── SymbolsController.php
+│   │   ├── SymbolController.php
 │   │   ├── CategoryController.php
+│   │   ├── LanguageController.php
 │   │   └── KeywordController.php
 │   ├── models/
 │   │   ├── Category.php
@@ -22,6 +23,7 @@ illustrator2_project/
     │   ├── symbols.php
     │   ├── category.php
     │   ├── keyword.php
+    │   ├── language.php
     │   ├── upload.php
     │   ├── edit.php
     │   ├── stats.php
