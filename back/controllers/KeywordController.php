@@ -15,13 +15,22 @@ class KeywordController {
     }
 
     public function getKeyword($id) {
-        return $this->keywordModel->getKeywordById($id);
+        $keyword = $this->keywordModel->getKeywordById($id);
+        if ($keyword) {
+            return $keyword;
+        } else {
+            return ['error' => 'Keyword not found'];
+        }
     }
 
     public function createKeyword($data) {
-        $keywordId = $this->keywordModel->addKeyword($data['symbol_id'], $data['lang'], $data['keyword']);
-        if (is_numeric($keywordId)) {
-            return ['keyword_id' => $keywordId];
+        $keywordName = $data['keyword'];
+        $languageCode = $data['language_code'];
+
+        $result = $this->keywordModel->createKeyword($keywordName, $languageCode);
+
+        if ($result) {
+            return ['keyword_id' => $result, 'keyword' => $keywordName, 'language_code' => $languageCode];
         } else {
             return ['error' => 'Failed to create keyword'];
         }
@@ -34,7 +43,10 @@ class KeywordController {
             return ['error' => 'Keyword not found'];
         }
 
-        $result = $this->keywordModel->updateKeyword($id, $data['lang'], $data['keyword']);
+        $keywordName = isset($data['keyword']) ? $data['keyword'] : $keyword['keyword'];
+        $languageCode = isset($data['language_code']) ? $data['language_code'] : $keyword['language_code'];
+
+        $result = $this->keywordModel->updateKeyword($id, $keywordName, $languageCode);
 
         if ($result > 0) {
             return ['message' => 'Keyword updated successfully'];
@@ -58,8 +70,5 @@ class KeywordController {
             return ['error' => 'Keyword deletion failed'];
         }
     }
-	public function deleteKeywordsBySymbol($symbolId) {
-		$this->keywordModel->deleteKeywordsBySymbol($symbolId);
-	}
-	
 }
+?>

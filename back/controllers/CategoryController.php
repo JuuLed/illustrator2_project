@@ -24,9 +24,13 @@ class CategoryController {
     }
 
     public function createCategory($data) {
-        $categoryId = $this->categoryModel->addCategory($data['category_name'], $data['lang']);
-        if (is_numeric($categoryId)) {
-            return ['category_id' => $categoryId];
+        $categoryName = $data['category_name'];
+        $languageCode = $data['language_code'];
+
+        $result = $this->categoryModel->createCategory($categoryName, $languageCode);
+
+        if ($result) {
+            return ['category_id' => $result, 'category_name' => $categoryName, 'language_code' => $languageCode];
         } else {
             return ['error' => 'Failed to create category'];
         }
@@ -39,7 +43,10 @@ class CategoryController {
             return ['error' => 'Category not found'];
         }
 
-        $result = $this->categoryModel->updateCategory($id, $data['category_name'], $data['lang']);
+        $categoryName = isset($data['category_name']) ? $data['category_name'] : $category['category_name'];
+        $languageCode = isset($data['language_code']) ? $data['language_code'] : $category['language_code'];
+
+        $result = $this->categoryModel->updateCategory($id, $categoryName, $languageCode);
 
         if ($result > 0) {
             return ['message' => 'Category updated successfully'];
@@ -49,19 +56,19 @@ class CategoryController {
     }
 
     public function deleteCategory($id) {
+        $category = $this->categoryModel->getCategoryById($id);
+
+        if (!$category) {
+            return ['error' => 'Category not found'];
+        }
+
         $result = $this->categoryModel->deleteCategory($id);
+
         if ($result > 0) {
             return ['message' => 'Category deleted successfully'];
         } else {
-            return ['error' => 'Category delete failed'];
+            return ['error' => 'Category deletion failed'];
         }
     }
-	public function removeSymbolFromAllCategories($symbolId) {
-		$this->categoryModel->removeSymbolFromAllCategories($symbolId);
-	}
-	
-	public function addSymbolToCategory($symbolId, $categoryId) {
-		$this->categoryModel->addSymbolToCategory($symbolId, $categoryId);
-	}
-	
 }
+?>

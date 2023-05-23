@@ -7,55 +7,50 @@ class Category {
     }
 
     public function getAllCategories() {
-        $stmt = $this->pdo->query("SELECT * FROM categories");
+        $query = "SELECT * FROM categories";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getCategoryById($categoryId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM categories WHERE category_id = ?");
-        $stmt->execute([$categoryId]);
+    public function getCategoryById($id) {
+        $query = "SELECT * FROM categories WHERE category_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addCategory($categoryName, $lang) {
-        $stmt = $this->pdo->prepare("INSERT INTO categories (category_name, lang) VALUES (?, ?)");
-        $stmt->execute([$categoryName, $lang]);
+    public function createCategory($name, $languageCode) {
+        $query = "INSERT INTO categories (category_name, language_code) VALUES (:name, :languageCode)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->execute();
+
         return $this->pdo->lastInsertId();
     }
 
-    public function updateCategory($categoryId, $categoryName, $lang) {
-        $stmt = $this->pdo->prepare("UPDATE categories SET category_name = ?, lang = ? WHERE category_id = ?");
-        $stmt->execute([$categoryName, $lang, $categoryId]);
-        return $stmt->rowCount();
-    }
-
-    public function deleteCategory($categoryId) {
-        // Delete associations between the category and symbols in the symbol_category table
-        $stmt = $this->pdo->prepare("DELETE FROM symbol_category WHERE category_id = ?");
-        $stmt->execute([$categoryId]);
-
-        // Delete the category from the categories table
-        $stmt = $this->pdo->prepare("DELETE FROM categories WHERE category_id = ?");
-        $stmt->execute([$categoryId]);
+    public function updateCategory($id, $name, $languageCode) {
+        $query = "UPDATE categories SET category_name = :name, language_code = :languageCode WHERE category_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
 
         return $stmt->rowCount();
     }
 
-    public function getCategoriesBySymbol($symbolId) {
-        $stmt = $this->pdo->prepare("SELECT categories.* FROM categories
-            INNER JOIN symbol_category ON categories.category_id = symbol_category.category_id
-            WHERE symbol_category.symbol_id = ?");
-        $stmt->execute([$symbolId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function deleteCategory($id) {
+        $query = "DELETE FROM categories WHERE category_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        return $stmt->rowCount();
     }
-	public function removeSymbolFromAllCategories($symbolId) {
-		$stmt = $this->pdo->prepare("DELETE FROM symbol_category WHERE symbol_id = ?");
-		$stmt->execute([$symbolId]);
-	}
-	
-	public function addSymbolToCategory($symbolId, $categoryId) {
-		$stmt = $this->pdo->prepare("INSERT INTO symbol_category (symbol_id, category_id) VALUES (?, ?)");
-		$stmt->execute([$symbolId, $categoryId]);
-	}
-	
 }
+?>

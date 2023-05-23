@@ -7,42 +7,50 @@ class Keyword {
     }
 
     public function getAllKeywords() {
-        $stmt = $this->pdo->query("SELECT * FROM keywords");
+        $query = "SELECT * FROM keywords";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getKeywordById($keywordId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM keywords WHERE keyword_id = ?");
-        $stmt->execute([$keywordId]);
+    public function getKeywordById($id) {
+        $query = "SELECT * FROM keywords WHERE keyword_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function addKeyword($symbolId, $lang, $keyword) {
-        $stmt = $this->pdo->prepare("INSERT INTO keywords (symbol_id, lang, keyword) VALUES (?, ?, ?)");
-        $stmt->execute([$symbolId, $lang, $keyword]);
+    public function createKeyword($keyword, $languageCode) {
+        $query = "INSERT INTO keywords (keyword, language_code) VALUES (:keyword, :languageCode)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':keyword', $keyword);
+        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->execute();
+
         return $this->pdo->lastInsertId();
     }
 
-    public function updateKeyword($keywordId, $lang, $keyword) {
-        $stmt = $this->pdo->prepare("UPDATE keywords SET lang = ?, keyword = ? WHERE keyword_id = ?");
-        $stmt->execute([$lang, $keyword, $keywordId]);
+    public function updateKeyword($id, $keyword, $languageCode) {
+        $query = "UPDATE keywords SET keyword = :keyword, language_code = :languageCode WHERE keyword_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':keyword', $keyword);
+        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
         return $stmt->rowCount();
     }
 
-    public function deleteKeyword($keywordId) {
-        $stmt = $this->pdo->prepare("DELETE FROM keywords WHERE keyword_id = ?");
-        $stmt->execute([$keywordId]);
+    public function deleteKeyword($id) {
+        $query = "DELETE FROM keywords WHERE keyword_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
         return $stmt->rowCount();
     }
-
-    public function getKeywordsBySymbol($symbolId) {
-        $stmt = $this->pdo->prepare("SELECT * FROM keywords WHERE symbol_id = ?");
-        $stmt->execute([$symbolId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-	public function deleteKeywordsBySymbol($symbolId) {
-		$stmt = $this->pdo->prepare("DELETE FROM keywords WHERE symbol_id = ?");
-		$stmt->execute([$symbolId]);
-	}
-	
 }
+?>

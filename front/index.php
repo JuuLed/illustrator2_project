@@ -18,6 +18,12 @@
 				<a class="navbar-link" href="index.php?page=symbols">Symboles</a>
 			</li>
 			<li class="navbar-item">
+				<a class="navbar-link" href="index.php?page=category">Category</a>
+			</li>
+			<li class="navbar-item">
+				<a class="navbar-link" href="index.php?page=keyword">Keyword</a>
+			</li>
+			<li class="navbar-item">
 				<a class="navbar-link" href="index.php?page=upload">Uploader</a>
 			</li>
 			<li class="navbar-item">

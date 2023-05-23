@@ -1,41 +1,22 @@
 <?php
 require_once './config/database.php';
 require_once './models/Symbol.php';
-require_once './models/Category.php';
-require_once './models/Keyword.php';
 
-class SymbolsController {
+class SymbolController {
     protected $symbolModel;
-    protected $categoryModel;
-    protected $keywordModel;
 
     public function __construct() {
         global $pdo;
         $this->symbolModel = new Symbol($pdo);
-        $this->categoryModel = new Category($pdo);
-        $this->keywordModel = new Keyword($pdo);
     }
 
     public function getAllSymbols() {
-        $symbols = $this->symbolModel->getAllSymbols();
-        $filteredSymbols = [];
-
-        foreach ($symbols as $symbol) {
-            if (!$symbol['deleted']) {
-                $symbol['categories'] = $this->categoryModel->getCategoriesBySymbol($symbol['symbol_id']);
-                $symbol['keywords'] = $this->keywordModel->getKeywordsBySymbol($symbol['symbol_id']);
-                $filteredSymbols[] = $symbol;
-            }
-        }
-
-        return $filteredSymbols;
+        return $this->symbolModel->getAllSymbols();
     }
 
     public function getSymbol($id) {
         $symbol = $this->symbolModel->getSymbolById($id);
         if ($symbol) {
-            $symbol['categories'] = $this->categoryModel->getCategoriesBySymbol($id);
-            $symbol['keywords'] = $this->keywordModel->getKeywordsBySymbol($id);
             return $symbol;
         } else {
             return ['error' => 'Symbol not found'];
@@ -43,11 +24,15 @@ class SymbolsController {
     }
 
     public function createSymbol($data) {
-        $symbolId = $this->symbolModel->createSymbol($data);
-        if (is_numeric($symbolId)) {
-            $this->updateSymbolCategories($symbolId, $data['categories']);
-            $this->updateSymbolKeywords($symbolId, $data['keywords']);
-            return ['symbol_id' => $symbolId];
+        $fileName = $data['file_name'];
+        $size = $data['size'];
+        $active = isset($data['active']) ? $data['active'] : false;
+        $deleted = isset($data['deleted']) ? $data['deleted'] : false;
+
+        $result = $this->symbolModel->createSymbol($fileName, $size, $active, $deleted);
+
+        if ($result) {
+            return ['symbol_id' => $result, 'file_name' => $fileName, 'size' => $size, 'active' => $active, 'deleted' => $deleted];
         } else {
             return ['error' => 'Failed to create symbol'];
         }
@@ -60,26 +45,17 @@ class SymbolsController {
             return ['error' => 'Symbol not found'];
         }
 
-        $validation = $this->validateSymbolData($data);
+        $fileName = isset($data['file_name']) ? $data['file_name'] : $symbol['file_name'];
+        $size = isset($data['size']) ? $data['size'] : $symbol['size'];
+        $active = isset($data['active']) ? $data['active'] : $symbol['active'];
+        $deleted = isset($data['deleted']) ? $data['deleted'] : $symbol['deleted'];
 
-        if ($validation === true) {
-            $updatedData = [
-                'name_file' => isset($data['name_file']) ? $data['name_file'] : $symbol['name_file'],
-                'active' => isset($data['active']) ? $data['active'] : $symbol['active'],
-                'size' => isset($data['size']) ? $data['size'] : $symbol['size'],
-            ];
+        $result = $this->symbolModel->updateSymbol($id, $fileName, $size, $active, $deleted);
 
-            $result = $this->symbolModel->updateSymbol($id, $updatedData);
-
-            if ($result > 0) {
-                $this->updateSymbolCategories($id, isset($data['categories']) ? $data['categories'] : []);
-                $this->updateSymbolKeywords($id, isset($data['keywords']) ? $data['keywords'] : []);
-                return ['message' => 'Symbol updated successfully'];
-            } else {
-                return ['error' => 'Symbol update failed'];
-            }
+        if ($result > 0) {
+            return ['message' => 'Symbol updated successfully'];
         } else {
-            return ['error' => 'Invalid data', 'details' => $validation];
+            return ['error' => 'Symbol update failed'];
         }
     }
 
@@ -98,38 +74,5 @@ class SymbolsController {
             return ['error' => 'Symbol deletion failed'];
         }
     }
-
-    private function updateSymbolCategories($symbolId, $categories) {
-        $this->categoryModel->removeSymbolFromAllCategories($symbolId);
-
-        foreach ($categories as $categoryId) {
-            $this->categoryModel->addSymbolToCategory($symbolId, $categoryId);
-        }
-    }
-
-    private function updateSymbolKeywords($symbolId, $keywords) {
-        $this->keywordModel->deleteKeywordsBySymbol($symbolId);
-
-        foreach ($keywords as $lang => $keyword) {
-            $this->keywordModel->addKeyword($symbolId, $lang, $keyword);
-        }
-    }
-
-    private function validateSymbolData($data) {
-        $errors = [];
-
-        if (!isset($data['name_file']) || empty($data['name_file'])) {
-            $errors[] = 'name_file is required';
-        }
-
-        if (!isset($data['active']) || !in_array($data['active'], [0, 1])) {
-            $errors[] = 'active must be 0 or 1';
-        }
-
-        if (!isset($data['size']) || !is_numeric($data['size']) || $data['size'] < 1 || $data['size'] > 100) {
-            $errors[] = 'size must be a number between 1 and 100';
-        }
-
-        return empty($errors) ? true : $errors;
-    }
 }
+?>

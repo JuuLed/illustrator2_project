@@ -9,6 +9,7 @@ illustrator2_project/
 │   ├── models/
 │   │   ├── Category.php
 │   │   ├── Keyword.php
+│   │   ├── Language.php
 │   │   └── Symbol.php
 │   └── index.php
 └── front/
@@ -17,9 +18,10 @@ illustrator2_project/
     ├── js/
     │   └── script.js
     ├── views/
-    │   ├── navbar.php
     │   ├── home.php
     │   ├── symbols.php
+    │   ├── category.php
+    │   ├── keyword.php
     │   ├── upload.php
     │   ├── edit.php
     │   ├── stats.php

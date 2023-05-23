@@ -29,3 +29,11 @@
 - Méthode : DELETE
 - Paramètres : {id} est l'identifiant du symbole
 - Réponse : Confirmation de la suppression du symbole
+
+
+
+
+
+
+
+

@@ -63,8 +63,11 @@ echo '</table>';
         button.addEventListener('click', () => {
             const symbolId = button.dataset.id;
             const rowData = getRowData(button.parentNode.parentNode);
-            // Appeler l'API pour mettre à jour le symbole
-            updateSymbol(symbolId, rowData);
+			rowData.categories = []; // Ajoutez ici les catégories mises à jour
+			rowData.keywords = []; // Ajoutez ici les mots-clés mis à jour
+
+			// Appeler l'API pour mettre à jour le symbole
+			updateSymbol(symbolId, rowData);
         });
     });
 
@@ -96,31 +99,36 @@ echo '</table>';
     }
 
     // Fonction pour mettre à jour le symbole via l'API
-    function updateSymbol(symbolId, data) {
-        const url = '<?php echo $apiBaseURL; ?>/' + symbolId;
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-            .then(response => response.json())
-            .then(data => {
-                // Afficher un message ou actualiser la page après la mise à jour
-                console.log(data);
-                // Actualiser la ligne modifiée dans le tableau
-                const symbolRow = document.querySelector(`tr[data-id="${symbolId}"]`);
-                if (symbolRow) {
-                    symbolRow.querySelector('[data-field="name_file"]').textContent = data.name_file;
-                    symbolRow.querySelector('[data-field="size"]').textContent = data.size;
-                    symbolRow.querySelector('[data-field="active"]').textContent = data.active;
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la mise à jour du symbole:', error);
-            });
-    }
+	function updateSymbol(symbolId, data) {
+		const url = '<?php echo $apiBaseURL; ?>/' + symbolId;
+		fetch(url, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(data => {
+				// Afficher un message ou actualiser la page après la mise à jour
+				console.log(data);
+				// Actualiser la ligne modifiée dans le tableau
+				const symbolRow = document.querySelector(`tr[data-id="${symbolId}"]`);
+				if (symbolRow) {
+					symbolRow.querySelector('[data-field="file_name"]').textContent = data.file_name;
+					symbolRow.querySelector('[data-field="size"]').textContent = data.size;
+					symbolRow.querySelector('[data-field="active"]').textContent = data.active;
+					// Mettre à jour les catégories affichées dans la colonne correspondante
+					symbolRow.querySelector('[data-field="categories"]').textContent = getCategories(data);
+					// Mettre à jour les mots-clés affichés dans la colonne correspondante
+					symbolRow.querySelector('[data-field="keywords"]').textContent = getKeywords(data);
+				}
+			})
+			.catch(error => {
+				console.error('Erreur lors de la mise à jour du symbole:', error);
+			});
+	}
+
 
     // Fonction pour supprimer le symbole via l'API
     function deleteSymbol(symbolId) {
