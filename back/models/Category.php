@@ -7,7 +7,10 @@ class Category {
     }
 
     public function getAllCategories() {
-        $query = "SELECT * FROM categories";
+        $query = "SELECT c.category_id, c.category, t.language_code, t.value
+                  FROM categories c
+                  LEFT JOIN translates t ON t.table_name = 'categories' AND t.row_id = c.category_id";
+
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
 

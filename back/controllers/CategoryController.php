@@ -6,114 +6,129 @@ require_once './models/Language.php';
 
 class CategoryController {
     protected $categoryModel;
-	protected $translateModel;
-	protected $languageModel;
+    protected $translateModel;
+    protected $languageModel;
 
     public function __construct() {
         global $pdo;
         $this->categoryModel = new Category($pdo);
-		$this->translateModel = new Translate($pdo);
-		$this->languageModel = new Language($pdo);
+        $this->translateModel = new Translate($pdo);
+        $this->languageModel = new Language($pdo);
     }
 
-	public function getAllCategories() {
-		$categories = $this->categoryModel->getAllCategories();
-	
-		$result = [];
-	
-		foreach ($categories as $category) {
-			$categoryId = $category['category_id'];
-			$categoryName = $category['category'];
-	
-			// Récupérer les traductions de la catégorie
-			$translations = $this->translateModel->getTranslateByTableAndId('categories', $categoryId);
-	
-			$categoryTranslations = [];
-			foreach ($translations as $translation) {
-				$languageCode = $translation['language_code'];
-				$value = $translation['value'];
-				$categoryTranslations[$languageCode] = $value;
-			}
-	
-			$result[] = [
-				'category_id' => $categoryId,
-				'category' => $categoryName,
-				'translates' => $categoryTranslations
-			];
-		}
-	
-		return $result;
-	}
+    public function getAllCategories() {
+        $categories = $this->categoryModel->getAllCategories();
+        $result = [];
+
+        foreach ($categories as $category) {
+            $categoryId = $category['category_id'];
+            $categoryName = $category['category'];
+
+            // Vérifier si la catégorie existe déjà dans le résultat
+            if (!isset($result[$categoryId])) {
+                $result[$categoryId] = [
+                    'category_id' => $categoryId,
+                    'category' => $categoryName,
+                    'translates' => []
+                ];
+            }
+
+            // Récupérer les traductions pour la catégorie
+            $translations = $this->translateModel->getTranslateByTableAndId('categories', $categoryId);
+
+            foreach ($translations as $translation) {
+                $languageCode = $translation['language_code'];
+                $value = $translation['value'];
+
+                // Ajouter la traduction au tableau correspondant à la catégorie
+                $result[$categoryId]['translates'][$languageCode] = $value;
+            }
+        }
+
+        return array_values($result);
+    }
 
     public function getCategory($id) {
-		$category = $this->categoryModel->getCategoryById($id);
-		if ($category) {
-			// Récupérer les traductions de la catégorie
-			$translations = $this->translateModel->getTranslateByTableAndId('categories', $id);
-	
-			// Ajouter les traductions à la réponse
-			$category['translates'] = $translations;
-	
-			return $category;
-		} else {
-			return ['error' => 'Category not found'];
-		}
-	}
+        $category = $this->categoryModel->getCategoryById($id);
+        if ($category) {
+            $categoryId = $category['category_id'];
+            $categoryName = $category['category'];
+
+            // Vérifier si la catégorie existe déjà dans le résultat
+            $result = [
+                'category_id' => $categoryId,
+                'category' => $categoryName,
+                'translates' => []
+            ];
+
+            // Récupérer les traductions pour la catégorie
+            $translations = $this->translateModel->getTranslateByTableAndId('categories', $categoryId);
+
+            foreach ($translations as $translation) {
+                $languageCode = $translation['language_code'];
+                $value = $translation['value'];
+
+                // Ajouter la traduction au tableau correspondant à la catégorie
+                $result['translates'][$languageCode] = $value;
+            }
+
+            return $result;
+        } else {
+            return ['error' => 'Category not found'];
+        }
+    }
 
 	// Json d'ajout :
 	// {
-	// 	"category": "Category Name",
+	// 	"category": "categorie 1",
 	// 	"translates": {
-	// 	  "EN": "Translation in English",
-	// 	  "DE": "Translation in German",
-	// 	  "ES": "Translation in Spanish",
-	// 	  "FR": "Translation in French",
-	// 	  "IT": "Translation in Italian",
-	// 	  "PT": "Translation in Portuguese"
+	// 		"EN": "Translation in English",
+	// 		"DE": "Translation in German",
+	// 		"ES": "Translation in Spanish",
+	// 		"FR": "Translation in French",
+	// 		"IT": "Translation in Italian",
+	// 		"PT": "Translation in Portuguese"
 	// 	}
-	//   }	  
-	public function createCategory($data) {
-		$categoryName = $data['category'];
-		$translations = $data['translates'];
-	
-		// Créer la catégorie dans la base de données
-		$categoryId = $this->categoryModel->createCategory($categoryName);
-	
-		if ($categoryId) {
-			// Récupérer toutes les langues disponibles
-			$availableLanguages = $this->languageModel->getAvailableLanguages();
-	
-			// Créer les traductions pour la catégorie
-			foreach ($translations as $languageCode => $translation) {
-				// Vérifier si la langue est disponible
-				if (isset($availableLanguages[$languageCode])) {
-					$this->translateModel->createTranslate('categories', $categoryId, $translation, $languageCode);
-				}
-			}
-	
-			// Récupérer les traductions pour construire la réponse
-			$responseTranslations = [];
-			foreach ($translations as $languageCode => $translation) {
-				// Vérifier si la langue est disponible
-				if (isset($availableLanguages[$languageCode])) {
-					$responseTranslations[$languageCode] = $translation;
-				}
-			}
-	
-			// Construire la réponse avec les informations de la catégorie et les traductions
-			$response = [
-				'category_id' => $categoryId,
-				'category' => $categoryName,
-				'translates' => $responseTranslations
-			];
-	
-			return $response;
-		} else {
-			return ['error' => 'Failed to create category'];
-		}
-	}
-	
-	
+	// }	
+    public function createCategory($data) {
+        $categoryName = $data['category'];
+        $translations = $data['translates'];
+
+        // Créer la catégorie dans la base de données
+        $categoryId = $this->categoryModel->createCategory($categoryName);
+
+        if ($categoryId) {
+            // Créer les traductions pour la catégorie
+            foreach ($translations as $languageCode => $translation) {
+                $this->translateModel->createTranslate('categories', $categoryId, $translation, $languageCode);
+            }
+
+            // Récupérer les traductions pour construire la réponse
+            $responseTranslations = [];
+            foreach ($translations as $languageCode => $translation) {
+                $language = $this->languageModel->getLanguageByCode($languageCode);
+                if ($language) {
+                    $responseTranslations[$languageCode] = $translation;
+                }
+            }
+
+            // Construire la réponse avec les informations de la catégorie et les traductions
+            $response = [
+                'category_id' => $categoryId,
+                'category' => $categoryName,
+                'translates' => $responseTranslations
+            ];
+
+            return $response;
+        } else {
+            return ['error' => 'Failed to create category'];
+        }
+    }
+
+	// json de modification :
+	// 	{
+	// 		"category": "Modif categorie"
+	// 	  }
     public function updateCategory($id, $data) {
         $category = $this->categoryModel->getCategoryById($id);
 
@@ -139,7 +154,11 @@ class CategoryController {
             return ['error' => 'Category not found'];
         }
 
+        // Supprimer la catégorie de la table "categories"
         $result = $this->categoryModel->deleteCategory($id);
+
+        // Supprimer les traductions associées à la catégorie de la table "translates"
+        $this->translateModel->deleteTranslateByTableAndId('categories', $id);
 
         if ($result > 0) {
             return ['message' => 'Category deleted successfully'];
@@ -148,3 +167,4 @@ class CategoryController {
         }
     }
 }
+?>

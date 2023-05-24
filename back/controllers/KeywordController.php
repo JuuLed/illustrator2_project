@@ -127,7 +127,7 @@ class KeywordController {
 
 	// json de modification :
 	// 	{
-	// 		"keyword": "Nouveau mot-clé"
+	// 		"keyword": "Modif du mot-clé"
 	// 	  }
     public function updateKeyword($id, $data) {
 		$keyword = $this->keywordModel->getKeywordById($id);
