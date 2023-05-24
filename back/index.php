@@ -10,10 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require_once './controllers/SymbolController.php';
 require_once './controllers/CategoryController.php';
 require_once './controllers/KeywordController.php';
+require_once './controllers/LanguageController.php';
+require_once './controllers/TranslateController.php';
 
 $symbolController = new SymbolController();
 $categoryController = new CategoryController();
 $keywordController = new KeywordController();
+$languageController = new LanguageController();
+$translateController = new TranslateController();
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -39,7 +43,7 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+    break;
     case preg_match('/^symbols\/\d+$/', $route) ? true : false:
         $id = explode('/', $route)[1];
         if ($method === 'GET') {
@@ -53,7 +57,8 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+     break;
+
     case 'categories':
         if ($method === 'GET') {
             $response = $categoryController->getAllCategories();
@@ -64,7 +69,7 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+    break;
     case preg_match('/^categories\/\d+$/', $route) ? true : false:
         $id = explode('/', $route)[1];
         if ($method === 'GET') {
@@ -78,7 +83,8 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+    break;
+
     case 'keywords':
         if ($method === 'GET') {
             $response = $keywordController->getAllKeywords();
@@ -89,7 +95,7 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+    break;
     case preg_match('/^keywords\/\d+$/', $route) ? true : false:
         $id = explode('/', $route)[1];
         if ($method === 'GET') {
@@ -103,7 +109,63 @@ switch ($route) {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
-        break;
+    break;
+
+	case 'languages':
+		if ($method === 'GET') {
+			$response = $languageController->getAllLanguages();
+		} elseif ($method === 'POST') {
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = $languageController->createLanguage($data);
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	case preg_match('/^languages\/\d+$/', $route) ? true : false:
+		$id = explode('/', $route)[1];
+		if ($method === 'GET') {
+			$response = $languageController->getLanguage($id);
+		} elseif ($method === 'PUT') {
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = $languageController->updateLanguage($id, $data);
+		} elseif ($method === 'DELETE') {
+			$response = $languageController->deleteLanguage($id);
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+
+	case 'translates':
+        if ($method === 'GET') {
+            $response = $translateController->getAllTranslates();
+        } elseif ($method === 'POST') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $response = $translateController->createTranslate($data);
+        } else {
+            $response = ['error' => 'Method not allowed'];
+            http_response_code(405);
+        }
+    break;
+    case preg_match('/^translates\/[^\/]+\/\d+$/', $route) ? true : false:
+        $params = explode('/', $route);
+        $table = $params[1];
+        $id = $params[2];
+
+        if ($method === 'GET') {
+            $response = $translateController->getTranslateByTableAndId($table, $id);
+        } elseif ($method === 'PUT') {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $response = $translateController->updateTranslate($table, $id, $data);
+        } elseif ($method === 'DELETE') {
+            $response = $translateController->deleteTranslate($table, $id);
+        } else {
+            $response = ['error' => 'Method not allowed'];
+            http_response_code(405);
+        }
+    break;
+
     default:
         $response = ['error' => 'Endpoint not found'];
         http_response_code(404);

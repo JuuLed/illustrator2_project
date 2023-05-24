@@ -9,7 +9,7 @@ POST :
 		"en": "illustration",
 		"fr": "illustration",
 		"es": "ilustración"
-	}
+		}
 	}
 
 PUT :
@@ -23,7 +23,7 @@ PUT :
 		"en": "illustration",
 		"fr": "illustration",
 		"es": "ilustración"
-	}
+		}
 	}
 
 

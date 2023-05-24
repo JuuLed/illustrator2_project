@@ -22,6 +22,21 @@ class Language {
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+	
+	public function getAvailableLanguages() {
+        $query = "SELECT * FROM languages";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+
+        $languages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $result = [];
+        foreach ($languages as $language) {
+            $result[$language['language_code']] = $language['language_name'];
+        }
+
+        return $result;
+    }
 
     public function createLanguage($code, $name) {
         $query = "INSERT INTO languages (language_code, language_name) VALUES (:code, :name)";
@@ -34,7 +49,7 @@ class Language {
     }
 
     public function updateLanguage($code, $name) {
-        $query = "UPDATE languages SET language_name = :name WHERE language_code = :code";
+        $query = "UPDATE languages SET language = :name WHERE language_code = :code";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':code', $code);

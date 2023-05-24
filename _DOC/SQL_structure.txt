@@ -1,6 +1,12 @@
 Table languages :
-	language_code (clé primaire, par exemple : EN, DE, ES, FR, IT, PT)
-	language_name (par exemple : Anglais, Allemand, Espagnol, Français, Italien, Portugais)
+	language_code (clé primaire, par defaut : EN, DE, ES, FR, IT, PT)
+	language_name (par defaut : Anglais, Allemand, Espagnol, Français, Italien, Portugais)
+
+Table translates :
+	table_name
+	row_id
+	value
+	language_code (clé étrangère à languages.language_code)
 
 Table symbols :
 	symbol_id (clé primaire)
@@ -12,12 +18,10 @@ Table symbols :
 Table keywords :
 	keyword_id (clé primaire)
 	keyword
-	language_code (clé étrangère à languages.language_code)
 
 Table categories :
 	category_id (clé primaire)
-	category_name
-	language_code (clé étrangère à languages.language_code)
+	category
 
 Table symbol_keyword :
 	symbol_id (clé étrangère à symbols.symbol_id)

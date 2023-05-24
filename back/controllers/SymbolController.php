@@ -24,19 +24,22 @@ class SymbolController {
     }
 
     public function createSymbol($data) {
-        $fileName = $data['file_name'];
-        $size = $data['size'];
-        $active = isset($data['active']) ? $data['active'] : false;
-        $deleted = isset($data['deleted']) ? $data['deleted'] : false;
-
-        $result = $this->symbolModel->createSymbol($fileName, $size, $active, $deleted);
-
-        if ($result) {
-            return ['symbol_id' => $result, 'file_name' => $fileName, 'size' => $size, 'active' => $active, 'deleted' => $deleted];
-        } else {
-            return ['error' => 'Failed to create symbol'];
-        }
-    }
+		$fileName = $data['file_name'];
+		$size = $data['size'];
+		$active = isset($data['active']) ? $data['active'] : false;
+		$deleted = isset($data['deleted']) ? $data['deleted'] : false;
+		$categoryIds = $data['category_ids'];
+		$keywordNames = $data['keyword_names'];
+	
+		$result = $this->symbolModel->createSymbol($fileName, $size, $active, $deleted, $categoryIds, $keywordNames);
+	
+		if ($result) {
+			return ['symbol_id' => $result, 'file_name' => $fileName, 'size' => $size, 'active' => $active, 'deleted' => $deleted];
+		} else {
+			return ['error' => 'Failed to create symbol'];
+		}
+	}
+	
 
     public function updateSymbol($id, $data) {
         $symbol = $this->symbolModel->getSymbolById($id);
@@ -49,8 +52,10 @@ class SymbolController {
         $size = isset($data['size']) ? $data['size'] : $symbol['size'];
         $active = isset($data['active']) ? $data['active'] : $symbol['active'];
         $deleted = isset($data['deleted']) ? $data['deleted'] : $symbol['deleted'];
+        $categoryIds = isset($data['category_ids']) ? $data['category_ids'] : explode(',', $symbol['category_ids']);
+        $keywordIds = isset($data['keyword_ids']) ? $data['keyword_ids'] : explode(',', $symbol['keyword_ids']);
 
-        $result = $this->symbolModel->updateSymbol($id, $fileName, $size, $active, $deleted);
+        $result = $this->symbolModel->updateSymbol($id, $fileName, $size, $active, $deleted, $categoryIds, $keywordIds);
 
         if ($result > 0) {
             return ['message' => 'Symbol updated successfully'];

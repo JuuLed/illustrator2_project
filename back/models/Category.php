@@ -23,21 +23,19 @@ class Category {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function createCategory($name, $languageCode) {
-        $query = "INSERT INTO categories (category_name, language_code) VALUES (:name, :languageCode)";
+    public function createCategory($category) {
+        $query = "INSERT INTO categories (category) VALUES (:category)";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->bindParam(':category', $category);
         $stmt->execute();
 
         return $this->pdo->lastInsertId();
     }
 
-    public function updateCategory($id, $name, $languageCode) {
-        $query = "UPDATE categories SET category_name = :name, language_code = :languageCode WHERE category_id = :id";
+    public function updateCategory($id, $category) {
+        $query = "UPDATE categories SET category = :category WHERE category_id = :id";
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':languageCode', $languageCode);
+        $stmt->bindParam(':category', $category);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
 
@@ -53,4 +51,3 @@ class Category {
         return $stmt->rowCount();
     }
 }
-?>
