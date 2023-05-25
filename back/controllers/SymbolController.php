@@ -30,57 +30,14 @@ class SymbolController {
 		foreach ($symbols as $symbol) {
 			$symbolId = $symbol['symbol_id'];
 	
-			// Vérifier si le symbole existe déjà dans le résultat
 			if (!isset($result[$symbolId])) {
-				// Créer une nouvelle entrée pour le symbole
-				$symbolData = [
-					'id' => $symbolId,
-					'name' => $symbol['file_name'],
-					'size' => $symbol['size'],
-					'status' => $symbol['active'] ? 1 : 0,
-					'categories' => [],
-					'keywords' => []
-				];
+				$symbolData = $this->getSymbol($symbolId);
 	
 				$result[$symbolId] = $symbolData;
 			}
-	
-			// Ajouter les catégories du symbole
-			$categoryData = [
-				'id' => $symbol['category_id'],
-				'category' => $symbol['category'],
-				'translations' => []
-			];
-			$translations = $this->translateModel->getTranslateByTableAndId('categories', $symbol['category_id']);
-			foreach ($translations as $translation) {
-				$categoryData['translations'][$translation['language_code']] = $translation['value'];
-			}
-	
-			$result[$symbolId]['categories'][] = $categoryData;
-	
-			// Vérifier si le symbole a des mots-clés
-			if (!empty($symbol['keyword_id']) && !empty($symbol['keyword'])) {
-				// Ajouter les mots-clés du symbole
-				$keywordData = [
-					'id' => $symbol['keyword_id'],
-					'keyword' => $symbol['keyword'],
-					'translations' => []
-				];
-				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $symbol['keyword_id']);
-				foreach ($translations as $translation) {
-					$keywordData['translations'][$translation['language_code']] = $translation['value'];
-				}
-	
-				$result[$symbolId]['keywords'][] = $keywordData;
-			}
 		}
-	
 		return array_values($result);
 	}
-	
-	
-	
-	
 	
 	public function getSymbol($symbol_id) {
 		$symbol = $this->symbolModel->getSymbolById($symbol_id);
@@ -178,5 +135,6 @@ class SymbolController {
         } else {
             return ['error' => 'Symbol deletion failed'];
         }
-    }
+    }	
+	
 }
