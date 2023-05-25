@@ -122,3 +122,26 @@ Exemple parfait selon chatGPT :
         "orderCount": 0 // count of orders
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+_________________________________________________________________________
+
+{
+	"file_name": "BMW",
+	"size": 50,
+	"active": 0,
+	"categories": [5, 8, 15, 18],
+	"keywords": [5, 6, 7]
+}
