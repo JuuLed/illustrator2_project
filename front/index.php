@@ -5,6 +5,9 @@
     <title>Mon application</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+<?
+	$currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
+?>
 <body>
     <div class="navbar">
 		<div class="navbar-brand">
@@ -12,25 +15,25 @@
 		</div>
 		<ul class="navbar-menu">
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=home">Accueil</a>
+				<a class="navbar-link <?= $currentPage === 'home' ? 'active' : ""; ?>" href="index.php?page=home">Accueil</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=symbols">Symboles</a>
+				<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>" href="index.php?page=symbols">Symboles</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=category">Category</a>
+				<a class="navbar-link <?= $currentPage === 'category' ? 'active' : ""; ?>" href="index.php?page=category">Category</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=keyword">Keyword</a>
+				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">Keyword</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=upload">Uploader</a>
+				<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>" href="index.php?page=upload">Uploader</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=stats">Statistiques</a>
+				<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>" href="index.php?page=stats">Statistiques</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link" href="index.php?page=login">Connexion</a>
+				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>" href="index.php?page=login">Connexion</a>
 			</li>
 		</ul>
     </div>

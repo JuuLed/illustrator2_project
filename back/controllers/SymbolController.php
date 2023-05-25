@@ -112,11 +112,12 @@ class SymbolController {
 		$fileName = isset($data['file_name']) ? $data['file_name'] : null;
 		$size = isset($data['size']) ? $data['size'] : null;
 		$active = isset($data['active']) ? $data['active'] : null;
-		$categoryIds = isset($data['categories']) ? $data['categories'] : null;
-		$keywordIds = isset($data['keywords']) ? $data['keywords'] : null;
+		// $categoryIds = isset($data['categories']) ? $data['categories'] : null;
+		// $keywordIds = isset($data['keywords']) ? $data['keywords'] : null;
 	
 		// Mise à jour du symbole 
-		$this->symbolModel->updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds);
+		// $this->symbolModel->updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds);
+		$this->symbolModel->updateSymbol($id, $fileName, $size, $active);
 	
 		return ['message' => 'Symbol updated successfully'];
 	}

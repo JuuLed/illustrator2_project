@@ -62,7 +62,7 @@ class Symbol {
         return $symbolId;
     }
 
-    public function updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds) {
+    public function updateSymbol($id, $fileName, $size, $active) {
 		$query = "UPDATE symbols SET file_name = :fileName, size = :size, active = :active WHERE symbol_id = :id";
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':fileName', $fileName);
@@ -71,8 +71,8 @@ class Symbol {
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
 	
-        $this->updateSymbolCategories($id, $categoryIds);
-        $this->updateSymbolKeywords($id, $keywordIds);
+        // $this->updateSymbolCategories($id, $categoryIds);
+        // $this->updateSymbolKeywords($id, $keywordIds);
 
 		return $stmt->rowCount();
 	}	
