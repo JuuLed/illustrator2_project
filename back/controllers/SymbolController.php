@@ -124,7 +124,14 @@ class SymbolController {
 		return null;
 	}
 	
-	
+	// Json d'ajout ou de update :
+	// {
+	// 	"file_name": "example_symbol",
+	// 	"size": 50,
+	// 	"active": 0,
+	// 	"categories": [1],
+	// 	"keywords":  [3]
+	// }
 	public function createSymbol($data) {
 		$fileName = $data['file_name'];
 		$size = $data['size'];
@@ -146,16 +153,6 @@ class SymbolController {
 	
 		// Mise à jour du symbole 
 		$this->symbolModel->updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds);
-		
-		// // Mise à jour des catégories
-		// if ($categoryIds !== null) {
-		// 	$this->symbolModel->updateSymbolCategories($id, $categoryIds);
-		// }
-	
-		// // Mise à jour des mots-clés
-		// if ($keywordIds !== null) {
-		// 	$this->symbolModel->updateSymbolKeywords($id, $keywordIds);
-		// }
 	
 		return ['message' => 'Symbol updated successfully'];
 	}
