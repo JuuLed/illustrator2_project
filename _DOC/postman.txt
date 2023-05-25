@@ -1,32 +1,3 @@
-POST :
-	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/
-	{
-	"file_name": "example_symbol",
-	"active": 1,
-	"size": 50,
-	"categories": [1, 2, 3],
-	"keywords": {
-		"en": "illustration",
-		"fr": "illustration",
-		"es": "ilustración"
-		}
-	}
-
-PUT :
-	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
-	{
-	"file_name": "example_symbol",
-	"active": 1,
-	"size": 50,
-	"categories": [1, 2, 3],
-	"keywords": {
-		"en": "illustration",
-		"fr": "illustration",
-		"es": "ilustración"
-		}
-	}
-
-
 DELETE :
 	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
 
@@ -107,4 +78,47 @@ POST ?
 	"categories": [1, 2],
 	"keywords": [1, 2]
 }
+_______________________________________
+Exemple parfait selon chatGPT :
 
+{
+    "id": 407,
+    "name": "9dyw5tub-407.svg",
+    "filePath": "path_to_the_folder/9dyw5tub-407.svg",
+    "color": "#000000",
+    "defaultSize": 50,
+    "isActive": false,
+    "categories": [
+        {
+            "id": 1,
+            "name": {
+                "EN": "Category_Name_in_English",
+                "DE": "Category_Name_in_German",
+                "ES": "Category_Name_in_Spanish",
+                "FR": "Category_Name_in_French",
+                "IT": "Category_Name_in_Italian",
+                "PT": "Category_Name_in_Portuguese"
+            },
+            "order": 1
+        },
+        // ... other categories
+    ],
+    "keywords": {
+        "EN": ["keyword1", "keyword2"],
+        "DE": ["keyword1", "keyword2"],
+        "ES": ["keyword1", "keyword2"],
+        "FR": ["keyword1", "keyword2"],
+        "IT": ["keyword1", "keyword2"],
+        "PT": ["keyword1", "keyword2"]
+    },
+    "statistics": {
+        "customizations": [
+            // array of customization IDs containing this symbol
+        ],
+        "orders": [
+            // array of order IDs with this symbol
+        ],
+        "customizationCount": 0, // count of customizations
+        "orderCount": 0 // count of orders
+    }
+}

@@ -28,50 +28,57 @@ class SymbolController {
 		$result = [];
 	
 		foreach ($symbols as $symbol) {
-			$symbolData = [
-				'id' => $symbol['symbol_id'],
-				'name' => $symbol['file_name'],
-				'size' => $symbol['size'],
-				'status' => $symbol['active'] ? 1 : 0,
-				'categories' => [],
-				'keywords' => []
-			];
+			$symbolId = $symbol['symbol_id'];
 	
-			// Fetch categories
-			$categories = $this->categoryModel->getCategoriesForSymbol($symbol['symbol_id']);
-			foreach ($categories as $category) {
-				$translations = $this->translateModel->getTranslateByTableAndId('categories', $category['category_id']);
-				$categoryData = [
-					'id' => $category['category_id'],
-					'category' => $category['category'],
-					'translations' => []
+			// Vérifier si le symbole existe déjà dans le résultat
+			if (!isset($result[$symbolId])) {
+				// Créer une nouvelle entrée pour le symbole
+				$symbolData = [
+					'id' => $symbolId,
+					'name' => $symbol['file_name'],
+					'size' => $symbol['size'],
+					'status' => $symbol['active'] ? 1 : 0,
+					'categories' => [],
+					'keywords' => []
 				];
-				foreach ($translations as $translation) {
-					$categoryData['translations'][$translation['language_code']] = $translation['value'];
-				}
-				$symbolData['categories'][] = $categoryData;
+	
+				$result[$symbolId] = $symbolData;
 			}
 	
-			// Fetch keywords
-			$keywords = $this->keywordModel->getKeywordsForSymbol($symbol['symbol_id']);
-			foreach ($keywords as $keyword) {
-				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keyword['keyword_id']);
+			// Ajouter les catégories du symbole
+			$categoryData = [
+				'id' => $symbol['category_id'],
+				'category' => $symbol['category'],
+				'translations' => []
+			];
+			$translations = $this->translateModel->getTranslateByTableAndId('categories', $symbol['category_id']);
+			foreach ($translations as $translation) {
+				$categoryData['translations'][$translation['language_code']] = $translation['value'];
+			}
+	
+			$result[$symbolId]['categories'][] = $categoryData;
+	
+			// Vérifier si le symbole a des mots-clés
+			if (!empty($symbol['keyword_id']) && !empty($symbol['keyword'])) {
+				// Ajouter les mots-clés du symbole
 				$keywordData = [
-					'id' => $keyword['keyword_id'],
-					'keyword' => $keyword['keyword'],
+					'id' => $symbol['keyword_id'],
+					'keyword' => $symbol['keyword'],
 					'translations' => []
 				];
+				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $symbol['keyword_id']);
 				foreach ($translations as $translation) {
 					$keywordData['translations'][$translation['language_code']] = $translation['value'];
 				}
-				$symbolData['keywords'][] = $keywordData;
-			}
 	
-			$result[] = $symbolData;
+				$result[$symbolId]['keywords'][] = $keywordData;
+			}
 		}
 	
-		return $result;
+		return array_values($result);
 	}
+	
+	
 	
 	
 	
