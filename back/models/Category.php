@@ -53,4 +53,17 @@ class Category {
 
         return $stmt->rowCount();
     }
+	//________________________________________
+	// Methodes pour les autres controllers
+	public function getCategoriesForSymbol($symbolId) {
+		$query = "SELECT categories.category_id, categories.category
+				  FROM categories
+				  JOIN symbol_category ON categories.category_id = symbol_category.category_id
+				  WHERE symbol_category.symbol_id = :symbolId";
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':symbolId', $symbolId);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
 }

@@ -54,4 +54,17 @@ class Keyword {
 
         return $stmt->rowCount();
     }
+	//________________________________________
+	// Methodes pour les autres controllers
+	public function getKeywordsForSymbol($symbolId) {
+		$query = "SELECT keywords.keyword_id, keywords.keyword
+				  FROM keywords
+				  JOIN symbol_keyword ON keywords.keyword_id = symbol_keyword.keyword_id
+				  WHERE symbol_keyword.symbol_id = :symbolId";
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':symbolId', $symbolId);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
+	
 }

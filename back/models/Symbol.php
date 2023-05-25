@@ -7,18 +7,20 @@ class Symbol {
     }
 
     public function getAllSymbols() {
-        $query = "SELECT symbols.*, GROUP_CONCAT(DISTINCT categories.category_id) AS category_ids, GROUP_CONCAT(DISTINCT keywords.keyword_id) AS keyword_ids
-                  FROM symbols
-                  LEFT JOIN symbol_category ON symbols.symbol_id = symbol_category.symbol_id
-                  LEFT JOIN categories ON symbol_category.category_id = categories.category_id
-                  LEFT JOIN symbol_keyword ON symbols.symbol_id = symbol_keyword.symbol_id
-                  LEFT JOIN keywords ON symbol_keyword.keyword_id = keywords.keyword_id
-                  GROUP BY symbols.symbol_id";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+		$query = "SELECT symbols.symbol_id, symbols.file_name, symbols.size, symbols.active, 
+						 categories.category_id, categories.category, 
+						 keywords.keyword_id, keywords.keyword
+				  FROM symbols 
+				  LEFT JOIN symbol_category ON symbols.symbol_id = symbol_category.symbol_id
+				  LEFT JOIN categories ON symbol_category.category_id = categories.category_id
+				  LEFT JOIN symbol_keyword ON symbols.symbol_id = symbol_keyword.symbol_id
+				  LEFT JOIN keywords ON symbol_keyword.keyword_id = keywords.keyword_id
+				  WHERE symbols.deleted = 0";
+	
+		$stmt = $this->pdo->prepare($query);
+		$stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
     public function getSymbolById($id) {
         $query = "SELECT symbols.*, GROUP_CONCAT(DISTINCT categories.category_id) AS category_ids, GROUP_CONCAT(DISTINCT keywords.keyword_id) AS keyword_ids
@@ -28,6 +30,7 @@ class Symbol {
                   LEFT JOIN symbol_keyword ON symbols.symbol_id = symbol_keyword.symbol_id
                   LEFT JOIN keywords ON symbol_keyword.keyword_id = keywords.keyword_id
                   WHERE symbols.symbol_id = :id
+				  AND symbols.deleted = 0
                   GROUP BY symbols.symbol_id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
@@ -35,68 +38,56 @@ class Symbol {
 
         $symbol = $stmt->fetch(PDO::FETCH_ASSOC);
 
-		if ($symbol) {
-			$symbol['category_ids'] = explode(',', $symbol['category_ids']);
-			$symbol['keyword_ids'] = explode(',', $symbol['keyword_ids']);
-		}
+        if ($symbol) {
+            $symbol['category_ids'] = explode(',', $symbol['category_ids']);
+            $symbol['keyword_ids'] = explode(',', $symbol['keyword_ids']);
+        }
 
-		return $symbol;
-	}
+        return $symbol;
+    }
 
-    public function createSymbol($fileName, $size, $active, $deleted, $categoryIds, $keywordNames) {
-		$query = "INSERT INTO symbols (file_name, size, active, deleted) VALUES (:fileName, :size, :active, :deleted)";
-		$stmt = $this->pdo->prepare($query);
-		$stmt->bindParam(':fileName', $fileName);
-		$stmt->bindParam(':size', $size);
-		$stmt->bindParam(':active', $active, PDO::PARAM_BOOL);
-		$stmt->bindParam(':deleted', $deleted, PDO::PARAM_BOOL);
-		$stmt->execute();
-	
-		$symbolId = $this->pdo->lastInsertId();
-	
-		$this->updateSymbolCategories($symbolId, $categoryIds);
-	
-		$keywordIds = $this->getOrInsertKeywordIds($keywordNames);
-	
-		$this->updateSymbolKeywords($symbolId, $keywordIds);
-	
-		return $symbolId;
-	}
-	
-
-
-    public function updateSymbol($id, $fileName, $size, $active, $deleted, $categoryNames, $keywordNames) {
-        $query = "UPDATE symbols SET file_name = :fileName, size = :size, active = :active, deleted = :deleted WHERE symbol_id = :id";
+    public function createSymbol($fileName, $size, $active, $categoryIds, $keywordIds) {
+        $query = "INSERT INTO symbols (file_name, size, active) VALUES (:fileName, :size, :active)";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':fileName', $fileName);
         $stmt->bindParam(':size', $size);
-        $stmt->bindParam(':active', $active, PDO::PARAM_BOOL);
-        $stmt->bindParam(':deleted', $deleted, PDO::PARAM_BOOL);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':active', $active);
         $stmt->execute();
 
-        $categoryIds = $this->getOrInsertCategoryIds($categoryNames);
-        $keywordIds = $this->getOrInsertKeywordIds($keywordNames);
+        $symbolId = $this->pdo->lastInsertId();
 
+        $this->updateSymbolCategories($symbolId, $categoryIds);
+        $this->updateSymbolKeywords($symbolId, $keywordIds);
+
+        return $symbolId;
+    }
+
+    public function updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds) {
+		$query = "UPDATE symbols SET file_name = :fileName, size = :size, active = :active WHERE symbol_id = :id";
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':fileName', $fileName);
+		$stmt->bindParam(':size', $size);
+		$stmt->bindParam(':active', $active);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+	
         $this->updateSymbolCategories($id, $categoryIds);
         $this->updateSymbolKeywords($id, $keywordIds);
 
-        return $stmt->rowCount();
-    }
-
+		return $stmt->rowCount();
+	}	
 
     public function deleteSymbol($id) {
-        $query = "DELETE FROM symbols WHERE symbol_id = :id";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        $this->deleteSymbolCategories($id);
-        $this->deleteSymbolKeywords($id);
-
-        return $stmt->rowCount();
-    }
-
+		$query = "UPDATE symbols SET deleted = 1 WHERE symbol_id = :id";
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':id', $id);
+		$stmt->execute();
+	
+		return $stmt->rowCount();
+	}
+	
+	//________________________________________
+	// Methodes pour symbol_category
     private function updateSymbolCategories($symbolId, $categoryIds) {
         // Supprimer les anciennes entrées de la table de liaison
         $this->deleteSymbolCategories($symbolId);
@@ -119,6 +110,8 @@ class Symbol {
         $stmt->execute();
     }
 
+	//________________________________________
+	// Methodes pour symbol_category
     private function updateSymbolKeywords($symbolId, $keywordIds) {
         // Supprimer les anciennes entrées de la table de liaison
         $this->deleteSymbolKeywords($symbolId);
@@ -140,47 +133,4 @@ class Symbol {
         $stmt->bindParam(':symbolId', $symbolId);
         $stmt->execute();
     }
-
-	private function getOrInsertCategoryIds($categoryNames) {
-		$categoryIds = [];			   
-		foreach ($categoryNames as $categoryName) {
-			$query = "SELECT category_id FROM categories WHERE category_name = :categoryName";
-			$stmt = $this->pdo->prepare($query);
-			$stmt->bindParam(':categoryName', $categoryName);
-			$stmt->execute();
-			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			if ($result) {
-				$categoryIds[] = $result['category_id'];
-			} else {
-				$query = "INSERT INTO categories (category_name) VALUES (:categoryName)";
-				$stmt = $this->pdo->prepare($query);
-				$stmt->bindParam(':categoryName', $categoryName);
-				$stmt->execute();
-				$categoryIds[] = $this->pdo->lastInsertId();
-			}
-		}
-		return $categoryIds;
-	}		   
-	private function getOrInsertKeywordIds($keywordNames) {
-		$keywordIds = [];
-		foreach ($keywordNames as $keywordName) {
-			$query = "SELECT keyword_id FROM keywords WHERE keyword = :keywordName";
-			$stmt = $this->pdo->prepare($query);
-			$stmt->bindParam(':keywordName', $keywordName);
-			$stmt->execute();
-			$result = $stmt->fetch(PDO::FETCH_ASSOC);
-			if ($result) {
-				$keywordIds[] = $result['keyword_id'];
-			} else {
-				$query = "INSERT INTO keywords (keyword) VALUES (:keywordName)";
-				$stmt = $this->pdo->prepare($query);
-				$stmt->bindParam(':keywordName', $keywordName);
-				$stmt->execute();
-				$keywordIds[] = $this->pdo->lastInsertId();
-			}
-		}	
-		return $keywordIds;
-	}
-		
 }
-?>

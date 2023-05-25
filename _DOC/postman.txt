@@ -1,7 +1,7 @@
 POST :
 	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/
 	{
-	"name_file": "example_symbol",
+	"file_name": "example_symbol",
 	"active": 1,
 	"size": 50,
 	"categories": [1, 2, 3],
@@ -15,7 +15,7 @@ POST :
 PUT :
 	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
 	{
-	"name_file": "example_symbol",
+	"file_name": "example_symbol",
 	"active": 1,
 	"size": 50,
 	"categories": [1, 2, 3],
@@ -35,3 +35,76 @@ GET ALL :
 	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/
 GET :
 	URL : http://www.sitetest.local/illustrator2_project/back/index.php/symbols/{ID}
+
+
+
+GET :
+{
+	"symbol_id": 1,
+	"file_name": "example_symbol",
+	"size": 50,
+	"active": 0,
+	"categories": [
+		{
+		"category_id": 1,
+		"category": "nature",
+		"translates": {
+			"EN": "nature",
+			"DE": "Natur",
+			"ES": "naturaleza",
+			"FR": "nature",
+			"IT": "natura",
+			"PT": "natureza"
+			}
+		},
+		{
+		"category_id": 2,
+		"category": "animaux",
+		"translates": {
+			"EN": "pets",
+			"DE": "Tiere",
+			"ES": "animales",
+			"FR": "animaux",
+			"IT": "animali",
+			"PT": "animais"
+			}
+		}
+	],
+	"keywords": [
+		{
+		"keyword_id": 1,
+		"keyword": "chien",
+		"translates": {
+			"EN": "dog",
+			"DE": "Hund",
+			"ES": "perro",
+			"FR": "chien",
+			"IT": "cane",
+			"PT": "cão"
+			}
+		},
+		{
+		"keyword_id": 2,
+		"keyword": "arbre",
+		"translates": {
+			"EN": "tree",
+			"DE": "Baum",
+			"ES": "árbol",
+			"FR": "arbre",
+			"IT": "albero",
+			"PT": "árvore"
+			}
+		}
+	]
+}
+
+_______________________________________
+POST ?
+{
+	"file_name": "example_symbol",
+	"size": 50,
+	"active": 0,
+	"categories": [1, 2],
+	"keywords": [1, 2]
+}
+

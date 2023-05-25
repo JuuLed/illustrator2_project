@@ -1,68 +1,164 @@
 <?php
+
 require_once './config/database.php';
 require_once './models/Symbol.php';
+require_once './models/Translate.php';
+require_once './models/Language.php';
+require_once './models/Category.php';
+require_once './models/Keyword.php';
 
 class SymbolController {
     protected $symbolModel;
+    protected $translateModel;
+    protected $languageModel;
+    protected $categoryModel;
+    protected $keywordModel;
 
     public function __construct() {
         global $pdo;
         $this->symbolModel = new Symbol($pdo);
+        $this->translateModel = new Translate($pdo);
+        $this->languageModel = new Language($pdo);
+        $this->categoryModel = new Category($pdo);
+        $this->keywordModel = new Keyword($pdo);
     }
 
     public function getAllSymbols() {
-        return $this->symbolModel->getAllSymbols();
-    }
-
-    public function getSymbol($id) {
-        $symbol = $this->symbolModel->getSymbolById($id);
-        if ($symbol) {
-            return $symbol;
-        } else {
-            return ['error' => 'Symbol not found'];
-        }
-    }
-
-    public function createSymbol($data) {
-		$fileName = $data['file_name'];
-		$size = $data['size'];
-		$active = isset($data['active']) ? $data['active'] : false;
-		$deleted = isset($data['deleted']) ? $data['deleted'] : false;
-		$categoryIds = $data['category_ids'];
-		$keywordNames = $data['keyword_names'];
+		$symbols = $this->symbolModel->getAllSymbols();
+		$result = [];
 	
-		$result = $this->symbolModel->createSymbol($fileName, $size, $active, $deleted, $categoryIds, $keywordNames);
+		foreach ($symbols as $symbol) {
+			$symbolData = [
+				'id' => $symbol['symbol_id'],
+				'name' => $symbol['file_name'],
+				'size' => $symbol['size'],
+				'status' => $symbol['active'] ? 1 : 0,
+				'categories' => [],
+				'keywords' => []
+			];
 	
-		if ($result) {
-			return ['symbol_id' => $result, 'file_name' => $fileName, 'size' => $size, 'active' => $active, 'deleted' => $deleted];
-		} else {
-			return ['error' => 'Failed to create symbol'];
+			// Fetch categories
+			$categories = $this->categoryModel->getCategoriesForSymbol($symbol['symbol_id']);
+			foreach ($categories as $category) {
+				$translations = $this->translateModel->getTranslateByTableAndId('categories', $category['category_id']);
+				$categoryData = [
+					'id' => $category['category_id'],
+					'category' => $category['category'],
+					'translations' => []
+				];
+				foreach ($translations as $translation) {
+					$categoryData['translations'][$translation['language_code']] = $translation['value'];
+				}
+				$symbolData['categories'][] = $categoryData;
+			}
+	
+			// Fetch keywords
+			$keywords = $this->keywordModel->getKeywordsForSymbol($symbol['symbol_id']);
+			foreach ($keywords as $keyword) {
+				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keyword['keyword_id']);
+				$keywordData = [
+					'id' => $keyword['keyword_id'],
+					'keyword' => $keyword['keyword'],
+					'translations' => []
+				];
+				foreach ($translations as $translation) {
+					$keywordData['translations'][$translation['language_code']] = $translation['value'];
+				}
+				$symbolData['keywords'][] = $keywordData;
+			}
+	
+			$result[] = $symbolData;
 		}
+	
+		return $result;
 	}
 	
-
-    public function updateSymbol($id, $data) {
-        $symbol = $this->symbolModel->getSymbolById($id);
-
-        if (!$symbol) {
-            return ['error' => 'Symbol not found'];
-        }
-
-        $fileName = isset($data['file_name']) ? $data['file_name'] : $symbol['file_name'];
-        $size = isset($data['size']) ? $data['size'] : $symbol['size'];
-        $active = isset($data['active']) ? $data['active'] : $symbol['active'];
-        $deleted = isset($data['deleted']) ? $data['deleted'] : $symbol['deleted'];
-        $categoryIds = isset($data['category_ids']) ? $data['category_ids'] : explode(',', $symbol['category_ids']);
-        $keywordIds = isset($data['keyword_ids']) ? $data['keyword_ids'] : explode(',', $symbol['keyword_ids']);
-
-        $result = $this->symbolModel->updateSymbol($id, $fileName, $size, $active, $deleted, $categoryIds, $keywordIds);
-
-        if ($result > 0) {
-            return ['message' => 'Symbol updated successfully'];
-        } else {
-            return ['error' => 'Symbol update failed'];
-        }
-    }
+	
+	
+	public function getSymbol($symbol_id) {
+		$symbol = $this->symbolModel->getSymbolById($symbol_id);
+	
+		if ($symbol) {
+			$symbolData = [
+				'id' => $symbol['symbol_id'],
+				'file_name' => $symbol['file_name'],
+				'size' => $symbol['size'],
+				'active' => $symbol['active'] ? 1 : 0,
+				'categories' => [],
+				'keywords' => []
+			];
+	
+			// Fetch categories
+			$categories = $this->categoryModel->getCategoriesForSymbol($symbol['symbol_id']);
+			foreach ($categories as $category) {
+				$translations = $this->translateModel->getTranslateByTableAndId('categories', $category['category_id']);
+				$categoryData = [
+					'id' => $category['category_id'],
+					'category' => $category['category'],
+					'translations' => []
+				];
+				foreach ($translations as $translation) {
+					$categoryData['translations'][$translation['language_code']] = $translation['value'];
+				}
+				$symbolData['categories'][] = $categoryData;
+			}
+	
+			// Fetch keywords
+			$keywords = $this->keywordModel->getKeywordsForSymbol($symbol['symbol_id']);
+			foreach ($keywords as $keyword) {
+				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keyword['keyword_id']);
+				$keywordData = [
+					'id' => $keyword['keyword_id'],
+					'keyword' => $keyword['keyword'],
+					'translations' => []
+				];
+				foreach ($translations as $translation) {
+					$keywordData['translations'][$translation['language_code']] = $translation['value'];
+				}
+				$symbolData['keywords'][] = $keywordData;
+			}
+	
+			return $symbolData;
+		}
+	
+		return null;
+	}
+	
+	
+	public function createSymbol($data) {
+		$fileName = $data['file_name'];
+		$size = $data['size'];
+		$active = $data['active'];
+		$categoryIds = $data['categories'];
+		$keywordIds = $data['keywords'];
+	
+		$symbolId = $this->symbolModel->createSymbol($fileName, $size, $active, $categoryIds, $keywordIds);
+	
+		return $symbolId;
+	}
+	
+	public function updateSymbol($id, $data) {
+		$fileName = isset($data['file_name']) ? $data['file_name'] : null;
+		$size = isset($data['size']) ? $data['size'] : null;
+		$active = isset($data['active']) ? $data['active'] : null;
+		$categoryIds = isset($data['categories']) ? $data['categories'] : null;
+		$keywordIds = isset($data['keywords']) ? $data['keywords'] : null;
+	
+		// Mise à jour du symbole 
+		$this->symbolModel->updateSymbol($id, $fileName, $size, $active, $categoryIds, $keywordIds);
+		
+		// // Mise à jour des catégories
+		// if ($categoryIds !== null) {
+		// 	$this->symbolModel->updateSymbolCategories($id, $categoryIds);
+		// }
+	
+		// // Mise à jour des mots-clés
+		// if ($keywordIds !== null) {
+		// 	$this->symbolModel->updateSymbolKeywords($id, $keywordIds);
+		// }
+	
+		return ['message' => 'Symbol updated successfully'];
+	}
 
     public function deleteSymbol($id) {
         $symbol = $this->symbolModel->getSymbolById($id);
@@ -80,4 +176,3 @@ class SymbolController {
         }
     }
 }
-?>
