@@ -3,24 +3,23 @@
 require_once './config/database.php';
 require_once './models/Symbol.php';
 require_once './models/Translate.php';
-require_once './models/Language.php';
-require_once './models/Category.php';
-require_once './models/Keyword.php';
+
+require_once './models/SymbolCategory.php';
+require_once './models/SymbolKeyword.php';
 
 class SymbolController {
     protected $symbolModel;
     protected $translateModel;
-    protected $languageModel;
-    protected $categoryModel;
-    protected $keywordModel;
+    protected $symbolCategoryModel;
+    protected $symbolKeywordModel;
 
     public function __construct() {
         global $pdo;
         $this->symbolModel = new Symbol($pdo);
         $this->translateModel = new Translate($pdo);
-        $this->languageModel = new Language($pdo);
-        $this->categoryModel = new Category($pdo);
-        $this->keywordModel = new Keyword($pdo);
+
+        $this->symbolCategoryModel = new SymbolCategory($pdo);
+        $this->symbolKeywordModel = new SymbolKeyword($pdo);
     }
 
     public function getAllSymbols() {
@@ -53,7 +52,7 @@ class SymbolController {
 			];
 	
 			// Fetch categories
-			$categories = $this->categoryModel->getCategoriesForSymbol($symbol['symbol_id']);
+			$categories = $this->symbolCategoryModel->getAllCategoriesBySymbolId($symbol['symbol_id']);
 			foreach ($categories as $category) {
 				$translations = $this->translateModel->getTranslateByTableAndId('categories', $category['category_id']);
 				$categoryData = [
@@ -68,7 +67,7 @@ class SymbolController {
 			}
 	
 			// Fetch keywords
-			$keywords = $this->keywordModel->getKeywordsForSymbol($symbol['symbol_id']);
+			$keywords = $this->symbolKeywordModel->getAllKeywordsBySymbolId($symbol['symbol_id']);
 			foreach ($keywords as $keyword) {
 				$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keyword['keyword_id']);
 				$keywordData = [
