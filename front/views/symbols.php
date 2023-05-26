@@ -1,5 +1,5 @@
 <style>
-  /* mise en page du tableau */
+  /* Mise en page du tableau */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -15,7 +15,9 @@
   th {
     background-color: #f2f2f2;
   }
-  th:not(:last-child) {
+
+  th:not(:last-child),
+  td:not(:last-child) {
     border-right: 1px solid #ccc;
   }
 
@@ -27,22 +29,27 @@
   td:nth-child(1) {
     width: 10%;
   }
+
   th:nth-child(2),
   td:nth-child(2) {
     width: 4%;
   }
+
   th:nth-child(3),
   td:nth-child(3) {
     width: 4%;
   }
+
   th:nth-child(4),
   td:nth-child(4) {
     width: 30%;
   }
+
   th:nth-child(5),
   td:nth-child(5) {
     width: 30%;
   }
+
   th:nth-child(6),
   td:nth-child(6) {
     width: 10%;
@@ -61,10 +68,12 @@
     border: 2px outset grey;
     border-radius: 1vh;
   }
+
   .save-btn:hover,
   .delete-btn:hover {
     border: 2px inset grey;
   }
+
   .delete-btn {
     background-color: #f44336;
   }
@@ -87,20 +96,23 @@
     border-radius: 0.2vh;
   }
 
-  /* mise en page pour les case catégories */
-  .category-list {
+  /* Mise en page pour les catégories */
+  .category-list,
+  .keyword-list {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
 
-  .category-list li {
+  .category-list li,
+  .keyword-list li {
     display: inline-block;
     position: relative;
     margin: 4px;
   }
 
-  .category-list span {
+  .category-list span,
+  .keyword-list span {
     display: inline-block;
     padding: 4px 8px;
     background-color: #f2f2f2;
@@ -109,13 +121,14 @@
     border: 1px solid grey;
   }
 
-  .category-list .delete-category-btn {
+  .category-list .delete-category-btn,
+  .keyword-list .delete-keyword-btn {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 2.5vh;
-    height: 2.5vh;
-    background-color: #ccc;
+    width: 2vh;
+    height: 2vh;
+    background-color: #f44336;
     border: 1px solid grey;
     border-radius: 100%;
     font-size: 1.5vh;
@@ -126,13 +139,62 @@
     top: 0;
     right: 0;
     transform: translate(50%, -50%);
-    color: #f44336;
-  }
-
-  .category-list .delete-category-btn:hover {
-    background-color: #f44336;
     color: white;
   }
+
+  .category-list .delete-category-btn:hover,
+  .keyword-list .delete-keyword-btn:hover {
+    color: black;
+    border: 1px solid black;
+  }
+
+
+
+
+  /* MODALS */
+  .add-btn {
+	/* background: green;(()) */
+	/* border-radius: 100%; */
+  }
+  .add-category-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	color: white;
+	font-size: 3.5vh;
+	width: 3.5vh;
+	height: 3.5vh;
+	border-radius: 100%;
+	background: limegreen;
+	border: 2px solid green;
+  }
+  .add-category-btn:hover {
+	cursor: pointer;
+	color: black;
+  }
+
+  /* Styles pour la modal */
+  	.modal {
+		display: none; /* Par défaut, la modal est cachée */
+		position: fixed;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		background-color: rgba(0, 0, 0, 0.4); /* Fond semi-transparent */
+	}
+
+	.modal-content-categoies {
+		background-color: #fefefe;
+		margin: 15% auto;
+		padding: 20px;
+		border: 1px solid #888;
+		width: 80%;
+	}
+  
 </style>
 
 <h1>SYMBOLS</h1>
@@ -196,10 +258,23 @@ function getKeywords($symbol)
               <button class="delete-category-btn">&times;</button>
             </li>
           <?php } ?>
+			<li class="add-btn">
+				<button class="add-category-btn">+</button>
+			</li>
         </ul>
       </td>
 
-      <td><?= getKeywords($symbol); ?></td>
+      <td>
+        <ul class="keyword-list">
+          <?php foreach ($symbol['keywords'] as $keyword) { ?>
+            <li data-keyword-id="<?= $keyword['id']; ?>">
+              <span><?= $keyword['keyword']; ?></span>
+              <button class="delete-keyword-btn">&times;</button>
+            </li>
+          <?php } ?>
+        </ul>
+      </td>
+
       <td>
         <button class="save-btn" data-id="<?= $symbol['id']; ?>">Enregistrer</button>
         <button class="delete-btn" data-id="<?= $symbol['id']; ?>">Supprimer</button>
@@ -208,7 +283,56 @@ function getKeywords($symbol)
   <?php } ?>
 </table>
 
+<div id="myModalCategories" class="modal">
+	<div class="modal-content-categories">
+		<h2>Ma Modal</h2>
+		<p>Contenu de la modal...</p>
+		<button id="closeModalCategories">Fermer</button>
+	</div>
+</div>
+
+<!-- <div id="myModal" class="modal">
+	<div class="modal-content">
+		<h2>Ma Modal</h2>
+		<p>Contenu de la modal...</p>
+		<button id="closeModal">Fermer</button>
+	</div>
+</div> -->
+
 <script>
+// modals :
+
+	// Récupérer les éléments
+	var myModalCategories = document.getElementById("myModalCategories");
+    var btn = document.getElementsByClassName("add-category-btn")[0];
+    var closeBtn = document.getElementById("closeModalCategories");
+
+    // Ouvrir la modal lorsque le bouton "+" est cliqué
+    btn.onclick = function() {
+		myModalCategories.style.display = "block";
+    }
+
+    // Fermer la modal lorsque le bouton "Fermer" est cliqué
+    closeBtn.onclick = function() {
+		myModalCategories.style.display = "none";
+    }
+
+    // Fermer la modal lorsque l'utilisateur clique en dehors de la modal
+    window.onclick = function(event) {
+      if (event.target == myModalCategories) {
+        myModalCategories.style.display = "none";
+      }
+    }
+
+
+
+
+
+
+
+
+
+// ______________________________________________________________________
   // Récupérer tous les boutons d'enregistrement
   const saveButtons = document.querySelectorAll('.save-btn');
 
@@ -217,8 +341,8 @@ function getKeywords($symbol)
     button.addEventListener('click', () => {
       const symbolId = button.dataset.id;
       const rowData = getRowData(button.parentNode.parentNode);
-      rowData.categories = []; // Ajoutez ici les catégories mises à jour
-      rowData.keywords = []; // Ajoutez ici les mots-clés mis à jour
+      rowData.categories = getCategories(button.parentNode.parentNode);
+      rowData.keywords = getKeywords(button.parentNode.parentNode);
 
       // Appeler l'API pour mettre à jour le symbole
       updateSymbol(symbolId, rowData);
@@ -252,6 +376,31 @@ function getKeywords($symbol)
     };
   }
 
+  // Fonction pour récupérer les catégories d'un symbole
+  function getCategories(symbolRow) {
+    const categoryItems = symbolRow.querySelectorAll('.category-list li');
+    const categories = [];
+    categoryItems.forEach(item => {
+      categories.push({
+        id: item.dataset.categoryId,
+        category: item.querySelector('span').textContent
+      });
+    });
+    return categories;
+  }
+
+  // Fonction pour récupérer les mots-clés d'un symbole
+  function getKeywords(symbolRow) {
+    const keywordItems = symbolRow.querySelectorAll('.keyword-list li');
+    const keywords = [];
+    keywordItems.forEach(item => {
+      keywords.push({
+        id: item.dataset.keywordId,
+        keyword: item.querySelector('span').textContent
+      });
+    });
+    return keywords;
+  }
 
   // Fonction pour mettre à jour le symbole via l'API
   function updateSymbol(symbolId, data) {
@@ -274,16 +423,15 @@ function getKeywords($symbol)
           symbolRow.querySelector('[data-field="size"]').textContent = data.size;
           symbolRow.querySelector('[data-field="active"]').textContent = data.active;
           // Mettre à jour les catégories affichées dans la colonne correspondante
-          symbolRow.querySelector('[data-field="categories"]').textContent = getCategories(data);
+          symbolRow.querySelector('[data-field="categories"]').innerHTML = renderCategories(data.categories);
           // Mettre à jour les mots-clés affichés dans la colonne correspondante
-          symbolRow.querySelector('[data-field="keywords"]').textContent = getKeywords(data);
+          symbolRow.querySelector('[data-field="keywords"]').innerHTML = renderKeywords(data.keywords);
         }
       })
       .catch(error => {
         console.error('Erreur lors de la mise à jour du symbole:', error);
       });
   }
-
 
   // Fonction pour supprimer le symbole via l'API
   function deleteSymbol(symbolId) {
@@ -331,17 +479,94 @@ function getKeywords($symbol)
       });
   }
 
-  // Ajoutez un écouteur d'événement à chaque bouton de suppression de catégorie
-  const deleteCategoryButtons = document.querySelectorAll('.delete-category-btn');
+  // Fonction pour supprimer un mot-clé d'un symbole via l'API
+  function removeKeywordFromSymbol(symbolId, keywordId) {
+    const url = `<?= $apiBaseURL; ?>/symbols/${symbolId}/keywords/${keywordId}`;
+    return fetch(url, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
 
-  deleteCategoryButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const categoryId = button.parentNode.dataset.categoryId;
-      const symbolId = button.closest('tr').querySelector('.save-btn').dataset.id;
+  // Fonction pour ajouter un mot-clé à un symbole via l'API
+  function addKeywordToSymbol(symbolId, keyword) {
+    const url = `<?= $apiBaseURL; ?>/symbols/${symbolId}/keywords`;
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ keyword })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
+
+  // Supprimer visuellement une catégorie d'un symbole
+  function removeCategoryFromView(categoryItem) {
+    const symbolRow = categoryItem.closest('tr');
+    const categoryList = symbolRow.querySelector('.category-list');
+    categoryItem.remove();
+
+    // Mettre à jour la classe de la première catégorie s'il y en a une
+    const firstCategory = categoryList.querySelector('li');
+    if (firstCategory) {
+      firstCategory.classList.add('first-category');
+    }
+  }
+
+  // Supprimer visuellement un mot-clé d'un symbole
+  function removeKeywordFromView(keywordItem) {
+    keywordItem.remove();
+  }
+
+  // Rendu HTML pour les catégories
+  function renderCategories(categories) {
+    return categories
+      .map(category => `
+        <li data-category-id="${category.id}">
+          <span>${category.category}</span>
+          <button class="delete-category-btn">&times;</button>
+        </li>
+      `)
+      .join('');
+  }
+
+  // Rendu HTML pour les mots-clés
+  function renderKeywords(keywords) {
+    return keywords
+      .map(keyword => `
+        <li data-keyword-id="${keyword.id}">
+          <span>${keyword.keyword}</span>
+          <button class="delete-keyword-btn">&times;</button>
+        </li>
+      `)
+      .join('');
+  }
+
+  // Sélectionnez tous les boutons de suppression de catégorie
+  const removeCategoryButtons = document.querySelectorAll('.delete-category-btn');
+
+  // Ajoutez un écouteur d'événement à chaque bouton de suppression de catégorie
+  removeCategoryButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+      event.stopPropagation(); // Arrêter la propagation de l'événement
+
+      const categoryItem = this.parentNode;
+      const categoryId = categoryItem.dataset.categoryId;
+      const symbolRow = this.closest('tr');
+      const symbolId = symbolRow.querySelector('.save-btn').dataset.id;
+
+      // Appeler l'API pour supprimer la catégorie du symbole
       removeCategoryFromSymbol(symbolId, categoryId)
         .then(() => {
-          const categoryItem = button.parentNode;
-          categoryItem.parentNode.removeChild(categoryItem);
+          // Supprimer l'élément de catégorie de l'affichage
+          removeCategoryFromView(categoryItem);
         })
         .catch(error => {
           console.error('Erreur lors de la suppression de la catégorie:', error);
@@ -349,53 +574,124 @@ function getKeywords($symbol)
     });
   });
 
-  // Fonction pour ajouter une catégorie à un symbole
-  function addCategory(symbolId, category) {
-    const symbolRow = document.querySelector(`tr[data-id="${symbolId}"]`);
+  
+
+  // Mettre à jour la liste des catégories d'un symbole
+  function updateCategoryList(symbolRow, categories) {
     const categoryList = symbolRow.querySelector('.category-list');
-    const categoryItem = document.createElement('li');
-    categoryItem.dataset.categoryId = category.id;
-    const categorySpan = document.createElement('span');
-    categorySpan.textContent = category.category;
-    const deleteButton = document.createElement('button');
-    deleteButton.className = 'delete-category-btn';
-    deleteButton.innerHTML = '&times;';
-    categoryItem.appendChild(categorySpan);
-    categoryItem.appendChild(deleteButton);
-    categoryList.appendChild(categoryItem);
+    categoryList.innerHTML = renderCategories(categories);
 
     // Ajoutez un écouteur d'événement pour la suppression de catégorie
-    deleteButton.addEventListener('click', () => {
-      const categoryId = categoryItem.dataset.categoryId;
-      removeCategoryFromSymbol(symbolId, categoryId);
-      categoryItem.parentNode.removeChild(categoryItem);
-    });
-  }
+    const deleteCategoryButtons = categoryList.querySelectorAll('.delete-category-btn');
+    deleteCategoryButtons.forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.stopPropagation(); // Arrêter la propagation de l'événement
 
-  // Fonction pour supprimer visuellement une catégorie d'un symbole
-  function removeCategoryFromView(categoryItem) {
-    categoryItem.parentNode.removeChild(categoryItem);
-  }
+        const categoryItem = this.parentNode;
+        const categoryId = categoryItem.dataset.categoryId;
+        const symbolRow = this.closest('tr');
+        const symbolId = symbolRow.querySelector('.save-btn').dataset.id;
 
-  // Ajoutez un écouteur d'événement pour l'ajout de catégorie
-  const addCategoryButtons = document.querySelectorAll('.add-category-btn');
-
-  addCategoryButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const symbolId = button.parentNode.parentNode.dataset.id;
-      const categoryInput = button.parentNode.querySelector('.category-input');
-      const category = categoryInput.value.trim();
-
-      if (category !== '') {
-        addCategoryToSymbol(symbolId, category)
-          .then(data => {
-            addCategory(symbolId, data);
-            categoryInput.value = '';
+        // Appeler l'API pour supprimer la catégorie du symbole
+        removeCategoryFromSymbol(symbolId, categoryId)
+          .then(() => {
+            // Supprimer l'élément de catégorie de l'affichage
+            removeCategoryFromView(categoryItem);
           })
           .catch(error => {
-            console.error('Erreur lors de l\'ajout de la catégorie:', error);
+            console.error('Erreur lors de la suppression de la catégorie:', error);
           });
-      }
+      });
+    });
+  }
+
+
+  // Supprimer visuellement un mot-clé d'un symbole
+  function removeKeywordFromView(keywordItem) {
+    keywordItem.remove();
+  }
+
+  // Rendu HTML pour les mots-clés
+  function renderKeywords(keywords) {
+    return keywords
+      .map(keyword => `
+        <li data-keyword-id="${keyword.id}">
+          <span>${keyword.keyword}</span>
+          <button class="delete-keyword-btn">&times;</button>
+        </li>
+      `)
+      .join('');
+  }
+
+  // Sélectionnez tous les boutons de suppression de mot-clé
+  const removeKeywordButtons = document.querySelectorAll('.delete-keyword-btn');
+
+  // Ajoutez un écouteur d'événement à chaque bouton de suppression de mot-clé
+  removeKeywordButtons.forEach(button => {
+    button.addEventListener('click', function(event) {
+      event.stopPropagation(); // Arrêter la propagation de l'événement
+
+      const keywordItem = this.parentNode;
+      const keywordId = keywordItem.dataset.keywordId;
+      const symbolRow = this.closest('tr');
+      const symbolId = symbolRow.querySelector('.save-btn').dataset.id;
+
+      // Appeler l'API pour supprimer le mot-clé du symbole
+      removeKeywordFromSymbol(symbolId, keywordId)
+        .then(() => {
+          // Supprimer l'élément de mot-clé de l'affichage
+          removeKeywordFromView(keywordItem);
+        })
+        .catch(error => {
+          console.error('Erreur lors de la suppression du mot-clé:', error);
+        });
     });
   });
+
+  // Ajouter un mot-clé à un symbole
+  function addKeyword(symbolRow, symbolId, keyword) {
+    addKeywordToSymbol(symbolId, keyword)
+      .then(() => {
+        // Mettre à jour la liste des mots-clés
+        const updatedKeywords = symbolRow.querySelectorAll('.keyword-list li');
+        updateKeywordList(symbolRow, updatedKeywords);
+      })
+      .catch(error => {
+        console.error('Erreur lors de l\'ajout du mot-clé:', error);
+      });
+  }
+
+  // Mettre à jour la liste des mots-clés d'un symbole
+  function updateKeywordList(symbolRow, keywords) {
+    const keywordList = symbolRow.querySelector('.keyword-list');
+    keywordList.innerHTML = renderKeywords(keywords);
+
+    // Ajoutez un écouteur d'événement pour la suppression de mot-clé
+    const deleteKeywordButtons = keywordList.querySelectorAll('.delete-keyword-btn');
+    deleteKeywordButtons.forEach(button => {
+      button.addEventListener('click', function(event) {
+        event.stopPropagation(); // Arrêter la propagation de l'événement
+
+        const keywordItem = this.parentNode;
+        const keywordId = keywordItem.dataset.keywordId;
+        const symbolRow = this.closest('tr');
+        const symbolId = symbolRow.querySelector('.save-btn').dataset.id;
+
+        // Appeler l'API pour supprimer le mot-clé du symbole
+        removeKeywordFromSymbol(symbolId, keywordId)
+          .then(() => {
+            // Supprimer l'élément de mot-clé de l'affichage
+            removeKeywordFromView(keywordItem);
+          })
+          .catch(error => {
+            console.error('Erreur lors de la suppression du mot-clé:', error);
+          });
+      });
+    });
+  }
+
+  
+
+
+  
 </script>
