@@ -217,15 +217,7 @@ function apiGet($url)
 
 $symbols = apiGet('/symbols');
 
-function getCategories($symbol)
-{
-  return implode(', ', array_column($symbol['categories'], 'category'));
-}
 
-function getKeywords($symbol)
-{
-  return implode(', ', array_column($symbol['keywords'], 'keyword'));
-}
 ?>
 
 <table class="table-symbols">
@@ -609,18 +601,6 @@ function getKeywords($symbol)
   // Supprimer visuellement un mot-clé d'un symbole
   function removeKeywordFromView(keywordItem) {
     keywordItem.remove();
-  }
-
-  // Rendu HTML pour les mots-clés
-  function renderKeywords(keywords) {
-    return keywords
-      .map(keyword => `
-        <li data-keyword-id="${keyword.id}">
-          <span>${keyword.keyword}</span>
-          <button class="delete-keyword-btn">&times;</button>
-        </li>
-      `)
-      .join('');
   }
 
   // Sélectionnez tous les boutons de suppression de mot-clé

@@ -1,4 +1,9 @@
-<style>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mon application</title>
+  <style>
     /* Styles pour la modal */
     .modal {
       display: none;
@@ -44,15 +49,25 @@
     th {
       background-color: #f2f2f2;
     }
+
+    /* Styles pour la liste d'éléments */
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+
+    li:hover {
+      text-decoration: underline;
+    }
   </style>
-
-<h1>
-
-	HOME
-
-</h1>
-
-<table>
+</head>
+<body>
+  <table>
     <thead>
       <tr>
         <th>Nom</th>
@@ -63,14 +78,22 @@
       <tr>
         <td>John Doe</td>
         <td>
-          Hobbies 1
+          <div class="hobbies-container">
+            <div class="hobby">Activité 1</div>
+            <div class="hobby">Activité 2</div>
+            <div class="hobby">Activité 3</div>
+          </div>
           <span class="open-modal">+</span>
         </td>
       </tr>
       <tr>
         <td>Jane Smith</td>
         <td>
-          Hobbies 2
+          <div class="hobbies-container">
+            <div class="hobby">Activité 1</div>
+            <div class="hobby">Activité 4</div>
+            <div class="hobby">Activité 5</div>
+          </div>
           <span class="open-modal">+</span>
         </td>
       </tr>
@@ -82,38 +105,67 @@
     <div class="modal-content">
       <h2>Hobbies</h2>
       <p>Contenu de la modal...</p>
+      <h3>Liste de choses à ajouter :</h3>
+      <ul id="list">
+        <!-- Ajoutez vos activités ici -->
+        <li class="list-item">Activité A</li>
+        <li class="list-item">Activité B</li>
+        <li class="list-item">Activité C</li>
+      </ul>
       <button id="closeModal">Fermer</button>
     </div>
   </div>
 
   <script>
-    var modals = document.getElementsByClassName("modal");
-    var modalContents = document.getElementsByClassName("modal-content");
-    var btns = document.getElementsByClassName("open-modal");
-    var closeBtn = document.getElementById("closeModal");
+    document.addEventListener("DOMContentLoaded", function() {
+      var openModalButtons = document.getElementsByClassName("open-modal");
+      var modal = document.getElementById("myModal");
+      var closeModalButton = document.getElementById("closeModal");
+      var listItems = document.getElementsByClassName("list-item");
 
-    for (var i = 0; i < btns.length; i++) {
-      // Ajouter un gestionnaire d'événements à chaque bouton "+" pour ouvrir la modal correspondante
-      btns[i].onclick = function(index) {
-        return function() {
-          modals[index].style.display = "block";
-        }
-      }(i);
+      function openModal() {
+        var hobbiesContainer = this.parentNode.getElementsByClassName("hobbies-container")[0];
+        var hobbies = Array.from(hobbiesContainer.getElementsByClassName("hobby")).map(function(hobby) {
+          return hobby.textContent;
+        });
 
-      // Fermer la modal lorsque le bouton "Fermer" est cliqué
-      closeBtn.onclick = function(index) {
-        return function() {
-          modals[index].style.display = "none";
-        }
-      }(i);
-    }
+        var list = modal.querySelector("#list");
+        list.innerHTML = "";
 
-    // Fermer la modal lorsque l'utilisateur clique en dehors de la modal
-    window.onclick = function(event) {
-      for (var i = 0; i < modals.length; i++) {
-        if (event.target == modals[i]) {
-          modals[i].style.display = "none";
-        }
+        Array.from(listItems).forEach(function(item) {
+          if (hobbies.indexOf(item.textContent) === -1) {
+            list.appendChild(item.cloneNode(true));
+          }
+        });
+
+        modal.style.display = "block";
+
+        Array.from(list.getElementsByTagName("li")).forEach(function(item) {
+          item.addEventListener("click", function() {
+            var hobby = this.textContent;
+            var newHobby = document.createElement("div");
+            newHobby.textContent = hobby;
+            newHobby.className = "hobby";
+            hobbiesContainer.appendChild(newHobby);
+            this.remove();
+          });
+        });
       }
-    }
+
+      Array.from(openModalButtons).forEach(function(button) {
+        button.addEventListener("click", openModal);
+      });
+
+      closeModalButton.addEventListener("click", function() {
+        modal.style.display = "none";
+      });
+
+      modal.addEventListener("click", function(event) {
+        if (event.target === this) {
+          modal.style.display = "none";
+        }
+      });
+    });
   </script>
+</body>
+</html>
