@@ -373,11 +373,13 @@ $symbols = apiGet('/symbols');
     const categoryItems = symbolRow.querySelectorAll('.category-list li');
     const categories = [];
     categoryItems.forEach(item => {
-      categories.push({
-        id: item.dataset.categoryId,
-        category: item.querySelector('span').textContent
-      });
-    });
+		if (item.querySelector('span')) {
+			categories.push({
+				id: item.dataset.categoryId,
+				category: item.querySelector('span').textContent
+				});
+			}
+		});
     return categories;
   }
 
@@ -386,11 +388,13 @@ $symbols = apiGet('/symbols');
     const keywordItems = symbolRow.querySelectorAll('.keyword-list li');
     const keywords = [];
     keywordItems.forEach(item => {
-      keywords.push({
-        id: item.dataset.keywordId,
-        keyword: item.querySelector('span').textContent
-      });
-    });
+		if (item.querySelector('span')) {
+			keywords.push({
+				id: item.dataset.keywordId,
+				keyword: item.querySelector('span').textContent
+			});
+		}
+	});
     return keywords;
   }
 
