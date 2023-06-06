@@ -9,7 +9,8 @@ class Category {
     public function getAllCategories() {
         $query = "SELECT c.category_id, c.category, t.language_code, t.value
                   FROM categories c
-                  LEFT JOIN translates t ON t.table_name = 'categories' AND t.row_id = c.category_id";
+                  LEFT JOIN translates t ON t.table_name = 'categories' AND t.row_id = c.category_id
+				  ORDER BY c.category ASC";
 
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
