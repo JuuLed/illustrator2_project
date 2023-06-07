@@ -102,10 +102,27 @@
 		background-color: silver;
 		border: none;
 		outline: none;
-		border: 1px solid grey;
-		border-radius: 0.2vh;
+		border: 1px outset grey;
+		border-radius: 0.3vh;
+	}
+	.editable-content:hover {
+		border: 1px inset grey;
+	}
+	.editable-content:focus {
+		background-color: lightyellow;
+		border: 1px inset grey;
 	}
 
+	.loading {
+		border: 2px solid grey;
+		animation: load-border 1s linear infinite;
+	}
+
+	@keyframes load-border {
+		0% { border-color: grey; }
+		50% { border-color: #4cd964; }
+		100% { border-color: grey; }
+	}
 
 	/* Style pour le bouton ON/OFF avec curseur glissant type Apple */
 	.toggle-btn {
@@ -357,13 +374,13 @@
 			return `
 		<tr>
 		  <td class="contenteditable" data-field="file_name">
-			<div class="editable-content" contenteditable="true">
+			<div class="editable-content" contenteditable="false">
 			  ${symbol.file_name}
 			</div>
 		  </td>
 
 		  <td class="cln-size contenteditable" data-field="size">
-			<div class="editable-content" contenteditable="true">
+			<div class="editable-content" contenteditable="false">
 			  ${symbol.size}
 			</div>
 		  </td>
@@ -613,7 +630,7 @@
 			}),
 			contentType: "application/json",
 			success: function (data) {
-				console.log("État actif du symbole mis à jour avec succès:", data);
+				console.log("État actif du symbole mis à jour avec succès");
 				// Mettre à jour le bouton ON/OFF et son état actif
 				toggleButton.toggleClass("active");
 				toggleButton.text(toggleButton.hasClass("active") ? "ON" : "OFF");
@@ -655,6 +672,11 @@
 			return parseInt(keyword.dataset.keywordId);
 		});
 
+		var loadingElement = symbolRow.find(".editable-content");
+
+		// Ajouter la classe 'loading' à l'élément d'animation
+		loadingElement.addClass("loading");
+		
 		// Effectuer une requête AJAX PUT pour enregistrer les modifications du symbole
 		$.ajax({
 			url: apiBaseURL + "/symbols/" + symbolId,
@@ -669,34 +691,51 @@
 			contentType: "application/json",
 			success: function (data) {
 				console.log("Symbole mis à jour avec succès:", data);
+				// Supprimer la classe 'loading' de l'élément d'animation en cas d'erreur
+				loadingElement.removeClass("loading");
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				console.log("Erreur lors de la mise à jour du symbole:", textStatus, errorThrown);
+				// Supprimer la classe 'loading' de l'élément d'animation en cas d'erreur
+				loadingElement.removeClass("loading");
 			}
 		});
 	}
 
-	// Attacher un gestionnaire d'événement à la modification du champ "Nom du fichier"
-	$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
-		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
-		var symbolRow = $(this).closest("tr");
-		updateSymbol(symbolId, symbolRow);
-	});
+	// Attacher un gestionnaire d'événement au double-clic sur le champ "Nom du fichier"
+$(document).on("dblclick", "[data-field='file_name'] .editable-content", function () {
+    $(this).attr("contenteditable", "true").focus();
+});
 
-	// Attacher un gestionnaire d'événement à la modification du champ "Taille"
-	$(document).on("blur", "[data-field='size'] .editable-content", function () {
-		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
-		var symbolRow = $(this).closest("tr");
-		updateSymbol(symbolId, symbolRow);
-	});
+// Attacher un gestionnaire d'événement au double-clic sur le champ "Taille"
+$(document).on("dblclick", "[data-field='size'] .editable-content", function () {
+    $(this).attr("contenteditable", "true").focus();
+});
 
-	// Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
-	$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
-		if (event.which === 13) {
-			event.preventDefault();
-			$(this).blur(); // Fait sortir de l'input
-		}
-	});
+// Attacher un gestionnaire d'événement à la perte de focus du champ "Nom du fichier"
+$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
+    $(this).removeAttr("contenteditable");
+    var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
+    var symbolRow = $(this).closest("tr");
+    updateSymbol(symbolId, symbolRow);
+});
+
+// Attacher un gestionnaire d'événement à la perte de focus du champ "Taille"
+$(document).on("blur", "[data-field='size'] .editable-content", function () {
+    $(this).removeAttr("contenteditable");
+    var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
+    var symbolRow = $(this).closest("tr");
+    updateSymbol(symbolId, symbolRow);
+});
+
+// Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
+$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
+    if (event.which === 13) {
+        event.preventDefault();
+        $(this).blur(); // Fait sortir de l'input
+    }
+});
+
 
 	//___________________ gestionnaires d'événements aux éléments du tableau _______________________
 	$(document).on("click", ".add-category-btn", openModal);
