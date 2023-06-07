@@ -1,4 +1,16 @@
 <style>
+	.header-symbols {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.header-symbols input {
+		height: 5vh;
+		width: 30vh;
+	}
+
 	/* Mise en page du tableau */
 	table {
 		width: 100%;
@@ -234,7 +246,22 @@
 	}
 </style>
 
-<h1>SYMBOLS</h1>
+<div class="header-symbols">
+	<h1>SYMBOLS</h1>
+
+	<div>
+		<label for="searchInput">Recherche :</label>
+		<input type="text" id="searchInput" placeholder="Nom de fichier ou mots-clés">
+	</div>
+	<div>
+		<label for="categoryFilter">Filtrer par catégorie :</label>
+		<select id="categoryFilter">
+			<option value="">Toutes les catégories</option>
+			<!-- Les options de catégorie seront ajoutées ici par JavaScript -->
+		</select>
+	</div>
+
+</div>
 
 <table class="table-symbols">
 	<tr>
@@ -249,9 +276,7 @@
 </table>
 
 
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
 	//_____________________________ URL de base de l'API _____________________________________
@@ -357,131 +382,83 @@
 	// _____________________________MODAL__________________________________
 
 	function openModal() {
-  var symbolRow = this.closest("tr");
-  var buttonType = this.dataset.type;
-  console.log(buttonType);
+		var symbolRow = this.closest("tr");
+		var buttonType = this.dataset.type;
+		console.log(buttonType);
 
-  var modal;
-  var list;
-  var itemType;
-  var itemId;
+		var modal;
+		var list;
+		var itemType;
+		var itemId;
 
-  if (buttonType === "categories") {
-    modal = symbolRow.querySelector(".category-modal");
-    list = symbolRow.querySelector("#categoryList");
-    itemType = "category";
-    itemId = "data-category-id";
-  } else if (buttonType === "keywords") {
-    modal = symbolRow.querySelector(".keyword-modal");
-    list = symbolRow.querySelector("#keywordList");
-    itemType = "keyword";
-    itemId = "data-keyword-id";
-  }
+		if (buttonType === "categories") {
+			modal = symbolRow.querySelector(".category-modal");
+			list = symbolRow.querySelector("#categoryList");
+			itemType = "category";
+			itemId = "data-category-id";
+		} else if (buttonType === "keywords") {
+			modal = symbolRow.querySelector(".keyword-modal");
+			list = symbolRow.querySelector("#keywordList");
+			itemType = "keyword";
+			itemId = "data-keyword-id";
+		}
 
-  fetch(apiBaseURL + "/" + buttonType)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Erreur lors de la récupération des " + buttonType + ".");
-    })
-    .then(function (items) {
-      var existingItems = Array.from(symbolRow.querySelectorAll("[" + itemId + "]")).map(function (item) {
-        return item.dataset[itemType + "Id"];
-      });
+		fetch(apiBaseURL + "/" + buttonType)
+			.then(function (response) {
+				if (response.ok) {
+					return response.json();
+				}
+				throw new Error("Erreur lors de la récupération des " + buttonType + ".");
+			})
+			.then(function (items) {
+				var existingItems = Array.from(symbolRow.querySelectorAll("[" + itemId + "]")).map(function (item) {
+					return item.dataset[itemType + "Id"];
+				});
 
-      list.innerHTML = "";
+				list.innerHTML = "";
 
-      items.forEach(function (item) {
-        if (!existingItems.includes(item[itemType + "_id"].toString())) {
-          var itemElement = document.createElement("li");
-          itemElement.dataset[itemType + "Id"] = item[itemType + "_id"];
-          itemElement.textContent = item[itemType];
+				items.forEach(function (item) {
+					if (!existingItems.includes(item[itemType + "_id"].toString())) {
+						var itemElement = document.createElement("li");
+						itemElement.dataset[itemType + "Id"] = item[itemType + "_id"];
+						itemElement.textContent = item[itemType];
 
-          itemElement.addEventListener("click", function () {
-            console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " cliqué :", item[itemType]);
-            addItem(itemElement, itemType);
-          });
+						itemElement.addEventListener("click", function () {
+							console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " cliqué :", item[itemType]);
+							addItem(itemElement, itemType);
+						});
 
-          itemElement.addEventListener("mouseover", handleItemMouseOver);
-          itemElement.addEventListener("mouseout", handleItemMouseOut);
+						itemElement.addEventListener("mouseover", handleItemMouseOver);
+						itemElement.addEventListener("mouseout", handleItemMouseOut);
 
-          list.appendChild(itemElement);
-        }
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+						list.appendChild(itemElement);
+					}
+				});
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
 
-  modal.style.display = "block";
+		modal.style.display = "block";
 
-  // Fermer la modal lorsque l'utilisateur clique en dehors de celle-ci
-  window.onclick = function (event) {
-    if (event.target == modal) {
-      closeModal();
-    }
-  };
-}
+		// Fermer la modal lorsque l'utilisateur clique en dehors de celle-ci
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				closeModal();
+			}
+		};
+	}
 
-function addItem(itemElement, itemType) {
-  var symbolRow = itemElement.closest("tr");
-  var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
-  var itemId = itemElement.dataset[itemType + "Id"];
+	function closeModal() {
+		var modals = document.querySelectorAll(".modal");
+		for (var i = 0; i < modals.length; i++) {
+			var modal = modals[i];
+			modal.style.display = "none";
 
-  // Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
-  $.ajax({
-    url: apiBaseURL + "/symbols/" + symbolId + "/" + itemType + "s/" + itemId,
-    type: "POST",
-    success: function (data) {
-      console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
-
-      var itemContainer = symbolRow.querySelector("." + itemType + "-list");
-
-      var newItemElement = document.createElement("li");
-      newItemElement.dataset[itemType + "Id"] = itemId;
-
-      var itemSpan = document.createElement("span");
-      itemSpan.textContent = itemElement.textContent;
-      newItemElement.appendChild(itemSpan);
-
-      var deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete-" + itemType + "-btn");
-      deleteButton.innerHTML = "&times;";
-      newItemElement.appendChild(deleteButton);
-
-      var addButton = itemContainer.querySelector(".add-btn");
-
-      // Insérer le nouvel élément avant le bouton "+"
-      itemContainer.insertBefore(newItemElement, addButton);
-
-      // Effacer la sélection
-      itemElement.classList.remove(itemType + "-hover");
-
-      // Retirer l'élément de la liste
-      itemElement.remove();
-
-      // closeModal();
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log("Erreur lors de l'association de l'" + itemType + " au symbole:", textStatus, errorThrown);
-    }
-  });
-}
-
-
-
-function closeModal() {
-  var modals = document.querySelectorAll(".modal");
-  for (var i = 0; i < modals.length; i++) {
-    var modal = modals[i];
-    modal.style.display = "none";
-
-    var list = modal.querySelector(".scrollable-list");
-    list.innerHTML = "";
-  }
-}
-
+			var list = modal.querySelector(".scrollable-list");
+			list.innerHTML = "";
+		}
+	}
 
 	function handleItemMouseOver() {
 		// Code à exécuter lorsque la souris survole la catégorie
@@ -494,149 +471,56 @@ function closeModal() {
 	}
 
 	function addItem(itemElement, itemType) {
-  var symbolRow = itemElement.closest("tr");
-  var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
-  var itemId = itemElement.dataset[itemType + "Id"];
-  var apiUrl = apiBaseURL + "/symbols/" + symbolId;
+		var symbolRow = itemElement.closest("tr");
+		var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
+		var itemId = itemElement.dataset[itemType + "Id"];
+		var apiUrl = apiBaseURL + "/symbols/" + symbolId;
 
-  if (itemType === "category") {
-    apiUrl += "/categories";
-  } else if (itemType === "keyword") {
-    apiUrl += "/keywords";
-  }
+		if (itemType === "category") {
+			apiUrl += "/categories";
+		} else if (itemType === "keyword") {
+			apiUrl += "/keywords";
+		}
 
-  // Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
-  $.ajax({
-    url: apiUrl + "/" + itemId,
-    type: "POST",
-    success: function (data) {
-      console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
+		// Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
+		$.ajax({
+			url: apiUrl + "/" + itemId,
+			type: "POST",
+			success: function (data) {
+				console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
 
-      var itemContainer = symbolRow.querySelector("." + itemType + "-list");
+				var itemContainer = symbolRow.querySelector("." + itemType + "-list");
 
-      var newItemElement = document.createElement("li");
-      newItemElement.dataset[itemType + "Id"] = itemId;
+				var newItemElement = document.createElement("li");
+				newItemElement.dataset[itemType + "Id"] = itemId;
 
-      var itemSpan = document.createElement("span");
-      itemSpan.textContent = itemElement.textContent;
-      newItemElement.appendChild(itemSpan);
+				var itemSpan = document.createElement("span");
+				itemSpan.textContent = itemElement.textContent;
+				newItemElement.appendChild(itemSpan);
 
-      var deleteButton = document.createElement("button");
-      deleteButton.classList.add("delete-" + itemType + "-btn");
-      deleteButton.innerHTML = "&times;";
-      newItemElement.appendChild(deleteButton);
+				var deleteButton = document.createElement("button");
+				deleteButton.classList.add("delete-" + itemType + "-btn");
+				deleteButton.innerHTML = "&times;";
+				newItemElement.appendChild(deleteButton);
 
-      var addButton = itemContainer.querySelector(".add-btn");
+				var addButton = itemContainer.querySelector(".add-btn");
 
-      // Insérer le nouvel élément avant le bouton "+"
-      itemContainer.insertBefore(newItemElement, addButton);
+				// Insérer le nouvel élément avant le bouton "+"
+				itemContainer.insertBefore(newItemElement, addButton);
 
-      // Effacer la sélection
-      itemElement.classList.remove(itemType + "-hover");
+				// Effacer la sélection
+				itemElement.classList.remove(itemType + "-hover");
 
-      // Retirer l'élément de la liste
-      itemElement.remove();
+				// Retirer l'élément de la liste
+				itemElement.remove();
 
-      // closeModal();
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.log("Erreur lors de l'association de l'" + itemType + " au symbole:", textStatus, errorThrown);
-    }
-  });
-}
-
-
-
-
-	// function addCategory(categoryItem) {
-	// 	var symbolRow = categoryItem.closest("tr");
-	// 	var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
-	// 	var categoryId = categoryItem.dataset.categoryId;
-
-	// 	// Effectuer une requête AJAX POST pour associer la catégorie au symbole en base de données
-	// 	$.ajax({
-	// 		url: apiBaseURL + "/symbols/" + symbolId + "/categories/" + categoryId,
-	// 		type: "POST",
-	// 		success: function (data) {
-	// 			console.log("Catégorie associée au symbole avec succès:", data);
-
-	// 			var categoryContainer = symbolRow.querySelector(".category-list");
-
-	// 			var newCategoryItem = document.createElement("li");
-	// 			newCategoryItem.dataset.categoryId = categoryId;
-
-	// 			var categorySpan = document.createElement("span");
-	// 			categorySpan.textContent = categoryItem.textContent;
-	// 			newCategoryItem.appendChild(categorySpan);
-
-	// 			var deleteButton = document.createElement("button");
-	// 			deleteButton.classList.add("delete-category-btn");
-	// 			deleteButton.innerHTML = "&times;";
-	// 			newCategoryItem.appendChild(deleteButton);
-
-	// 			var addButton = categoryContainer.querySelector(".add-btn");
-
-	// 			// Insérer la nouvelle catégorie avant le bouton "+"
-	// 			categoryContainer.insertBefore(newCategoryItem, addButton);
-
-	// 			// Effacer la sélection
-	// 			categoryItem.classList.remove("category-hover");
-
-	// 			// Retirer la catégorie de la liste
-	// 			categoryItem.remove();
-
-	// 			// closeModal();
-	// 		},
-	// 		error: function (jqXHR, textStatus, errorThrown) {
-	// 			console.log("Erreur lors de l'association de la catégorie au symbole:", textStatus, errorThrown);
-	// 		}
-	// 	});
-	// }
-
-	// function addKeyword(keywordItem) {
-	// 	var symbolRow = keywordItem.closest("tr");
-	// 	var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
-	// 	var keywordId = keywordItem.dataset.keywordId;
-
-	// 	// Effectuer une requête AJAX POST pour associer le mot-clé au symbole en base de données
-	// 	$.ajax({
-	// 		url: apiBaseURL + "/symbols/" + symbolId + "/keywords/" + keywordId,
-	// 		type: "POST",
-	// 		success: function (data) {
-	// 			console.log("Mot-clé associé au symbole avec succès:", data);
-
-	// 			var keywordContainer = symbolRow.querySelector(".keyword-list");
-
-	// 			var newKeywordItem = document.createElement("li");
-	// 			newKeywordItem.dataset.keywordId = keywordId;
-
-	// 			var keywordSpan = document.createElement("span");
-	// 			keywordSpan.textContent = keywordItem.textContent;
-	// 			newKeywordItem.appendChild(keywordSpan);
-
-	// 			var deleteButton = document.createElement("button");
-	// 			deleteButton.classList.add("delete-keyword-btn");
-	// 			deleteButton.innerHTML = "&times;";
-	// 			newKeywordItem.appendChild(deleteButton);
-
-	// 			var addButton = keywordContainer.querySelector(".add-keyword-item");
-
-	// 			// Insérer le nouveau mot-clé avant le bouton "+"
-	// 			keywordContainer.insertBefore(newKeywordItem, addButton);
-
-	// 			// Effacer la sélection
-	// 			keywordItem.classList.remove("keyword-hover");
-
-	// 			// Retirer le mot-clé de la liste
-	// 			keywordItem.remove();
-
-	// 			// closeModal();
-	// 		},
-	// 		error: function (jqXHR, textStatus, errorThrown) {
-	// 			console.log("Erreur lors de l'association du mot-clé au symbole:", textStatus, errorThrown);
-	// 		}
-	// 	});
-	// }
+				// closeModal();
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				console.log("Erreur lors de l'association de l'" + itemType + " au symbole:", textStatus, errorThrown);
+			}
+		});
+	}
 
 	// ___________________________________________________________________________
 	function deleteCategory() {
@@ -685,7 +569,7 @@ function closeModal() {
 	$(document).on("click", ".delete-category-btn", deleteCategory);
 	$(document).on("click", ".delete-keyword-btn", deleteKeyword);
 
-	// Attacher des gestionnaires d'événements pour enregistrer et supprimer les symboles
+	// Attacher des gestionnaires d'événements pour enregistrer modifications et supprimer les symboles
 	$(document).on("click", ".save-btn", function () {
 		var symbolId = $(this).data("id");
 		var symbolRow = $(this).closest("tr");
@@ -742,4 +626,79 @@ function closeModal() {
 			}
 		});
 	});
+
+
+	//____________________________ BARRE DE RECHERCHE _____________________
+
+	function performSearch() {
+		var searchInput = document.getElementById("searchInput");
+		var searchTerm = searchInput.value.toLowerCase();
+		var categoryFilter = document.getElementById("categoryFilter").value;
+
+		var symbols = document.querySelectorAll(".table-symbols tr:not(:first-child)");
+
+		Array.from(symbols).forEach(function (symbol) {
+			var fileNameElement = symbol.querySelector("[data-field='file_name'] .editable-content");
+			var keywords = symbol.querySelectorAll(".keyword-list li");
+
+			// Recherche sur le nom du fichier
+			var isFileNameMatch = false;
+			if (fileNameElement) {
+				var fileName = fileNameElement.textContent.toLowerCase();
+				if (fileName.includes(searchTerm)) {
+					isFileNameMatch = true;
+				}
+			}
+
+			// Recherche sur les mots-clés
+			var isKeywordMatch = Array.from(keywords).some(function (keyword) {
+				var keywordSpan = keyword.querySelector("span");
+				if (keywordSpan) {
+					var keywordName = keywordSpan.textContent.toLowerCase();
+					return keywordName.includes(searchTerm);
+				}
+				return false;
+			});
+
+			// Filtre par catégorie
+			var hasCategoryFilter = categoryFilter !== "";
+			var categoryList = Array.from(symbol.querySelectorAll(".category-list li[data-category-id]"));
+			var hasCategory = Array.from(categoryList).some(function (category) {
+				return category.dataset.categoryId === categoryFilter;
+			});
+
+			// Afficher ou masquer le symbole en fonction des résultats de recherche et du filtre de catégorie
+			var shouldDisplay = (isFileNameMatch || isKeywordMatch) && (!hasCategoryFilter || hasCategory);
+			symbol.style.display = shouldDisplay ? "table-row" : "none";
+		});
+	}
+
+	// Fonction pour gérer la modification du filtre de catégorie
+	function handleCategoryFilter() {
+		performSearch();
+	}
+
+	// Attacher un gestionnaire d'événement pour la modification du filtre de catégorie
+	var categoryFilter = document.getElementById("categoryFilter");
+	categoryFilter.addEventListener("change", handleCategoryFilter);
+
+	// Attacher un gestionnaire d'événement pour la modification du champ de recherche
+	var searchInput = document.getElementById("searchInput");
+	searchInput.addEventListener("input", performSearch);
+
+	var searchInput = document.getElementById("searchInput");
+	searchInput.addEventListener("input", performSearch);
+	// Récupérer les catégories et générer les options dans le filtre de catégorie
+	apiGet('/categories', function (categories) {
+		var categoryFilter = document.getElementById("categoryFilter");
+		categories.forEach(function (category) {
+			var option = document.createElement("option");
+			option.value = category.category_id;
+			option.textContent = category.category;
+			categoryFilter.appendChild(option);
+		});
+	});
+
+
+
 </script>
