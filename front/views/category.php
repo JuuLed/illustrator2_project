@@ -677,20 +677,26 @@
 	}
 
 	// Attacher un gestionnaire d'événement à la modification du champ "Nom du fichier"
-	$(document).on("input", "[data-field='file_name'] .editable-content", function () {
+	$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
 		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
 		var symbolRow = $(this).closest("tr");
 		updateSymbol(symbolId, symbolRow);
 	});
 
 	// Attacher un gestionnaire d'événement à la modification du champ "Taille"
-	$(document).on("input", "[data-field='size'] .editable-content", function () {
+	$(document).on("blur", "[data-field='size'] .editable-content", function () {
 		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
 		var symbolRow = $(this).closest("tr");
 		updateSymbol(symbolId, symbolRow);
 	});
 
-
+	// Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
+	$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
+		if (event.which === 13) {
+			event.preventDefault();
+			$(this).blur(); // Fait sortir de l'input
+		}
+	});
 
 	//___________________ gestionnaires d'événements aux éléments du tableau _______________________
 	$(document).on("click", ".add-category-btn", openModal);
