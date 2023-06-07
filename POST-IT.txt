@@ -1,1 +1,2 @@
-modal sur l'ajout de categories/mots-clés
+openModal pour cette modal merdique 
+associer les variable correctement

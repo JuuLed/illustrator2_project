@@ -363,51 +363,44 @@
 
   var modal;
   var list;
-  var item;
-  var items;
   var itemType;
   var itemId;
 
   if (buttonType === "categories") {
     modal = symbolRow.querySelector(".category-modal");
     list = symbolRow.querySelector("#categoryList");
-    item = "category";
-    items = "categories";
-    itemType = "category_id";
+    itemType = "category";
     itemId = "data-category-id";
   } else if (buttonType === "keywords") {
     modal = symbolRow.querySelector(".keyword-modal");
     list = symbolRow.querySelector("#keywordList");
-    item = "keyword";
-    items = "keywords";
-    itemType = "keyword_id";
+    itemType = "keyword";
     itemId = "data-keyword-id";
   }
-  console.log(itemType);
 
-  fetch(apiBaseURL + "/" + items)
+  fetch(apiBaseURL + "/" + buttonType)
     .then(function (response) {
       if (response.ok) {
         return response.json();
       }
-      throw new Error("Erreur lors de la récupération des " + items + ".");
+      throw new Error("Erreur lors de la récupération des " + buttonType + ".");
     })
-    .then(function (fetchedItems) {
+    .then(function (items) {
       var existingItems = Array.from(symbolRow.querySelectorAll("[" + itemId + "]")).map(function (item) {
-        return item.dataset[itemType];
+        return item.dataset[itemType + "Id"];
       });
 
       list.innerHTML = "";
 
-      fetchedItems.forEach(function (item) {
-        if (!existingItems.includes(item[itemType].toString())) {
+      items.forEach(function (item) {
+        if (!existingItems.includes(item[itemType + "_id"].toString())) {
           var itemElement = document.createElement("li");
-          itemElement.dataset[itemType] = item[itemType];
-          itemElement.textContent = item[items];
+          itemElement.dataset[itemType + "Id"] = item[itemType + "_id"];
+          itemElement.textContent = item[itemType];
 
           itemElement.addEventListener("click", function () {
-            console.log(buttonType.charAt(0).toUpperCase() + buttonType.slice(1) + " cliqué :", item[items]);
-            addItem(itemElement, item);
+            console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " cliqué :", item[itemType]);
+            addItem(itemElement, itemType);
           });
 
           itemElement.addEventListener("mouseover", handleItemMouseOver);
@@ -431,17 +424,64 @@
   };
 }
 
+function addItem(itemElement, itemType) {
+  var symbolRow = itemElement.closest("tr");
+  var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
+  var itemId = itemElement.dataset[itemType + "Id"];
+
+  // Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
+  $.ajax({
+    url: apiBaseURL + "/symbols/" + symbolId + "/" + itemType + "s/" + itemId,
+    type: "POST",
+    success: function (data) {
+      console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
+
+      var itemContainer = symbolRow.querySelector("." + itemType + "-list");
+
+      var newItemElement = document.createElement("li");
+      newItemElement.dataset[itemType + "Id"] = itemId;
+
+      var itemSpan = document.createElement("span");
+      itemSpan.textContent = itemElement.textContent;
+      newItemElement.appendChild(itemSpan);
+
+      var deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-" + itemType + "-btn");
+      deleteButton.innerHTML = "&times;";
+      newItemElement.appendChild(deleteButton);
+
+      var addButton = itemContainer.querySelector(".add-btn");
+
+      // Insérer le nouvel élément avant le bouton "+"
+      itemContainer.insertBefore(newItemElement, addButton);
+
+      // Effacer la sélection
+      itemElement.classList.remove(itemType + "-hover");
+
+      // Retirer l'élément de la liste
+      itemElement.remove();
+
+      // closeModal();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Erreur lors de l'association de l'" + itemType + " au symbole:", textStatus, errorThrown);
+    }
+  });
+}
 
 
-	function closeModal() {
-		var modals = document.querySelectorAll(".modal");
-		for (var i = 0; i < modals.length; i++) {
-			var modal = modals[i];
-			modal.style.display = "none";
-			var categoryList = modal.querySelector("#categoryList");
-			categoryList.innerHTML = "";
-		}
-	}
+
+function closeModal() {
+  var modals = document.querySelectorAll(".modal");
+  for (var i = 0; i < modals.length; i++) {
+    var modal = modals[i];
+    modal.style.display = "none";
+
+    var list = modal.querySelector(".scrollable-list");
+    list.innerHTML = "";
+  }
+}
+
 
 	function handleItemMouseOver() {
 		// Code à exécuter lorsque la souris survole la catégorie
@@ -454,57 +494,57 @@
 	}
 
 	function addItem(itemElement, itemType) {
-		var symbolRow = itemElement.closest("tr");
-		var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
-		var itemId;
+  var symbolRow = itemElement.closest("tr");
+  var symbolId = symbolRow.querySelector(".save-btn").dataset.id;
+  var itemId = itemElement.dataset[itemType + "Id"];
+  var apiUrl = apiBaseURL + "/symbols/" + symbolId;
 
-		if (itemType === "categories") {
-			itemId = itemElement.dataset.categoryId;
-			itemSingulier = "category";
-		} else if (itemType === "keywords") {
-			itemId = itemElement.dataset.keywordId;
-			itemSingulier = "keyword";
-		}
+  if (itemType === "category") {
+    apiUrl += "/categories";
+  } else if (itemType === "keyword") {
+    apiUrl += "/keywords";
+  }
 
-		// Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
-		$.ajax({
-			url: apiBaseURL + "/symbols/" + symbolId + "/" + itemType + "s/" + itemId,
-			type: "POST",
-			success: function (data) {
-				console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
+  // Effectuer une requête AJAX POST pour associer l'élément au symbole en base de données
+  $.ajax({
+    url: apiUrl + "/" + itemId,
+    type: "POST",
+    success: function (data) {
+      console.log(itemType.charAt(0).toUpperCase() + itemType.slice(1) + " associé au symbole avec succès:", data);
 
-				var itemContainer = symbolRow.querySelector("." + itemSingulier + "-list");
+      var itemContainer = symbolRow.querySelector("." + itemType + "-list");
 
-				var newItemElement = document.createElement("li");
-				newItemElement.dataset[itemSingulier + "Id"] = itemId;
+      var newItemElement = document.createElement("li");
+      newItemElement.dataset[itemType + "Id"] = itemId;
 
-				var itemSpan = document.createElement("span");
-				itemSpan.textContent = itemElement.textContent;
-				newItemElement.appendChild(itemSpan);
+      var itemSpan = document.createElement("span");
+      itemSpan.textContent = itemElement.textContent;
+      newItemElement.appendChild(itemSpan);
 
-				var deleteButton = document.createElement("button");
-				deleteButton.classList.add("delete-" + itemSingulier + "-btn");
-				deleteButton.innerHTML = "&times;";
-				newItemElement.appendChild(deleteButton);
+      var deleteButton = document.createElement("button");
+      deleteButton.classList.add("delete-" + itemType + "-btn");
+      deleteButton.innerHTML = "&times;";
+      newItemElement.appendChild(deleteButton);
 
-				var addButton = itemContainer.querySelector(".add-btn");
+      var addButton = itemContainer.querySelector(".add-btn");
 
-				// Insérer le nouvel élément avant le bouton "+"
-				itemContainer.insertBefore(newItemElement, addButton);
+      // Insérer le nouvel élément avant le bouton "+"
+      itemContainer.insertBefore(newItemElement, addButton);
 
-				// Effacer la sélection
-				itemElement.classList.remove("category-hover");
+      // Effacer la sélection
+      itemElement.classList.remove(itemType + "-hover");
 
-				// Retirer l'élément de la liste
-				itemElement.remove();
+      // Retirer l'élément de la liste
+      itemElement.remove();
 
-				// closeModal();
-			},
-			error: function (jqXHR, textStatus, errorThrown) {
-				console.log("Erreur lors de l'association de " + itemType + " au symbole:", textStatus, errorThrown);
-			}
-		});
-	}
+      // closeModal();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Erreur lors de l'association de l'" + itemType + " au symbole:", textStatus, errorThrown);
+    }
+  });
+}
+
 
 
 
