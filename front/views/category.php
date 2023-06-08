@@ -6,9 +6,23 @@
 		align-items: center;
 	}
 
-	.header-symbols input {
+	.search-bar {
+		width: 70%;
 		height: 5vh;
+		/* border: 2px solid black; */
+		border-radius: 0.5em;
+		background: silver;
+		padding: 0.5em;
+	}
+
+	.search-bar input,
+	select {
+		height: 3.5vh;
 		width: 30vh;
+	}
+
+	.search-bar button {
+		height: 3.5vh;
 	}
 
 	/* Mise en page du tableau */
@@ -105,9 +119,11 @@
 		border: 1px outset grey;
 		border-radius: 0.3vh;
 	}
+
 	.editable-content:hover {
 		border: 1px inset grey;
 	}
+
 	.editable-content:focus {
 		background-color: lightyellow;
 		border: 1px inset grey;
@@ -119,9 +135,17 @@
 	}
 
 	@keyframes load-border {
-		0% { border-color: grey; }
-		50% { border-color: #4cd964; }
-		100% { border-color: grey; }
+		0% {
+			border-color: grey;
+		}
+
+		50% {
+			border-color: #4cd964;
+		}
+
+		100% {
+			border-color: grey;
+		}
 	}
 
 	/* Style pour le bouton ON/OFF avec curseur glissant type Apple */
@@ -302,17 +326,22 @@
 <div class="header-symbols">
 	<h1>SYMBOLS</h1>
 
-	<div>
-		<label for="searchInput">Recherche :</label>
-		<input type="text" id="searchInput" placeholder="Nom de fichier ou mots-clés">
+	<div class="header-symbols search-bar">
+		<div>
+			<label for="searchInput">Recherche :</label>
+			<input type="text" id="searchInput" placeholder="Nom de fichier ou mots-clés">
+		</div>
+		<div>
+			<label for="categoryFilter">Filtrer par catégorie :</label>
+			<select id="categoryFilter">
+				<option value="">Toutes les catégories</option>
+				<!-- Les options de catégorie seront ajoutées ici en JavaScript -->
+			</select>
+		</div>
+		<button id="resetFiltersBtn">Réinitialiser</button>
 	</div>
-	<div>
-		<label for="categoryFilter">Filtrer par catégorie :</label>
-		<select id="categoryFilter">
-			<option value="">Toutes les catégories</option>
-			<!-- Les options de catégorie seront ajoutées ici en JavaScript -->
-		</select>
-	</div>
+
+
 
 </div>
 
@@ -676,7 +705,7 @@
 
 		// Ajouter la classe 'loading' à l'élément d'animation
 		loadingElement.addClass("loading");
-		
+
 		// Effectuer une requête AJAX PUT pour enregistrer les modifications du symbole
 		$.ajax({
 			url: apiBaseURL + "/symbols/" + symbolId,
@@ -703,38 +732,38 @@
 	}
 
 	// Attacher un gestionnaire d'événement au double-clic sur le champ "Nom du fichier"
-$(document).on("dblclick", "[data-field='file_name'] .editable-content", function () {
-    $(this).attr("contenteditable", "true").focus();
-});
+	$(document).on("dblclick", "[data-field='file_name'] .editable-content", function () {
+		$(this).attr("contenteditable", "true").focus();
+	});
 
-// Attacher un gestionnaire d'événement au double-clic sur le champ "Taille"
-$(document).on("dblclick", "[data-field='size'] .editable-content", function () {
-    $(this).attr("contenteditable", "true").focus();
-});
+	// Attacher un gestionnaire d'événement au double-clic sur le champ "Taille"
+	$(document).on("dblclick", "[data-field='size'] .editable-content", function () {
+		$(this).attr("contenteditable", "true").focus();
+	});
 
-// Attacher un gestionnaire d'événement à la perte de focus du champ "Nom du fichier"
-$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
-    $(this).removeAttr("contenteditable");
-    var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
-    var symbolRow = $(this).closest("tr");
-    updateSymbol(symbolId, symbolRow);
-});
+	// Attacher un gestionnaire d'événement à la perte de focus du champ "Nom du fichier"
+	$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
+		$(this).removeAttr("contenteditable");
+		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
+		var symbolRow = $(this).closest("tr");
+		updateSymbol(symbolId, symbolRow);
+	});
 
-// Attacher un gestionnaire d'événement à la perte de focus du champ "Taille"
-$(document).on("blur", "[data-field='size'] .editable-content", function () {
-    $(this).removeAttr("contenteditable");
-    var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
-    var symbolRow = $(this).closest("tr");
-    updateSymbol(symbolId, symbolRow);
-});
+	// Attacher un gestionnaire d'événement à la perte de focus du champ "Taille"
+	$(document).on("blur", "[data-field='size'] .editable-content", function () {
+		$(this).removeAttr("contenteditable");
+		var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
+		var symbolRow = $(this).closest("tr");
+		updateSymbol(symbolId, symbolRow);
+	});
 
-// Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
-$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
-    if (event.which === 13) {
-        event.preventDefault();
-        $(this).blur(); // Fait sortir de l'input
-    }
-});
+	// Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
+	$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
+		if (event.which === 13) {
+			event.preventDefault();
+			$(this).blur(); // Fait sortir de l'input
+		}
+	});
 
 
 	//___________________ gestionnaires d'événements aux éléments du tableau _______________________
@@ -839,6 +868,26 @@ $(document).on("keydown", "[data-field='file_name'] .editable-content, [data-fie
 		});
 	});
 
+	// Gestionnaire d'événement pour le bouton de réinitialisation
+	var resetFiltersBtn = document.getElementById("resetFiltersBtn");
+	resetFiltersBtn.addEventListener("click", resetFilters);
+
+	// Fonction pour réinitialiser les filtres
+	function resetFilters() {
+		// Réinitialiser la valeur du champ de recherche
+		var searchInput = document.getElementById("searchInput");
+		searchInput.value = "";
+
+		// Réinitialiser la valeur du filtre de catégorie
+		var categoryFilter = document.getElementById("categoryFilter");
+		categoryFilter.selectedIndex = 0;
+
+		// Afficher tous les symboles
+		var symbols = document.querySelectorAll(".table-symbols tr:not(:first-child)");
+		Array.from(symbols).forEach(function (symbol) {
+			symbol.style.display = "table-row";
+		});
+	}
 
 
 </script>
