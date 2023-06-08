@@ -1,0 +1,67 @@
+Résumé des principales fonctionnalités demandées :
+
+- Parcours optimisé des symboles :
+Améliorer l'interface utilisateur pour faciliter la navigation à travers les catégories de symboles.
+
+- Gestion des symboles :
+Créer, modifier, supprimer et gérer les symboles plus facilement via un outil en backoffice.
+
+- Upload de fichiers SVG :
+Permettre aux utilisateurs de télécharger des fichiers SVG pour chaque symbole.
+Effectuer une détection de problèmes tels que la présence de plusieurs couleurs ou une couleur de remplissage autre que #000000.
+
+- Drag'n'drop et multiupload :
+Faciliter l'upload des fichiers SVG en permettant le glisser-déposer (drag'n'drop) et le téléchargement
+de plusieurs fichiers simultanément.
+
+- Nom de fichier aléatoire :
+Générer un nom de fichier aléatoire unique pour chaque symbole, combinant une chaîne aléatoire
+sur 8 caractères et l'identifiant du symbole.
+
+- Mots clés multilingues :
+Permettre d'entrer des mots clés pour décrire chaque symbole dans plusieurs langues (EN, DE, ES, FR, IT, PT).
+
+- Taille par défaut :
+Assigner une taille par défaut à chaque symbole, qui déterminera son affichage initial (par exemple, 50% de la surface).
+
+- Catégories de symboles :
+Classer les symboles dans des catégories, avec la possibilité pour un symbole d'appartenir à plusieurs catégories.
+Les catégories doivent avoir un nom unique et pouvoir être ordonnées.
+
+- Symboles actifs/inactifs :
+Permettre d'activer ou de désactiver chaque symbole. Par défaut, les symboles sont inactifs.
+
+- Statistiques des symboles :
+Afficher les statistiques pour chaque symbole, notamment la liste des personnalisations contenant
+ce symbole et leur nombre, ainsi que la liste des commandes avec ce symbole et leur nombre.
+
+- Suppression d'un symbole :
+La suppression d'un symbole depuis l'interface d'administration ne doit pas entraîner la suppression du
+fichier ni son entrée dans la base de données.
+
+- Modification d'un symbole :
+Permettre de modifier un symbole, par exemple en le re-téléchargeant ou en changeant les mots clés.
+L'ancienne version du symbole doit être "supprimée".
+
+- Recherche et filtrage :
+Fournir un moteur de recherche basé sur les mots clés et un filtre basé sur les catégories pour trouver rapidement les symboles parmi plus de 600.
+Permettre également des actions en un clic, comme activer/désactiver un symbole, effectuer une sélection multiple ou visualiser/télécharger les symboles.
+
+- Connexion à l'interface admin :
+Prévoir une connexion sécurisée à l'interface d'administration avec un système de login/mot de passe.
+Limiter l'accès à l'outil aux locaux d'Imprim et com ou à la maison de Greg, sans utiliser les classes Loguy.
+
+- Indépendance de Loguy :
+Le projet doit être totalement indépendant de Loguy, avec seulement une copie de la classe DB autorisée.
+Ne pas inclure toutes les classes Loguy, mais seulement le fichier DB et l'inclure uniquement dans le projet.
+
+- Paramétrage flexible :
+Permettre de configurer facilement le chemin du dossier où les symboles sont stockés, ainsi que les noms des tables utilisées.
+
+- Indépendance du CDN CSS :
+L'outil doit être totalement indépendant du CDN CSS d'Imprim et com.
+
+- Communication :
+Il est suggéré de communiquer principalement via GitHub pour les questions et les échanges liés au projet.
+
+De plus, un fichier ZIP contenant les fichiers SVG utilisés dans le configurateur V1 est disponible en téléchargement.

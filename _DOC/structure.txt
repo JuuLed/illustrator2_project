@@ -1,17 +1,26 @@
 illustrator2_project/
+├── docker-compose.yml
 ├── back/
 │   ├── config/
+│   │   ├── init.sql
 │   │   └── database.php
 │   ├── controllers/
-│   │   ├── SymbolController.php
 │   │   ├── CategoryController.php
+│   │   ├── KeywordController.php
 │   │   ├── LanguageController.php
-│   │   └── KeywordController.php
+│   │   ├── SymbolCategoryController.php
+│   │   ├── SymbolController.php
+│   │   ├── SymbolKeywordController.php
+│   │   └── TranslateController.php
 │   ├── models/
 │   │   ├── Category.php
 │   │   ├── Keyword.php
 │   │   ├── Language.php
-│   │   └── Symbol.php
+│   │   ├── Symbol.php
+│   │   ├── SymbolCategory.php
+│   │   ├── SymbolKeyword.php
+│   │   └── Translate.php
+│   ├── Dockerfile
 │   └── index.php
 └── front/
     ├── css/
@@ -28,4 +37,6 @@ illustrator2_project/
     │   ├── edit.php
     │   ├── stats.php
     │   └── login.php
+    ├── Dockerfile
+    ├── 000-default.conf
     └── index.php

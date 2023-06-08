@@ -1,0 +1,28 @@
+La vérification du fichier SVG peut être réalisée à la fois
+en back-end avec PHP et
+en front-end avec JavaScript,
+en fonction de vos besoins et de vos préférences.
+
+En utilisant PHP côté serveur,
+vous pouvez effectuer une validation basée sur le contenu du fichier SVG lorsqu'il est téléchargé.
+Vous pouvez analyser le fichier SVG à l'aide de bibliothèques PHP telles que SimpleXML ou DOMDocument,
+puis effectuer les vérifications nécessaires,
+telles que la détection de couleurs multiples ou d'une couleur de remplissage autre que #000000.
+Si le fichier ne répond pas aux critères requis, vous pouvez renvoyer un message d'erreur à l'utilisateur.
+
+Côté front-end, vous pouvez également utiliser JavaScript pour effectuer une validation du fichier SVG avant de l'envoyer au serveur.
+Vous pouvez utiliser l'API FileReader pour lire le contenu du fichier SVG et l'analyser à l'aide de bibliothèques JavaScript telles que DOMParser.
+Ensuite, vous pouvez effectuer les vérifications nécessaires
+et afficher un message d'erreur instantané à l'utilisateur s'il y a un problème avec le fichier SVG.
+
+Il est généralement recommandé de valider les fichiers
+à la fois côté serveur et côté client pour une sécurité et une expérience utilisateur optimales.
+La validation côté serveur est essentielle pour garantir l'intégrité des données,
+tandis que la validation côté client offre une rétroaction rapide à l'utilisateur avant de soumettre le formulaire.
+
+Vous pouvez choisir l'approche qui convient le mieux à votre projet en fonction de vos compétences techniques
+et des exigences spécifiques du projet.
+
+
+
+

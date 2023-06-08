@@ -1,7 +1,40 @@
-version: '3.9'
-
 services:
-  web:
-    build: .
+  db:
+    image: mariadb:10.6.5
+    environment:
+      MYSQL_DATABASE: illustrator2
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ./back/config/database.php:/docker-entrypoint-initdb.d/database.php
+      - ./back/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
     ports:
       - 80:80
+    depends_on:
+      - backend
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ''
+    ports:
+      - 8081:80
+    depends_on:
+      - db
