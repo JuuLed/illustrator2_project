@@ -1,2 +1,10 @@
-openModal pour cette modal merdique 
-associer les variable correctement
+"A un symbole correspond un fichier SVG. On doit pouvoir l’uploader depuis le gestionnaire. A l’upload, il doit y avoir une détection de problème sur les fichiers. Exemple de problèmes à détecter :
+
+Est-ce que le fichier contient plusieurs couleurs (correspond aux attributs fill dans le fichier svg) ? Puisque les fichiers doivent être strictement monochromes
+Est-ce que la couleur « fill » est autre que #000000 ? Puisque seule la couleur #000000 est autorisée
+Idéalement l’upload doit être fait en drag’n’drop, et encore mieux s’il y a un multiupload (= on glisse une sélection de fichiers)."
+
+commmencé sur le fichier keyword du front.
+________________________________________________________________________
+
+faire cahier des charge etc ...
