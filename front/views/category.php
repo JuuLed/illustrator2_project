@@ -355,77 +355,77 @@
 		var tableContent = symbols.map(function (symbol) {
 			var categoriesContent = symbol.categories.map(function (category) {
 				return `
-		  <li data-category-id="${category.id}">
-			<span>${category.category}</span>
-			<button class="delete-category-btn">&times;</button>
-		  </li>
-		`;
+					<li data-category-id="${category.id}">
+						<span>${category.category}</span>
+						<button class="delete-category-btn">&times;</button>
+					</li>
+				`;
 			}).join('');
 
 			var keywordsContent = symbol.keywords.map(function (keyword) {
 				return `
-		  <li data-keyword-id="${keyword.id}">
-			<span>${keyword.keyword}</span>
-			<button class="delete-keyword-btn">&times;</button>
-		  </li>
-		`;
+					<li data-keyword-id="${keyword.id}">
+						<span>${keyword.keyword}</span>
+						<button class="delete-keyword-btn">&times;</button>
+					</li>
+				`;
 			}).join('');
 
 			return `
-		<tr>
-		  <td class="contenteditable" data-field="file_name">
-			<div class="editable-content" contenteditable="false">
-			  ${symbol.file_name}
-			</div>
-		  </td>
+				<tr>
+					<td class="contenteditable" data-field="file_name">
+						<div class="editable-content" contenteditable="false">
+							${symbol.file_name}
+						</div>
+					</td>
 
-		  <td class="cln-size contenteditable" data-field="size">
-			<div class="editable-content" contenteditable="false">
-			  ${symbol.size}
-			</div>
-		  </td>
+					<td class="cln-size contenteditable" data-field="size">
+						<div class="editable-content" contenteditable="false">
+							${symbol.size}
+						</div>
+					</td>
 
-		  <td class="cln-size" data-field="active">
-			<button class="toggle-btn ${symbol.active ? 'active' : ''}" data-id="${symbol.id}">
-			  ${symbol.active ? 'ON' : 'OFF'}
-			</button>
-		  </td>
+					<td class="cln-size" data-field="active">
+						<button class="toggle-btn ${symbol.active ? 'active' : ''}" data-id="${symbol.id}">
+							${symbol.active ? 'ON' : 'OFF'}
+						</button>
+					</td>
 
-		  <td>
-			<ul class="category-list">
-			  ${categoriesContent}
-			  <li class="add-btn">
-				<button class="add-category-btn" data-type="categories">+</button>
-				<div class="modal category-modal">
-				  <div class="modal-content">
-					<h2>Liste des catégories</h2>
-					<ul id="categoryList" class="scrollable-list"></ul>
-				  </div>
-				</div>
-			  </li>
-			</ul>
-		  </td>
+					<td>
+						<ul class="category-list">
+						${categoriesContent}
+						<li class="add-btn">
+							<button class="add-category-btn" data-type="categories">+</button>
+							<div class="modal category-modal">
+							<div class="modal-content">
+								<h2>Liste des catégories</h2>
+								<ul id="categoryList" class="scrollable-list"></ul>
+							</div>
+							</div>
+						</li>
+						</ul>
+					</td>
 
-		  <td>
-			<ul class="keyword-list">
-			  ${keywordsContent}
-			  <li class="add-btn">
-				<button class="add-keyword-btn" data-type="keywords">+</button>
-				<div class="modal keyword-modal">
-				  <div class="modal-content">
-					<h2>Liste des mots-clés</h2>
-					<ul id="keywordList" class="scrollable-list"></ul>
-				  </div>
-				</div>
-			  </li>
-			</ul>
-		  </td>
+					<td>
+						<ul class="keyword-list">
+							${keywordsContent}
+						<li class="add-btn">
+							<button class="add-keyword-btn" data-type="keywords">+</button>
+							<div class="modal keyword-modal">
+							<div class="modal-content">
+								<h2>Liste des mots-clés</h2>
+								<ul id="keywordList" class="scrollable-list"></ul>
+							</div>
+							</div>
+						</li>
+						</ul>
+					</td>
 
-		  <td>
-			<button class="delete-btn" data-id="${symbol.id}">Supprimer</button>
-		  </td>
-		</tr>
-	  `;
+					<td>
+						<button class="delete-btn" data-id="${symbol.id}">Supprimer</button>
+					</td>
+				</tr>
+			`;
 		}).join('');
 
 		$('.table-symbols').append(tableContent);
