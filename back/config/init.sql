@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : jeu. 08 juin 2023 à 10:21
+-- Généré le : ven. 09 juin 2023 à 13:02
 -- Version du serveur :  10.6.5-MariaDB
 -- Version de PHP : 5.6.40
 
@@ -222,11 +222,11 @@ INSERT INTO `symbol_keyword` (`symbol_id`, `keyword_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `translates`
+-- Structure de la table `translations`
 --
 
-DROP TABLE IF EXISTS `translates`;
-CREATE TABLE IF NOT EXISTS `translates` (
+DROP TABLE IF EXISTS `translations`;
+CREATE TABLE IF NOT EXISTS `translations` (
   `table_name` varchar(50) NOT NULL,
   `row_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
@@ -235,10 +235,10 @@ CREATE TABLE IF NOT EXISTS `translates` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
--- Déchargement des données de la table `translates`
+-- Déchargement des données de la table `translations`
 --
 
-INSERT INTO `translates` (`table_name`, `row_id`, `value`, `language_code`) VALUES
+INSERT INTO `translations` (`table_name`, `row_id`, `value`, `language_code`) VALUES
 ('categories', 5, 'Mechanical', 'EN'),
 ('categories', 5, 'Mechanik', 'DE'),
 ('categories', 5, 'Mecánica', 'ES'),
@@ -535,10 +535,10 @@ ALTER TABLE `symbol_keyword`
   ADD CONSTRAINT `symbol_keyword_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`keyword_id`);
 
 --
--- Contraintes pour la table `translates`
+-- Contraintes pour la table `translations`
 --
-ALTER TABLE `translates`
-  ADD CONSTRAINT `translates_ibfk_1` FOREIGN KEY (`language_code`) REFERENCES `languages` (`language_code`);
+ALTER TABLE `translations`
+  ADD CONSTRAINT `translations_ibfk_1` FOREIGN KEY (`language_code`) REFERENCES `languages` (`language_code`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

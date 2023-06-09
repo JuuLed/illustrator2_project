@@ -11,7 +11,7 @@ require_once './controllers/SymbolController.php';
 require_once './controllers/CategoryController.php';
 require_once './controllers/KeywordController.php';
 require_once './controllers/LanguageController.php';
-require_once './controllers/TranslateController.php';
+require_once './controllers/TranslationController.php';
 require_once './controllers/SymbolKeywordController.php';
 require_once './controllers/SymbolCategoryController.php';
 
@@ -19,7 +19,7 @@ $symbolController = new SymbolController();
 $categoryController = new CategoryController();
 $keywordController = new KeywordController();
 $languageController = new LanguageController();
-$translateController = new TranslateController();
+$translationController = new TranslationController();
 $symbolKeywordController = new SymbolKeywordController();
 $symbolCategoryController = new SymbolCategoryController();
 
@@ -27,9 +27,9 @@ $request = $_SERVER['REQUEST_URI'];
 
 //* Chemin de base de votre API REST
 //! _____ docker : _____
-$base_path = '/index.php';
+// $base_path = '/index.php';
 //! _____ local : _____
-// $base_path = '/illustrator2_project/back/index.php';
+$base_path = '/illustrator2_project/back/index.php';
 
 // Supprimez la partie du chemin de base de l'URI
 $route = str_replace($base_path, '', $request);
@@ -150,29 +150,29 @@ switch ($route) {
     break;
 
     // Routes pour les traductions
-    case 'translates':
+    case 'translations':
         if ($method === 'GET') {
-            $response = $translateController->getAllTranslates();
+            $response = $translationController->getAllTranslations();
         } elseif ($method === 'POST') {
             $data = json_decode(file_get_contents('php://input'), true);
-            $response = $translateController->createTranslate($data);
+            $response = $translationController->createTranslation($data);
         } else {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);
         }
     break;
-    case preg_match('/^translates\/[^\/]+\/\d+$/', $route) ? true : false:
+    case preg_match('/^translations\/[^\/]+\/\d+$/', $route) ? true : false:
         $params = explode('/', $route);
         $table = $params[1];
         $id = $params[2];
 
         if ($method === 'GET') {
-            $response = $translateController->getTranslateByTableAndId($table, $id);
+            $response = $translationController->getTranslationByTableAndId($table, $id);
         } elseif ($method === 'PUT') {
             $data = json_decode(file_get_contents('php://input'), true);
-            $response = $translateController->updateTranslate($table, $id, $data);
+            $response = $translationController->updateTranslation($table, $id, $data);
         } elseif ($method === 'DELETE') {
-            $response = $translateController->deleteTranslate($table, $id);
+            $response = $translationController->deleteTranslation($table, $id);
         } else {
             $response = ['error' => 'Method not allowed'];
             http_response_code(405);

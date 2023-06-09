@@ -9,7 +9,7 @@ class Keyword {
     public function getAllKeywords() {
 		$query = "SELECT k.keyword_id, k.keyword, t.language_code, t.value
 				  FROM keywords k
-				  LEFT JOIN translates t ON t.table_name = 'keywords' AND t.row_id = k.keyword_id";
+				  LEFT JOIN translations t ON t.table_name = 'keywords' AND t.row_id = k.keyword_id";
 	
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();

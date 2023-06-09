@@ -1,18 +1,18 @@
 <?php
 require_once './config/database.php';
 require_once './models/Category.php';
-require_once './models/Translate.php';
+require_once './models/Translation.php';
 require_once './models/Language.php';
 
 class CategoryController {
     protected $categoryModel;
-    protected $translateModel;
+    protected $translationModel;
     protected $languageModel;
 
     public function __construct() {
         global $pdo;
         $this->categoryModel = new Category($pdo);
-        $this->translateModel = new Translate($pdo);
+        $this->translationModel = new Translation($pdo);
         $this->languageModel = new Language($pdo);
     }
 
@@ -29,19 +29,19 @@ class CategoryController {
                 $result[$categoryId] = [
                     'category_id' => $categoryId,
                     'category' => $categoryName,
-                    'translates' => []
+                    'translations' => []
                 ];
             }
 
             // Récupérer les traductions pour la catégorie
-            $translations = $this->translateModel->getTranslateByTableAndId('categories', $categoryId);
+            $translations = $this->translationModel->getTranslationByTableAndId('categories', $categoryId);
 
             foreach ($translations as $translation) {
                 $languageCode = $translation['language_code'];
                 $value = $translation['value'];
 
                 // Ajouter la traduction au tableau correspondant à la catégorie
-                $result[$categoryId]['translates'][$languageCode] = $value;
+                $result[$categoryId]['translations'][$languageCode] = $value;
             }
         }
 
@@ -58,18 +58,18 @@ class CategoryController {
             $result = [
                 'category_id' => $categoryId,
                 'category' => $categoryName,
-                'translates' => []
+                'translations' => []
             ];
 
             // Récupérer les traductions pour la catégorie
-            $translations = $this->translateModel->getTranslateByTableAndId('categories', $categoryId);
+            $translations = $this->translationModel->getTranslationByTableAndId('categories', $categoryId);
 
             foreach ($translations as $translation) {
                 $languageCode = $translation['language_code'];
                 $value = $translation['value'];
 
                 // Ajouter la traduction au tableau correspondant à la catégorie
-                $result['translates'][$languageCode] = $value;
+                $result['translations'][$languageCode] = $value;
             }
 
             return $result;
@@ -81,7 +81,7 @@ class CategoryController {
 	// Json d'ajout :
 	// {
 	// 	"category": "categorie 1",
-	// 	"translates": {
+	// 	"translations": {
 	// 		"EN": "Translation in English",
 	// 		"DE": "Translation in German",
 	// 		"ES": "Translation in Spanish",
@@ -92,7 +92,7 @@ class CategoryController {
 	// }	
     public function createCategory($data) {
         $categoryName = $data['category'];
-        $translations = $data['translates'];
+        $translations = $data['translations'];
 
         // Créer la catégorie dans la base de données
         $categoryId = $this->categoryModel->createCategory($categoryName);
@@ -100,7 +100,7 @@ class CategoryController {
         if ($categoryId) {
             // Créer les traductions pour la catégorie
             foreach ($translations as $languageCode => $translation) {
-                $this->translateModel->createTranslate('categories', $categoryId, $translation, $languageCode);
+                $this->translationModel->createTranslation('categories', $categoryId, $translation, $languageCode);
             }
 
             // Récupérer les traductions pour construire la réponse
@@ -116,7 +116,7 @@ class CategoryController {
             $response = [
                 'category_id' => $categoryId,
                 'category' => $categoryName,
-                'translates' => $responseTranslations
+                'translations' => $responseTranslations
             ];
 
             return $response;
@@ -157,8 +157,8 @@ class CategoryController {
         // Supprimer la catégorie de la table "categories"
         $result = $this->categoryModel->deleteCategory($id);
 
-        // Supprimer les traductions associées à la catégorie de la table "translates"
-        $this->translateModel->deleteTranslateByTableAndId('categories', $id);
+        // Supprimer les traductions associées à la catégorie de la table "translations"
+        $this->translationModel->deleteTranslationByTableAndId('categories', $id);
 
         if ($result > 0) {
             return ['message' => 'Category deleted successfully'];

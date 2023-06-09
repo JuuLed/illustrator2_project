@@ -1,18 +1,18 @@
 <?php
 require_once './config/database.php';
 require_once './models/Keyword.php';
-require_once './models/Translate.php';
+require_once './models/Translation.php';
 require_once './models/Language.php';
 
 class KeywordController {
     protected $keywordModel;
-    protected $translateModel;
+    protected $translationModel;
 	protected $languageModel;
 
     public function __construct() {
         global $pdo;
         $this->keywordModel = new Keyword($pdo);
-        $this->translateModel = new Translate($pdo);
+        $this->translationModel = new Translation($pdo);
 		$this->languageModel = new Language($pdo);
     }
 
@@ -29,19 +29,19 @@ class KeywordController {
 				$result[$keywordId] = [
 					'keyword_id' => $keywordId,
 					'keyword' => $keywordName,
-					'translates' => []
+					'translations' => []
 				];
 			}
 	
 			// Récupérer les traductions pour le mot-clé
-			$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keywordId);
+			$translations = $this->translationModel->getTranslationByTableAndId('keywords', $keywordId);
 	
 			foreach ($translations as $translation) {
 				$languageCode = $translation['language_code'];
 				$value = $translation['value'];
 	
 				// Ajouter la traduction au tableau correspondant au mot-clé
-				$result[$keywordId]['translates'][$languageCode] = $value;
+				$result[$keywordId]['translations'][$languageCode] = $value;
 			}
 		}
 	
@@ -58,18 +58,18 @@ class KeywordController {
 			$result = [
 				'keyword_id' => $keywordId,
 				'keyword' => $keywordName,
-				'translates' => []
+				'translations' => []
 			];
 	
 			// Récupérer les traductions pour le mot-clé
-			$translations = $this->translateModel->getTranslateByTableAndId('keywords', $keywordId);
+			$translations = $this->translationModel->getTranslationByTableAndId('keywords', $keywordId);
 	
 			foreach ($translations as $translation) {
 				$languageCode = $translation['language_code'];
 				$value = $translation['value'];
 	
 				// Ajouter la traduction au tableau correspondant au mot-clé
-				$result['translates'][$languageCode] = $value;
+				$result['translations'][$languageCode] = $value;
 			}
 	
 			return $result;
@@ -81,7 +81,7 @@ class KeywordController {
 	// Json d'ajout :
 	// {
 	// 	"keyword": "Keyword 1",
-	// 	"translates": {
+	// 	"translations": {
 	// 		"EN": "Translation in English",
 	// 		"DE": "Translation in German",
 	// 		"ES": "Translation in Spanish",
@@ -92,7 +92,7 @@ class KeywordController {
 	// }	
     public function createKeyword($data) {
         $keywordName = $data['keyword'];
-        $translations = $data['translates'];
+        $translations = $data['translations'];
 
         // Créer le mot-clé dans la base de données
         $keywordId = $this->keywordModel->createKeyword($keywordName);
@@ -100,7 +100,7 @@ class KeywordController {
         if ($keywordId) {
             // Créer les traductions pour le mot-clé
             foreach ($translations as $languageCode => $translation) {
-                $this->translateModel->createTranslate('keywords', $keywordId, $translation, $languageCode);
+                $this->translationModel->createTranslation('keywords', $keywordId, $translation, $languageCode);
             }
 
             // Récupérer les traductions pour construire la réponse
@@ -116,7 +116,7 @@ class KeywordController {
             $response = [
                 'keyword_id' => $keywordId,
                 'keyword' => $keywordName,
-                'translates' => $responseTranslations
+                'translations' => $responseTranslations
             ];
 
             return $response;
@@ -159,8 +159,8 @@ class KeywordController {
 		// Supprimer le mot-clé de la table "keywords"
 		$result = $this->keywordModel->deleteKeyword($id);
 	
-		// Supprimer les traductions associées au mot-clé de la table "translates"
-		$this->translateModel->deleteTranslateByTableAndId('keywords', $id);
+		// Supprimer les traductions associées au mot-clé de la table "translations"
+		$this->translationModel->deleteTranslationByTableAndId('keywords', $id);
 	
 		if ($result > 0) {
 			return ['message' => 'Keyword deleted successfully'];

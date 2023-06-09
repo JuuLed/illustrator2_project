@@ -1,22 +1,22 @@
 <?php
 
-class Translate {
+class Translation {
     protected $pdo;
 
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
 
-    public function getAllTranslates() {
-        $query = "SELECT * FROM translates";
+    public function getAllTranslations() {
+        $query = "SELECT * FROM translations";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getTranslateByTableAndId($table, $id) {
-		$query = "SELECT * FROM translates WHERE table_name = :table AND row_id = :id";
+    public function getTranslationByTableAndId($table, $id) {
+		$query = "SELECT * FROM translations WHERE table_name = :table AND row_id = :id";
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':table', $table);
 		$stmt->bindParam(':id', $id);
@@ -26,8 +26,8 @@ class Translate {
 	}
 	
 
-    public function createTranslate($table, $id, $value, $langCode) {
-        $query = "INSERT INTO translates (table_name, row_id, value, language_code) 
+    public function createTranslation($table, $id, $value, $langCode) {
+        $query = "INSERT INTO translations (table_name, row_id, value, language_code) 
                   VALUES (:table_name, :row_id, :value, :language_code)";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':table_name', $table);
@@ -39,21 +39,21 @@ class Translate {
         return $this->pdo->lastInsertId();
     }
 
-    public function updateTranslateByTableAndId($table, $id, $value, $langCode) {
-		$currentTranslate = $this->getTranslateByTableAndId($table, $id);
+    public function updateTranslationByTableAndId($table, $id, $value, $langCode) {
+		$currentTranslation = $this->getTranslationByTableAndId($table, $id);
 	
-		if (!$currentTranslate) {
+		if (!$currentTranslation) {
 			return 0; // La traduction n'existe pas, retourne 0 pour indiquer l'échec de la mise à jour
 		}
 	
-		$newValue = $value !== '' ? $value : $currentTranslate['value'];
-		$newLangCode = $langCode !== '' ? $langCode : $currentTranslate['language_code'];
+		$newValue = $value !== '' ? $value : $currentTranslation['value'];
+		$newLangCode = $langCode !== '' ? $langCode : $currentTranslation['language_code'];
 	
-		if ($newValue === $currentTranslate['value'] && $newLangCode === $currentTranslate['language_code']) {
+		if ($newValue === $currentTranslation['value'] && $newLangCode === $currentTranslation['language_code']) {
 			return 0; // Aucun champ à mettre à jour, retourne 0 pour indiquer l'absence de modification
 		}
 	
-		$query = "UPDATE translates SET value = :value, language_code = :language_code 
+		$query = "UPDATE translations SET value = :value, language_code = :language_code 
 				  WHERE table_name = :table AND row_id = :id";
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':table', $table);
@@ -66,8 +66,8 @@ class Translate {
 	}
 	
 
-    public function deleteTranslateByTableAndId($table, $id) {
-        $query = "DELETE FROM translates WHERE table_name = :table AND row_id = :id";
+    public function deleteTranslationByTableAndId($table, $id) {
+        $query = "DELETE FROM translations WHERE table_name = :table AND row_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':table', $table);
         $stmt->bindParam(':id', $id);
