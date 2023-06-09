@@ -1,0 +1,23 @@
+1. Pour passé de local a docker ou inversement, commenté/décommenté ces lignes dans ces fichiers :
+	BACK :
+		config/database.php : ligne 2 à 5
+		index.php	 : ligne 28 à 32
+	FRONT :
+		js/script.js	 : ligne 3 à 7
+
+2. Lancer Docker/Container :
+	- Ouvrir terminal/console
+	- Navigué jusqu'à la racine du projet (là où il y a docker-compose.yml)
+	- Lancé la commande : 
+		docker-compose up --build
+		et laissé docker travailler 2 minutes.
+
+3. Accés aux aperçus :
+	front 
+		http://localhost
+	back
+		http://localhost:8000/index.php/symbols
+	phpMyAdmin :
+		http://localhost:8081/
+
+

@@ -8,7 +8,7 @@
 
 		display: flex;
 		flex-direction: row;
-		
+
 		overflow: hidden;
 	}
 
@@ -23,48 +23,372 @@
 		justify-content: flex-start;
 		align-items: center;
 		padding: 3vh;
-		
+
 		flex-shrink: 0;
 	}
-  
+
 	.navbar-brand {
 		padding-bottom: 5vh;
 	}
+
 	.navbar-logo {
 		color: #fff;
 		font-size: 3vh;
 		font-weight: bold;
 		text-decoration: none;
 	}
-	
+
 	.navbar-menu {
 		list-style: none;
 		padding: 0;
 		margin: 0;
 	}
-	
+
 	.navbar-item {
 		margin-bottom: 1.5vh;
 	}
-	
+
 	.navbar-link {
 		color: #fff;
 		text-decoration: none;
 		font-size: 2.5vh;
 	}
-	
+
 	.navbar-link:hover {
 		text-shadow: 0 0 .25rem gold, -.125rem -.125rem 1rem gold, .125rem .125rem 1rem gold;
 	}
-	
+
 	.navbar-link.active {
 		text-shadow: 0 0 .25rem white, -.125rem -.125rem 1rem white, .125rem .125rem 1rem white;
 	}
-	
+
 	.content {
 		flex-grow: 1;
 		padding: 2vh;
 		overflow-y: auto;
 		height: calc(100vh - 20px);
 	}
-	
+
+/*********** PAGE SYMBOLS ***********/
+	.header-symbols {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.search-bar {
+		width: 70%;
+		height: 5vh;
+		/* border: 2px solid black; */
+		border-radius: 0.5em;
+		background: silver;
+		padding: 0.5em;
+	}
+
+	.search-bar input,
+	select {
+		height: 3.5vh;
+		width: 30vh;
+	}
+
+	.search-bar button {
+		height: 3.5vh;
+	}
+
+	/* Mise en page du tableau */
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	th,
+	td {
+		padding: 8px;
+		text-align: left;
+		border-bottom: 1px solid #ddd;
+	}
+
+	th {
+		background-color: #f2f2f2;
+	}
+
+	th:not(:last-child),
+	td:not(:last-child) {
+		border-right: 1px solid #ccc;
+	}
+
+	tr:hover {
+		background-color: #f5f5f5;
+	}
+
+	th:nth-child(1),
+	td:nth-child(1) {
+		width: 10%;
+	}
+
+	th:nth-child(2),
+	td:nth-child(2) {
+		width: 4%;
+	}
+
+	th:nth-child(3),
+	td:nth-child(3) {
+		width: 4%;
+	}
+
+	th:nth-child(4),
+	td:nth-child(4) {
+		width: 30%;
+	}
+
+	th:nth-child(5),
+	td:nth-child(5) {
+		width: 30%;
+	}
+
+	th:nth-child(6),
+	td:nth-child(6) {
+		width: 10%;
+	}
+
+	.delete-btn {
+		width: 15vh;
+		margin: 0.2vh;
+		padding: 4px 8px;
+		background-color: #4caf50;
+		color: white;
+		border: none;
+		cursor: pointer;
+		margin-right: 4px;
+		border: 2px outset grey;
+		border-radius: 1vh;
+	}
+
+	.delete-btn:hover {
+		border: 2px inset grey;
+	}
+
+	.delete-btn {
+		background-color: #f44336;
+	}
+
+	.contenteditable {
+		position: relative;
+	}
+
+	.editable-content {
+		position: absolute;
+		top: 0.7vh;
+		left: 0.7vh;
+		right: 0.7vh;
+		bottom: 0.7vh;
+		padding: 0.7vh;
+		background-color: silver;
+		border: none;
+		outline: none;
+		border: 1px outset grey;
+		border-radius: 0.3vh;
+	}
+
+	.editable-content:hover {
+		border: 1px inset grey;
+	}
+
+	.editable-content:focus {
+		background-color: lightyellow;
+		border: 1px inset grey;
+	}
+
+	.loading {
+		border: 2px solid grey;
+		animation: load-border 1s linear infinite;
+	}
+
+	@keyframes load-border {
+		0% {
+			border-color: grey;
+		}
+
+		50% {
+			border-color: #4cd964;
+		}
+
+		100% {
+			border-color: grey;
+		}
+	}
+
+	/* Style pour le bouton ON/OFF avec curseur glissant type Apple */
+	.toggle-btn {
+		position: relative;
+		display: inline-block;
+		width: 4em;
+		height: 2em;
+		background-color: #ddd;
+		border-radius: 1em;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+		overflow: hidden;
+	}
+
+	.toggle-btn::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 0.3em;
+		width: 1.4em;
+		height: 1.4em;
+		background-color: rgba(255, 255, 255, 0.5);
+		border-radius: 50%;
+		border: 1px solid grey;
+		box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.2);
+		transition: transform 0.3s ease;
+	}
+
+	.toggle-btn.active {
+		background-color: #4cd964;
+		color: white;
+	}
+
+	.toggle-btn.active::before {
+		transform: translateX(1.8em) translateY(-50%);
+	}
+
+	/* Mise en page pour les catégories */
+	.category-list,
+	.keyword-list {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.category-list li,
+	.keyword-list li {
+		display: inline-block;
+		position: relative;
+		margin: 4px;
+	}
+
+	.category-list span,
+	.keyword-list span {
+		display: inline-block;
+		padding: 4px 8px;
+		background-color: #f2f2f2;
+		border-radius: 1vh;
+		vertical-align: middle;
+		border: 1px solid grey;
+	}
+
+	.category-list .delete-category-btn,
+	.keyword-list .delete-keyword-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 2vh;
+		height: 2vh;
+		background-color: #f44336;
+		border: 1px solid grey;
+		border-radius: 100%;
+		font-size: 1.5vh;
+		line-height: 1;
+		text-align: center;
+		cursor: pointer;
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translate(50%, -50%);
+		color: white;
+	}
+
+	.category-list .delete-category-btn:hover,
+	.keyword-list .delete-keyword-btn:hover {
+		color: black;
+		border: 1px solid black;
+	}
+
+	/* BOUTONS MODALS */
+
+	.add-category-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		color: white;
+		font-size: 3.5vh;
+		width: 3.5vh;
+		height: 3.5vh;
+		border-radius: 100%;
+		background: limegreen;
+		border: 2px solid green;
+	}
+
+	.add-category-btn:hover {
+		cursor: pointer;
+		color: black;
+	}
+
+	.add-keyword-btn {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		color: white;
+		font-size: 3.5vh;
+		width: 3.5vh;
+		height: 3.5vh;
+		border-radius: 100%;
+		background: limegreen;
+		border: 2px solid green;
+	}
+
+	.add-keyword-btn:hover {
+		cursor: pointer;
+		color: black;
+	}
+
+	/*__________________________MODAL________________________________*/
+	/* Styles pour la modal */
+	.modal {
+		display: none;
+		position: fixed;
+		z-index: 1;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		background-color: rgba(0, 0, 0, 0.4);
+	}
+
+	.modal-content {
+		background-color: #fefefe;
+		margin: 15% auto;
+		padding: 20px;
+		border: 1px solid #888;
+		width: 80%;
+		max-height: 70vh;
+		overflow-y: auto;
+	}
+
+	.scrollable-list {
+		max-height: 300px;
+		overflow-y: auto;
+	}
+
+	.scrollable-list li {
+		display: inline-block;
+		padding: 4px 8px;
+		background-color: #f2f2f2;
+		border-radius: 1vh;
+		vertical-align: middle;
+		border: 1px solid grey;
+	}
+
+	.category-hover {
+		border: 1px solid gold !important;
+		background-color: grey !important;
+		color: gold;
+		cursor: pointer;
+	}
