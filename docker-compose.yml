@@ -1,28 +1,40 @@
+version: '3.8'
 services:
   db:
     image: mariadb:10.6.5
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_DATABASE: illustrator2
       MYSQL_USER: root
       MYSQL_PASSWORD: ''
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - ./back/config/database.php:/docker-entrypoint-initdb.d/database.php
       - ./back/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
 
   backend:
     build:
       context: ./back
       dockerfile: Dockerfile
+    volumes:
+      - ./back:/var/www/html
     ports:
-      - 8080:80
+      - 8000:80
     depends_on:
       - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: ''
+      DB_NAME: illustrator2
 
   frontend:
     build:
       context: ./front
       dockerfile: Dockerfile
+    volumes:
+      - ./front:/var/www/html
     ports:
       - 80:80
     depends_on:
@@ -30,6 +42,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    restart: always
     environment:
       PMA_HOST: db
       PMA_USER: root

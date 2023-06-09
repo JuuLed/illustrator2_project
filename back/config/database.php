@@ -1,5 +1,8 @@
 <?php
-$host = 'localhost';
+// docker :
+$host = 'db';
+
+// $host = 'localhost';
 $db   = 'illustrator2';
 $user = 'root';
 $pass = '';

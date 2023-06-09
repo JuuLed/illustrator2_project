@@ -44,44 +44,46 @@ illustrator2_project/
 
 mon dockerfile back :
 FROM php:5.6-apache
-COPY . /var/www/html/back
+
+# Installation de l'extension pdo_mysql
+RUN docker-php-ext-install pdo_mysql
+RUN a2enmod rewrite
+
+COPY . /var/www/html/
+
 EXPOSE 80
 
 mon dockerfile front :
 FROM php:5.6-apache
-COPY . /var/www/html/front
+COPY . /var/www/html/
 COPY ./000-default.conf /etc/apache2/sites-available/000-default.conf
+RUN a2enmod proxy
+RUN a2enmod proxy_http
 RUN a2enmod rewrite
 EXPOSE 80
 CMD ["apachectl", "-D", "FOREGROUND"]
 
+
 mon 000-default-conf :
 <VirtualHost *:80>
-    DocumentRoot /var/www/html/front
+    DocumentRoot /var/www/html
 
-    <Directory /var/www/html/front>
+    <Directory /var/www/html>
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
-    </Directory>
-
-    <Directory /var/www/html/back>
-        Options Indexes FollowSymLinks
-        AllowOverride All
-        Require all granted
-        RewriteEngine On
-        RewriteBase /back/
-        RewriteRule ^index\.php$ - [L]
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule . /back/index.php [L]
     </Directory>
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    ProxyPass /back http://backend:80
+    ProxyPassReverse /back http://backend:80
 </VirtualHost>
 
+
 mon docker-compose.yml :
+version: '3.8'
 services:
   db:
     image: mariadb:10.6.5
@@ -91,29 +93,40 @@ services:
       MYSQL_PASSWORD: ''
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     volumes:
-      - ./back/config/database.php:/docker-entrypoint-initdb.d/database.php
       - ./back/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 3306:3306
 
   backend:
     build:
       context: ./back
       dockerfile: Dockerfile
+    volumes:
+      - ./back:/var/www/html
     ports:
-      - 80:80
+      - 8000:80
     depends_on:
       - db
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: ''
+      DB_NAME: illustrator2
 
   frontend:
     build:
       context: ./front
       dockerfile: Dockerfile
+    volumes:
+      - ./front:/var/www/html
     ports:
-      - 8080:80
+      - 80:80
     depends_on:
       - backend
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
+    restart: always
     environment:
       PMA_HOST: db
       PMA_USER: root
@@ -122,3 +135,11 @@ services:
       - 8081:80
     depends_on:
       - db
+
+mon htaccess :
+RewriteEngine On
+RewriteBase /back/
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
