@@ -2,9 +2,9 @@
 //_____________________________ URL de base de l'API _____________________________________
 //* Chemin de base de votre API REST
 //! _____ docker : _____
-// var apiBaseURL = 'http://localhost:8000/index.php';
+var apiBaseURL = 'http://localhost:8000/index.php';
 //! _____ local : _____
-var apiBaseURL = 'http://www.sitetest.local/illustrator2_project/back/index.php';
+// var apiBaseURL = 'http://www.sitetest.local/illustrator2_project/back/index.php';
 
 // Fonction pour effectuer une requête Ajax GET à l'API 
 function apiGet(url, callback) {

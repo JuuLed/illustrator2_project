@@ -21,3 +21,7 @@
 		http://localhost:8081/
 
 
+Si une erreur persiste sur la db (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
+	- docker-compose down --volumes
+puis :
+	- docker-compose up

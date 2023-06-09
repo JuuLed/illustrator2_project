@@ -27,9 +27,9 @@ $request = $_SERVER['REQUEST_URI'];
 
 //* Chemin de base de votre API REST
 //! _____ docker : _____
-// $base_path = '/index.php';
+$base_path = '/index.php';
 //! _____ local : _____
-$base_path = '/illustrator2_project/back/index.php';
+// $base_path = '/illustrator2_project/back/index.php';
 
 // Supprimez la partie du chemin de base de l'URI
 $route = str_replace($base_path, '', $request);
