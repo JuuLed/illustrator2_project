@@ -20,6 +20,7 @@ illustrator2_project/
 │   │   ├── SymbolCategory.php
 │   │   ├── SymbolKeyword.php
 │   │   └── Translate.php
+│   ├── .htaccess
 │   ├── Dockerfile
 │   └── index.php
 └── front/
