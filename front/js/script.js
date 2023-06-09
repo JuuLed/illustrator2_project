@@ -2,9 +2,9 @@
 //_____________________________ URL de base de l'API _____________________________________
 //* Chemin de base de votre API REST
 //! _____ docker : _____
-var apiBaseURL = 'http://localhost:8000/index.php';
+// var apiBaseURL = 'http://localhost:8000/index.php';
 //! _____ local : _____
-// var apiBaseURL = 'http://www.sitetest.local/illustrator2_project/back/index.php';
+var apiBaseURL = 'http://www.sitetest.local/illustrator2_project/back/index.php';
 
 // Fonction pour effectuer une requête Ajax GET à l'API 
 function apiGet(url, callback) {
@@ -67,7 +67,9 @@ apiGet('/symbols', function (symbols) {
 						<ul class="category-list">
 						${categoriesContent}
 						<li class="add-btn">
-							<button class="add-category-btn" data-type="categories">+</button>
+							<button class="add-category-btn" data-type="categories">
+								<i class="fa-solid fa-circle-plus add-icon"></i>
+							</button>
 							<div class="modal category-modal">
 							<div class="modal-content">
 								<h2>Liste des catégories</h2>
@@ -82,7 +84,9 @@ apiGet('/symbols', function (symbols) {
 						<ul class="keyword-list">
 							${keywordsContent}
 						<li class="add-btn">
-							<button class="add-keyword-btn" data-type="keywords">+</button>
+							<button class="add-keyword-btn" data-type="keywords">
+								<i class="fa-solid fa-circle-plus add-icon"></i>
+							</button>
 							<div class="modal keyword-modal">
 							<div class="modal-content">
 								<h2>Liste des mots-clés</h2>

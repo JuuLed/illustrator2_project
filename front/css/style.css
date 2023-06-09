@@ -308,44 +308,36 @@
 		border: 1px solid black;
 	}
 
-	/* BOUTONS MODALS */
+	/* BOUTONS "+" MODALS */
 
-	.add-category-btn {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		text-align: center;
-		color: white;
-		font-size: 3.5vh;
-		width: 3.5vh;
-		height: 3.5vh;
-		border-radius: 100%;
-		background: limegreen;
-		border: 2px solid green;
+	.add-btn{
+		line-height: 1;
+		vertical-align: middle;
 	}
-
-	.add-category-btn:hover {
-		cursor: pointer;
-		color: black;
-	}
-
+	.add-category-btn,
 	.add-keyword-btn {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-		color: white;
-		font-size: 3.5vh;
-		width: 3.5vh;
-		height: 3.5vh;
+		font-size: 1.5em;
+		width: 1em;
+		height: 1em;
 		border-radius: 100%;
-		background: limegreen;
-		border: 2px solid green;
 	}
 
-	.add-keyword-btn:hover {
+	.add-icon {
+		color: limegreen;
+		border-radius: 100%;
+		border: 3px outset green;
+	}
+
+	.add-icon:hover,
+	.add-icon:hover {
+		color: lime;
 		cursor: pointer;
-		color: black;
+		background: black;
+		border: 3px inset green;
 	}
 
 	/*__________________________MODAL________________________________*/
