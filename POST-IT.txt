@@ -7,4 +7,13 @@ Idéalement l’upload doit être fait en drag’n’drop, et encore mieux s’i
 commmencé sur le fichier keyword du front.
 ________________________________________________________________________
 
-faire cahier des charge etc ...
+Tables symbols, keywords, categories, symbol_keyword, symbol_category : 
+elles correspondent bien à la demande.
+
+N'oubliez pas que, selon la demande, les noms des catégories ne doivent pas être identiques.
+Vous pouvez le gérer au niveau de l'application ou éventuellement en ajoutant une contrainte d'unicité à la table categories.
+
+Pour la table symbols, vous pouvez envisager d'ajouter une colonne pour stocker l'identifiant unique
+de 8 caractères qui est utilisé dans le nom du fichier. Cela pourrait faciliter la gestion des noms de fichiers,
+surtout si vous devez conserver plusieurs versions d'un même symbole.
+

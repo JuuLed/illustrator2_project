@@ -1,6 +1,6 @@
 1. Pour passé de local a docker ou inversement, commenté/décommenté ces lignes dans ces fichiers :
 	BACK :
-		config/database.php : ligne 2 à 5
+		config/config.php : ligne 7 à 10
 		index.php	 : ligne 28 à 32
 	FRONT :
 		js/script.js	 : ligne 3 à 7

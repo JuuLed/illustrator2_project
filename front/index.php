@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="UTF-8">
 	<title>Mon application</title>
@@ -22,32 +21,58 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 		</div>
 		<ul class="navbar-menu">
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'home' ? 'active' : ""; ?>"
-					href="index.php?page=home">Accueil</a>
+				<a class="navbar-link <?= $currentPage === 'home' ? 'active' : ""; ?>" href="index.php?page=home">
+					Accueil
+				</a>
+			</li>
+
+
+
+			<li class="navbar-item">
+				<a class="navbar-link <?= ($currentPage === 'symbols' || $currentPage === 'upload' || $currentPage === 'stats') ? 'active' : ''; ?>" href="index.php?page=symbols">
+					Symboles
+				</a>
+				<ul class="submenu">
+					<li class="navbar-item">
+						<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>" href="index.php?page=symbols">
+							Liste
+						</a>
+					</li>
+					<li class="navbar-item">
+						<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>" href="index.php?page=upload">
+							Ajouter (upload)
+						</a>
+					</li>
+					<li class="navbar-item">
+						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>" href="index.php?page=stats">
+							Statistiques
+						</a>
+					</li>
+				</ul>
+			</li>
+
+			<li class="navbar-item">
+				<a class="navbar-link <?= $currentPage === 'category' ? 'active' : ""; ?>" href="index.php?page=category">
+					Category
+				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>"
-					href="index.php?page=symbols">Symboles</a>
+				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">
+					Keyword
+				</a>
+			</li>
+			
+			<div class="gradient-line"></div>
+
+			<li class="navbar-item">
+				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>" href="index.php?page=login">
+					Connexion
+				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'category' ? 'active' : ""; ?>"
-					href="index.php?page=category">Category</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>"
-					href="index.php?page=keyword">Keyword</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>"
-					href="index.php?page=upload">Uploader</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>"
-					href="index.php?page=stats">Statistiques</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>"
-					href="index.php?page=login">Connexion</a>
+				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>" href="index.php?page=login">
+					Enregistrement
+				</a>
 			</li>
 		</ul>
 	</div>

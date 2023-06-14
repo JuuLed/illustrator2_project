@@ -1,0 +1,287 @@
+-- phpMyAdmin SQL Dump
+-- version 4.9.7
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1:3306
+-- Généré le : ven. 09 juin 2023 à 13:02
+-- Version du serveur :  10.6.5-MariaDB
+-- Version de PHP : 5.6.40
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `illustrator2`
+--
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+CREATE TABLE IF NOT EXISTS `categories` (
+  `category_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(100) NOT NULL,
+  `order` int(11) DEFAULT NULL,
+  PRIMARY KEY (`category_id`),
+  UNIQUE `category` (`category`)
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
+
+
+--
+-- Déchargement des données de la table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `category`) VALUES
+(5, 'Mécanique'),
+(6, 'Médical'),
+(7, 'Musique et son'),
+(8, 'Nature'),
+(9, 'Noël'),
+(10, 'Nourriture et Boisson'),
+(11, 'Objet'),
+(12, 'Photo - vidéo'),
+(13, 'Sécurité'),
+(14, 'Signe et Symbole'),
+(15, 'Sport'),
+(16, 'Symboles'),
+(17, 'Temps - météo'),
+(18, 'Transport'),
+(19, 'Vacances'),
+(20, 'Animal'),
+(21, 'Anniversaire'),
+(22, 'Arme'),
+(23, 'Bâtiment et pays'),
+(24, 'Boîte'),
+(25, 'Bulle de parole'),
+(26, 'Carte et localisation'),
+(27, 'Communication et Réseau'),
+(28, 'Doigt'),
+(29, 'École'),
+(30, 'Enfant'),
+(31, 'Entreprise et Finance'),
+(32, 'Espace'),
+(33, 'Événement'),
+(34, 'Fichier'),
+(35, 'Flèche'),
+(36, 'Format de fichier'),
+(37, 'Habille et accessoire'),
+(38, 'Humain'),
+(39, 'Illustrations pour gobelets'),
+(40, 'Industrie'),
+(41, 'Informatique'),
+(42, 'Insectes'),
+(43, 'Maison'),
+(44, 'Mariage');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `keywords`
+--
+
+DROP TABLE IF EXISTS `keywords`;
+CREATE TABLE IF NOT EXISTS `keywords` (
+  `keyword_id` int(11) NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(100) NOT NULL,
+  PRIMARY KEY (`keyword_id`),
+  UNIQUE `keyword` (`keyword`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `keywords`
+--
+
+INSERT INTO `keywords` (`keyword_id`, `keyword`) VALUES
+(5, 'chien'),
+(6, 'mignon'),
+(7, 'berger allemand'),
+(8, 'BMW'),
+(9, 'voiture'),
+(10, 'automobile');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `languages`
+--
+
+DROP TABLE IF EXISTS `languages`;
+CREATE TABLE IF NOT EXISTS `languages` (
+  `language_code` varchar(2) NOT NULL,
+  `language_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`language_code`),
+  UNIQUE `language_code` (`language_code`),
+  UNIQUE `language_name` (`language_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `languages`
+--
+
+INSERT INTO `languages` (`language_code`, `language_name`) VALUES
+('DE', 'Allemand'),
+('EN', 'Anglais'),
+('ES', 'Espagnol'),
+('FR', 'Français'),
+('IT', 'Italien'),
+('PT', 'Portugais');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `symbols`
+--
+
+DROP TABLE IF EXISTS `symbols`;
+CREATE TABLE IF NOT EXISTS `symbols` (
+  `symbol_id` int(11) NOT NULL AUTO_INCREMENT,
+  `unique_id` varchar(8) NOT NULL,
+  `file_name` varchar(100) NOT NULL,
+  `symbol_name` varchar(100) NOT NULL,
+  `size` int(11) DEFAULT 50,
+  `active` tinyint(1) DEFAULT 0,
+  `deleted` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`symbol_id`),
+  UNIQUE `file_name` (`file_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
+
+
+--
+-- Déchargement des données de la table `symbols`
+--
+
+INSERT INTO `symbols` (`symbol_id`, `unique_id`, `file_name`, `size`, `active`, `deleted`) VALUES
+(3, 'f4ze6Sg7', 'f4ze6Sg7-3', 60, 0, 0),
+(5, 'Ma5q6ze7', 'Ma5q6ze7-5', 50, 1, 0),
+(22, '9S3alE0q', '9S3alE0q-22', 70, 0, 0),
+(27, 'la3S8zP6', 'la3S8zP6-27', 65, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `symbol_category`
+--
+
+DROP TABLE IF EXISTS `symbol_category`;
+CREATE TABLE IF NOT EXISTS `symbol_category` (
+  `symbol_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  KEY `symbol_id` (`symbol_id`),
+  KEY `category_id` (`category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `symbol_category`
+--
+
+INSERT INTO `symbol_category` (`symbol_id`, `category_id`) VALUES
+(3, 20),
+(3, 8),
+(5, 5),
+(5, 8),
+(5, 15),
+(22, 12),
+(22, 40),
+(3, 21),
+(27, 5),
+(27, 8),
+(3, 23),
+(3, 22);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `symbol_keyword`
+--
+
+DROP TABLE IF EXISTS `symbol_keyword`;
+CREATE TABLE IF NOT EXISTS `symbol_keyword` (
+  `symbol_id` int(11) NOT NULL,
+  `keyword_id` int(11) NOT NULL,
+  KEY `symbol_id` (`symbol_id`),
+  KEY `keyword_id` (`keyword_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `symbol_keyword`
+--
+
+INSERT INTO `symbol_keyword` (`symbol_id`, `keyword_id`) VALUES
+(3, 5),
+(3, 6),
+(5, 8),
+(5, 9),
+(5, 10),
+(22, 10),
+(27, 10),
+(3, 7),
+(22, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `translations`
+--
+
+DROP TABLE IF EXISTS `translations`;
+CREATE TABLE IF NOT EXISTS `translations` (
+  `table_name` varchar(50) NOT NULL,
+  `row_id` int(11) NOT NULL,
+  `value` varchar(255) NOT NULL,
+  `language_code` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Structure de la table `users`
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Déchargement des données de la table `users`
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
+(1, 'admin', 'admin@example.com', 'admin');
+
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `symbol_category`
+--
+ALTER TABLE `symbol_category`
+  ADD CONSTRAINT `symbol_category_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
+  ADD CONSTRAINT `symbol_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
+
+--
+-- Contraintes pour la table `symbol_keyword`
+--
+ALTER TABLE `symbol_keyword`
+  ADD CONSTRAINT `symbol_keyword_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
+  ADD CONSTRAINT `symbol_keyword_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`keyword_id`);
+
+--
+-- Contraintes pour la table `translations`
+--
+ALTER TABLE `translations`
+  ADD CONSTRAINT `translations_ibfk_1` FOREIGN KEY (`language_code`) REFERENCES `languages` (`language_code`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -1,0 +1,54 @@
+Table languages :
+	language_code (Primary Key, Default: EN, DE, ES, FR, IT, PT)
+	language_name (Default: Anglais, Allemand, Espagnol, Français, Italien, Portugais)
+
+Table translations :
+	table_name (categories ou keywords)
+	row_id (category_id ou keyword_id)
+	value
+	language_code (Foreign Key -> languages.language_code)
+
+Table symbols :
+	symbol_id (Primary Key, Auto Increment)
+	unique_id (aléatoire, 8 caractères)
+	file_name ("unique_id" + "-" + "symbol_id")
+	symbol_name (Unique)
+	size (Defaut: 50)
+	active (Boolean, Defaut: 0)
+	deleted (Boolean, Defaut: 0)
+
+Table keywords :
+	keyword_id (Primary Key, Auto Increment)
+	keyword (Unique)
+
+Table categories :
+	category_id (Primary Key, Auto Increment)
+	category (Unique)
+	order
+
+Table symbol_keyword :
+	symbol_id (Foreign Key -> symbols.symbol_id)
+	keyword_id (Foreign Key -> keywords.keyword_id)
+
+
+Table symbol_category :
+	symbol_id (Foreign Key -> symbols.symbol_id)
+	category_id (Foreign Key -> categories.category_id)
+
+	
+Table users :
+	user_id (Primary Key, Auto Increment)
+	username
+	email (Unique)
+	password (Hash)
+
+
+
+Certaines fonctionnalités nécessitent une mise en œuvre au niveau de l'interface utilisateur,
+comme le téléchargement de fichiers par glisser-déposer,
+l'affichage de statistiques pour chaque symbole,
+la recherche rapide de symboles, etc.
+
+Ces fonctionnalités nécessiteront un développement supplémentaire au niveau de l'interface utilisateur,
+et elles ne sont pas directement liées à la conception de la base de données ou à la logique côté serveur.
+

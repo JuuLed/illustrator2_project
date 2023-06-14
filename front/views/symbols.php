@@ -28,7 +28,11 @@
 		<th class="cln-size">Actif</th>
 		<th>Catégories</th>
 		<th>Mots-clés</th>
-		<th>Actions</th>
+		
+		<th>
+			<input type="checkbox" id="selectAllCheckbox">
+			<button id="deleteSelectedBtn" disabled="true">Supp. sélect.</button>
+		</th>
 	</tr>
 	<!-- Les lignes du tableau seront ajoutées ici en JavaScript -->
 </table>

@@ -97,9 +97,7 @@ apiGet('/symbols', function (symbols) {
 						</ul>
 					</td>
 
-
 					<td>
-						<input type="checkbox" class="symbolCheckbox" data-id="${symbol.id}">
 						<button class="delete-btn" data-id="${symbol.id}">Supprimer</button>
 					</td>
 				</tr>
@@ -108,6 +106,7 @@ apiGet('/symbols', function (symbols) {
 
 	$('.table-symbols').append(tableContent);
 });
+
 
 // _____________________________MODAL__________________________________
 
@@ -422,8 +421,7 @@ $(document).on("click", ".delete-keyword-btn", deleteKeyword);
 
 
 
-
-//__________________ SUPPRESSION D'UN OU PLUSIEURS SYMBOLES ______________________
+//__________________ SUPPRESSION D'UN SYMBOLE ______________________
 $(document).on("click", ".delete-btn", function () {
 	var symbolId = $(this).data("id");
 	var symbolRow = $(this).closest("tr");
@@ -445,82 +443,6 @@ $(document).on("click", ".delete-btn", function () {
 	}
 });
 
-// Gestionnaire d'événement pour les cases à cocher des symboles individuels
-$(document).on("change", ".symbolCheckbox", function () {
-	var anyChecked = $(".symbolCheckbox:checked").length > 0;
-	var allChecked = $(".symbolCheckbox:checked").length === $(".symbolCheckbox").length;
-
-	// Activer/désactiver les boutons "Supprimer" sur chaque ligne
-	$(".delete-btn").prop("disabled", anyChecked);
-
-	// Mettre à jour l'état du bouton "Supprimer la sélection"
-	$("#deleteSelectedBtn").prop("disabled", !anyChecked);
-
-	// Activer/désactiver le bouton "supp.select."
-	$("#selectAllCheckbox").prop("disabled", false); // Définit explicitement le disabled à false
-});
-
-$("#selectAllCheckbox").on("change", function () {
-	var isChecked = $(this).prop("checked");
-
-	// Cocher ou décocher toutes les cases individuelles
-	$(".symbolCheckbox").prop("checked", isChecked);
-
-	// Activer/désactiver les boutons "Supprimer" sur chaque ligne
-	$(".delete-btn").prop("disabled", isChecked);
-
-	// Mettre à jour l'état du bouton "Supprimer la sélection"
-	$("#deleteSelectedBtn").prop("disabled", !isChecked);
-});
-
-// Gestionnaire d'événement pour la case à cocher "Tout sélectionner"
-$("#selectAllCheckbox").on("change", function () {
-	$(".symbolCheckbox").prop("checked", $(this).prop("checked"));
-});
-
-// Gestionnaire d'événement pour les cases à cocher des symboles individuels
-$(document).on("change", ".symbolCheckbox", function () {
-	$("#selectAllCheckbox").prop("checked", $(".symbolCheckbox:checked").length === $(".symbolCheckbox").length);
-});
-
-
-$(document).on("click", "#deleteSelectedBtn", function () {
-	// Récupérer les identifiants des symboles sélectionnés qui sont visibles
-	var selectedSymbols = $(".symbolCheckbox:checked").map(function () {
-		// Vérifier si la ligne est visible
-		if ($(this).closest("tr").css("display") !== "none") {
-			return $(this).data("id");
-		}
-	}).get();
-
-	// Afficher une boîte de dialogue de confirmation avant la suppression
-	if (confirm("Êtes-vous sûr de vouloir supprimer les symboles sélectionnés ?")) {
-		// Parcourir les symboles sélectionnés et effectuer une requête AJAX DELETE pour supprimer chaque symbole
-		selectedSymbols.forEach(function (symbolId) {
-			$.ajax({
-				url: apiBaseURL + "/symbols/" + symbolId,
-				type: "DELETE",
-				success: function () {
-					console.log("Symbole supprimé avec succès :", symbolId);
-					// Supprimer la ligne du symbole supprimé de la table
-					$(".symbolCheckbox[data-id='" + symbolId + "']").closest("tr").remove();
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					console.log("Erreur lors de la suppression du symbole", symbolId, ":", textStatus, errorThrown);
-				}
-			});
-		});
-
-		// Décocher toutes les cases à cocher
-		$(".symbolCheckbox").prop("checked", false);
-		// Décocher la case "Tout sélectionner"
-		$("#selectAllCheckbox").prop("checked", false);
-		// Réactiver tous les boutons supprimer
-		$(".delete-btn").prop("disabled", false);
-		// Réinitialiser l'état du bouton "Supprimer la sélection"
-		$("#deleteSelectedBtn").prop("disabled", true);
-	}
-});
 
 //____________________________ BARRE DE RECHERCHE _____________________
 
@@ -564,11 +486,6 @@ function performSearch() {
 		// Afficher ou masquer le symbole en fonction des résultats de recherche et du filtre de catégorie
 		var shouldDisplay = (isFileNameMatch || isKeywordMatch) && (!hasCategoryFilter || hasCategory);
 		symbol.style.display = shouldDisplay ? "table-row" : "none";
-
-		// Ajouter la classe "filtered" aux lignes qui correspondent aux critères de recherche
-		if (shouldDisplay) {
-			symbol.classList.add("filtered");
-		}
 	});
 }
 
@@ -617,14 +534,5 @@ function resetFilters() {
 	Array.from(symbols).forEach(function (symbol) {
 		symbol.style.display = "table-row";
 	});
-
-	// Décocher toutes les cases à cocher
-	$(".symbolCheckbox").prop("checked", false);
-	// Décocher la case "Tout sélectionner"
-	$("#selectAllCheckbox").prop("checked", false);
-	// Réactiver tous les boutons supprimer
-	$(".delete-btn").prop("disabled", false);
-	// Réinitialiser l'état du bouton "Supprimer la sélection"
-	$("#deleteSelectedBtn").prop("disabled", true);
 }
 

@@ -1,0 +1,57 @@
+illustrator2_project/
+├── README.md
+├── docker-compose.yml
+│
+├── back/
+│   ├── .htaccess
+│   ├── Dockerfile
+│   ├── index.php
+│   ├── config/
+│   │   ├── init.sql
+│   │   ├── config.php
+│   │   └── database.php
+│   ├── controllers/
+│   │   ├── CategoryController.php
+│   │   ├── KeywordController.php
+│   │   ├── LanguageController.php
+│   │   ├── SymbolCategoryController.php
+│   │   ├── SymbolController.php
+│   │   ├── SymbolKeywordController.php
+│   │   ├── TranslationController.php
+│   │   └── UserController.php
+│   ├── models/
+│   │   ├── Category.php
+│   │   ├── Keyword.php
+│   │   ├── Language.php
+│   │   ├── Symbol.php
+│   │   ├── SymbolCategory.php
+│   │   ├── SymbolKeyword.php
+│   │   ├── Translation.php
+│   │   └── User.php
+│   ├── tests/ 
+│   │   └── Test.php
+│   ├── utils/
+│   │   └── SvgValidator.php
+│   └── svg_storage/
+│       └── ... (fichiers SVG)
+│
+└── front/
+    ├── Dockerfile
+    ├── 000-default.conf
+    ├── README.md
+    ├── index.php
+    ├── css/
+    │   └── style.css
+    ├── js/
+    │   ├── script.js
+    │   └── svg-validation.js
+    └── views/
+        ├── home.php
+        ├── symbols.php
+        ├── category.php
+        ├── keyword.php
+        ├── language.php
+        ├── upload.php
+        ├── stats.php
+        ├── login.php
+        └── register.php

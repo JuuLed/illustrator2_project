@@ -1,12 +1,11 @@
 <?php
-//! _____ docker : _____
-// $host = 'db';
-//! _____ local : _____
-$host = 'localhost';
+require_once './config/config.php';
 
-$db   = 'illustrator2';
-$user = 'root';
-$pass = '';
+
+$host = DB_HOST;
+$db   = DB_NAME;
+$user = DB_USER;
+$pass = DB_PASS;
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
