@@ -10,7 +10,7 @@ class Symbol
 
 	public function getAllSymbols()
 	{
-		$query = "SELECT symbols.symbol_id, symbols.unique_id, symbols.file_name, symbols.size, symbols.active, 
+		$query = "SELECT symbols.symbol_id, symbols.unique_id, symbols.file_name, symbols.symbol_name, symbols.size, symbols.active, 
 						 categories.category_id, categories.category, 
 						 keywords.keyword_id, keywords.keyword
 				  FROM symbols 
@@ -59,60 +59,89 @@ class Symbol
 		return $symbol;
 	}
 
-	public function createSymbol($fileName, $size, $active
-	// , $categoryIds, $keywordIds
-	)
+	public function createSymbol($symbolName, $size = 50, $active = 0)
 	{
 		// Générer unique_id pour le nouveau symbole
 		$uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
 
 		$query = "INSERT INTO 
-					symbols (unique_id, file_name, size, active) 
-				  VALUES 
-				  	(:uniqueId, :fileName, :size, :active)";
+					symbols (unique_id, symbol_name, size, active) 
+              	  VALUES 
+				  	(:uniqueId, :symbolName, :size, :active)";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':uniqueId', $uniqueId);
-		$stmt->bindParam(':fileName', $fileName);
+		$stmt->bindParam(':symbolName', $symbolName);
 		$stmt->bindParam(':size', $size);
 		$stmt->bindParam(':active', $active);
 		$stmt->execute();
 
 		$symbolId = $this->pdo->lastInsertId();
 
-		// $this->updateSymbolCategories($symbolId, $categoryIds);
-		// $this->updateSymbolKeywords($symbolId, $keywordIds);
+		// Mettre à jour la ligne avec le file_name approprié
+		$fileName = $uniqueId . '-' . $symbolId;
+
+		$updateQuery = "UPDATE 
+							symbols 
+						SET 
+							file_name = :fileName 
+						WHERE 
+							symbol_id = :symbolId";
+
+		$updateStmt = $this->pdo->prepare($updateQuery);
+		$updateStmt->bindParam(':fileName', $fileName);
+		$updateStmt->bindParam(':symbolId', $symbolId);
+		$updateStmt->execute();
 
 		return $symbolId;
 	}
 
-	public function updateSymbol($id, $fileName, $size, $active
-	// , $categoryIds, $keywordIds
-	)
+	public function updateSymbol($id, $symbolName, $size, $active)
 	{
-		// Marquer le symbole existant comme supprimé
-		$this->deleteSymbol($id);
+		// Stocker les informations du symbole viser a etre modifié
+		$symbolDeleted = $this->getSymbolById($id);
 
-		// Créer un nouveau symbole avec le même unique_id et les nouveaux attributs
-		$symbol = $this->getSymbolById($id);
-		$newSymbolId = $this->createSymbol(
-			$fileName, $size, $active
-			// , $categoryIds, $keywordIds
-		);
+		// Récupérer unique_id pour le nouveau symbole modifier
+		$uniqueId = $symbolDeleted['unique_id'];
 
-		$query = "UPDATE 
-					symbols 
-				  SET 
-				  	unique_id = :uniqueId 
-				  WHERE 
-				  	symbol_id = :id";
+		// // Marquer le symbole existant comme supprimé
+		// $this->deleteSymbol($id);
+
+		$query = "INSERT INTO 
+					symbols (unique_id, symbol_name, size, active) 
+              	  VALUES 
+				  	(:uniqueId, :symbolName, :size, :active)";
 
 		$stmt = $this->pdo->prepare($query);
-		$stmt->bindParam(':uniqueId', $symbol['unique_id']);
-		$stmt->bindParam(':id', $newSymbolId);
+		$stmt->bindParam(':uniqueId', $uniqueId);
+		$stmt->bindParam(':symbolName', $symbolName);
+		$stmt->bindParam(':size', $size);
+		$stmt->bindParam(':active', $active);
 		$stmt->execute();
 
-		return $stmt->rowCount();
+		$symbolId = $this->pdo->lastInsertId();
+
+		if ($symbolId) {
+			// Marquer le symbole existant comme supprimé
+			$this->deleteSymbol($id);
+		}		
+
+		// Mettre à jour la ligne avec le file_name approprié
+		$fileName = $uniqueId . '-' . $symbolId;
+
+		$updateQuery = "UPDATE 
+							symbols 
+						SET 
+							file_name = :fileName 
+						WHERE 
+							symbol_id = :symbolId";
+
+		$updateStmt = $this->pdo->prepare($updateQuery);
+		$updateStmt->bindParam(':fileName', $fileName);
+		$updateStmt->bindParam(':symbolId', $symbolId);
+		$updateStmt->execute();
+
+		return $symbolId;
 	}
 
 	public function deleteSymbol($id)

@@ -48,6 +48,11 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 							Statistiques
 						</a>
 					</li>
+					<li class="navbar-item">
+						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>" href="index.php?page=stats">
+							Archives
+						</a>
+					</li>
 				</ul>
 			</li>
 
@@ -59,6 +64,11 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 			<li class="navbar-item">
 				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">
 					Keyword
+				</a>
+			</li>
+			<li class="navbar-item">
+				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">
+					Parametrages
 				</a>
 			</li>
 			

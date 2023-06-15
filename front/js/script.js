@@ -45,19 +45,25 @@ apiGet('/symbols', function (symbols) {
 
 		return `
 				<tr>
-					<td class="contenteditable" data-field="file_name">
-						<div class="editable-content" contenteditable="false">
+					<td data-field="file_name">
+						<div>
 							${symbol.file_name}
 						</div>
 					</td>
 
-					<td class="cln-size contenteditable" data-field="size">
+					<td class="contenteditable" data-field="symbol_name">
+						<div class="editable-content" contenteditable="false">
+							${symbol.symbol_name}
+						</div>
+					</td>
+
+					<td class="contenteditable" data-field="size">
 						<div class="editable-content" contenteditable="false">
 							${symbol.size}
 						</div>
 					</td>
 
-					<td class="cln-size" data-field="active">
+					<td data-field="active">
 						<button class="toggle-btn ${symbol.active ? 'active' : ''}" data-id="${symbol.id}">
 							${symbol.active ? 'ON' : 'OFF'}
 						</button>
@@ -298,6 +304,8 @@ function toggleActive(symbolId) {
 	var toggleButton = $(`.toggle-btn[data-id="${symbolId}"]`);
 	var isActive = toggleButton.hasClass("active") ? 0 : 1; // Convertir la valeur en entier
 
+	console.log("toggleButton" + toggleButton);
+	console.log("isActive" + isActive);
 	// Effectuer une requête AJAX PUT pour mettre à jour l'état actif du symbole
 	$.ajax({
 		url: apiBaseURL + "/symbols/" + symbolId,
@@ -314,6 +322,7 @@ function toggleActive(symbolId) {
 
 			// Mettre à jour le symbole dans le tableau
 			var symbolRow = toggleButton.closest("tr");
+			
 			updateSymbol(symbolId, symbolRow);
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
@@ -333,11 +342,11 @@ $(document).on("click", ".toggle-btn", function () {
 //_____________________ UPDATE SYMBOLE ____________________________________
 // Fonction pour gérer la mise à jour du symbole
 function updateSymbol(symbolId, symbolRow) {
-	var fileNameElement = symbolRow.find("[data-field='file_name'] .editable-content");
+	var symbolNameElement = symbolRow.find("[data-field='symbol_name'] .editable-content");
 	var sizeElement = symbolRow.find("[data-field='size'] .editable-content");
 	var activeElement = symbolRow.find("[data-field='active'] .toggle-btn");
 
-	var fileName = fileNameElement.text().trim();
+	var symbolName = symbolNameElement.text().trim();
 	var size = parseInt(sizeElement.text().trim());
 	var active = activeElement.hasClass("active") ? 1 : 0;
 
@@ -345,10 +354,17 @@ function updateSymbol(symbolId, symbolRow) {
 		return parseInt(category.dataset.categoryId);
 	});
 
-	var keywords = Array.from(symbolRow[0].querySelectorAll(".keyword-list li")).map(function (keyword) {
+	var keywords = Array.from(symbolRow[0].querySelectorAll(".keyword-list li[data-keyword-id]")).map(function (keyword) {
 		return parseInt(keyword.dataset.keywordId);
 	});
-
+	
+	console.log("symbolId :" + symbolId);
+	console.log("symbolName :" + symbolName);
+	console.log("size :" + size);
+	console.log("active :" + active);
+	console.log("categories :" + categories);
+	console.log("keywords :" + keywords);
+	
 	var loadingElement = symbolRow.find(".editable-content");
 
 	// Ajouter la classe 'loading' à l'élément d'animation
@@ -359,7 +375,7 @@ function updateSymbol(symbolId, symbolRow) {
 		url: apiBaseURL + "/symbols/" + symbolId,
 		type: "PUT",
 		data: JSON.stringify({
-			file_name: fileName,
+			symbol_name: symbolName,
 			size: size,
 			active: active,
 			categories: categories,
@@ -379,8 +395,8 @@ function updateSymbol(symbolId, symbolRow) {
 	});
 }
 
-// Attacher un gestionnaire d'événement au double-clic sur le champ "Nom du fichier"
-$(document).on("dblclick", "[data-field='file_name'] .editable-content", function () {
+// Attacher un gestionnaire d'événement au double-clic sur le champ "Nom du symbole"
+$(document).on("dblclick", "[data-field='symbol_name'] .editable-content", function () {
 	$(this).attr("contenteditable", "true").focus();
 });
 
@@ -389,8 +405,8 @@ $(document).on("dblclick", "[data-field='size'] .editable-content", function () 
 	$(this).attr("contenteditable", "true").focus();
 });
 
-// Attacher un gestionnaire d'événement à la perte de focus du champ "Nom du fichier"
-$(document).on("blur", "[data-field='file_name'] .editable-content", function () {
+// Attacher un gestionnaire d'événement à la perte de focus du champ "Nom du symbole"
+$(document).on("blur", "[data-field='symbol_name'] .editable-content", function () {
 	$(this).removeAttr("contenteditable");
 	var symbolId = $(this).closest("tr").find(".delete-btn").data("id");
 	var symbolRow = $(this).closest("tr");
@@ -406,7 +422,7 @@ $(document).on("blur", "[data-field='size'] .editable-content", function () {
 });
 
 // Attacher un gestionnaire d'événement à l'appui sur la touche "Entrée"
-$(document).on("keydown", "[data-field='file_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
+$(document).on("keydown", "[data-field='symbol_name'] .editable-content, [data-field='size'] .editable-content", function (event) {
 	if (event.which === 13) {
 		event.preventDefault();
 		$(this).blur(); // Fait sortir de l'input
@@ -532,14 +548,14 @@ function performSearch() {
 	var symbols = document.querySelectorAll(".table-symbols tr:not(:first-child)");
 
 	Array.from(symbols).forEach(function (symbol) {
-		var fileNameElement = symbol.querySelector("[data-field='file_name'] .editable-content");
+		var symbolNameElement = symbol.querySelector("[data-field='symbol_name'] .editable-content");
 		var keywords = symbol.querySelectorAll(".keyword-list li");
 
 		// Recherche sur le nom du fichier
 		var isFileNameMatch = false;
-		if (fileNameElement) {
-			var fileName = fileNameElement.textContent.toLowerCase();
-			if (fileName.includes(searchTerm)) {
+		if (symbolNameElement) {
+			var symbolName = symbolNameElement.textContent.toLowerCase();
+			if (symbolName.includes(searchTerm)) {
 				isFileNameMatch = true;
 			}
 		}

@@ -147,13 +147,12 @@ DROP TABLE IF EXISTS `symbols`;
 CREATE TABLE IF NOT EXISTS `symbols` (
   `symbol_id` int(11) NOT NULL AUTO_INCREMENT,
   `unique_id` varchar(8) NOT NULL,
-  `file_name` varchar(100) NOT NULL,
+  `file_name` varchar(100) DEFAULT NULL,
   `symbol_name` varchar(100) NOT NULL,
   `size` int(11) DEFAULT 50,
   `active` tinyint(1) DEFAULT 0,
   `deleted` tinyint(1) DEFAULT 0,
-  PRIMARY KEY (`symbol_id`),
-  UNIQUE `file_name` (`file_name`)
+  PRIMARY KEY (`symbol_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
 
 

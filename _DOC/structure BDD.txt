@@ -10,9 +10,11 @@ Table translations :
 
 Table symbols :
 	symbol_id (Primary Key, Auto Increment)
-	unique_id (aléatoire, 8 caractères)
-	file_name ("unique_id" + "-" + "symbol_id")
-	symbol_name (Unique)
+	unique_id (8 caractères aléatoire)
+	file_name 
+		("unique_id" + "-" + "symbol_id"; 
+		nullable car symbol_id requis, necessite insert et update pour etre complèté, update idem)
+	symbol_name
 	size (Defaut: 50)
 	active (Boolean, Defaut: 0)
 	deleted (Boolean, Defaut: 0)

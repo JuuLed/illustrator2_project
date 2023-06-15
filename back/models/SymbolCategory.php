@@ -1,14 +1,17 @@
 <?php
 
-class SymbolCategory {
-    private $pdo;
+class SymbolCategory
+{
+	private $pdo;
 
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
-    }
+	public function __construct($pdo)
+	{
+		$this->pdo = $pdo;
+	}
 
-    public function getAllCategoriesBySymbolId($symbolId) {
-        $query = "SELECT 
+	public function getAllCategoriesBySymbolId($symbolId)
+	{
+		$query = "SELECT 
 					categories.* 
                   FROM 
 				  	categories
@@ -17,54 +20,55 @@ class SymbolCategory {
                   WHERE 
 				  	symbol_category.symbol_id = :symbolId";
 
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':symbolId', $symbolId);
-        $stmt->execute();
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':symbolId', $symbolId);
+		$stmt->execute();
 		$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $categories;
-    }
+	}
 
-    public function addCategoryToSymbol($symbolId, $categoryId) {
-        $query = "INSERT INTO 
+	public function addCategoryToSymbol($symbolId, $categoryId)
+	{
+		$query = "INSERT INTO 
 					symbol_category (symbol_id, category_id) 
                   VALUES 
 				  	(:symbolId, :categoryId)";
 
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':symbolId', $symbolId);
-        $stmt->bindParam(':categoryId', $categoryId);
-        $stmt->execute();
-    }
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':symbolId', $symbolId);
+		$stmt->bindParam(':categoryId', $categoryId);
+		$stmt->execute();
+	}
 
-    public function removeCategoryFromSymbol($symbolId, $categoryId) {
-        $query = "DELETE FROM 
+	public function removeCategoryFromSymbol($symbolId, $categoryId)
+	{
+		$query = "DELETE FROM 
 					symbol_category 
                   WHERE 
 				  	symbol_id = :symbolId 
                   AND 
 				  	category_id = :categoryId";
 
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':symbolId', $symbolId);
-        $stmt->bindParam(':categoryId', $categoryId);
-        $stmt->execute();
-    }
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':symbolId', $symbolId);
+		$stmt->bindParam(':categoryId', $categoryId);
+		$stmt->execute();
+	}
 
-
-	//________________________________________
-	// Methodes pour symbol_category
-	private function updateSymbolCategories($symbolId, $categoryIds) {
-		// Supprimer les anciennes entrées de la table de liaison
-		$this->deleteSymbolCategories($symbolId);
-
-		// Insérer les nouvelles entrées dans la table de liaison
+	public function updateSymbolCategories($symbolId, $categoryIds)
+	{	
 		$query = "INSERT INTO 
 					symbol_category (symbol_id, category_id) 
 				  VALUES 
 					(:symbolId, :categoryId)";
-
+	
 		$stmt = $this->pdo->prepare($query);
 
+		// Si un seul identifiant de categorie est fourni, le convertir en tableau
+		if (!is_array($categoryIds)) {
+			$categoryIds = [$categoryIds];
+		}
+	
 		foreach ($categoryIds as $categoryId) {
 			$stmt->bindParam(':symbolId', $symbolId);
 			$stmt->bindParam(':categoryId', $categoryId);
@@ -72,7 +76,8 @@ class SymbolCategory {
 		}
 	}
 
-	private function deleteSymbolCategories($symbolId) {
+	public function deleteSymbolCategories($symbolId)
+	{
 		$query = "DELETE FROM 
 					symbol_category 
 				  WHERE 
