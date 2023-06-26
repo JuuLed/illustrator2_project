@@ -5,20 +5,20 @@ apiGet('/categories', function (categories) {
 	  var translations = category.translations;
 	  var row = `
 		<tr>
-		  <td>${category.category}</td>
-		  <td>${translations.DE}</td>
-		  <td>${translations.EN}</td>
-		  <td>${translations.ES}</td>
-		  <td>${translations.FR}</td>
-		  <td>${translations.IT}</td>
-		  <td>${translations.PT}</td>
-		  <td><button class="btn-delete" data-id="${category.category_id}">Supprimer</button></td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="category">${category.category}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="DE">${translations.DE}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="EN">${translations.EN}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="ES">${translations.ES}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="FR">${translations.FR}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="IT">${translations.IT}</td>
+			<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="PT">${translations.PT}</td>
+		  	<td><button class="btn-delete" data-id="${category.category_id}">Supprimer</button></td>
 		</tr>
 	  `;
 	  return row;
 	}).join('');
   
-	$('.table-symbols').append(tableContent);
+	$('.table-categories').append(tableContent);
   
 	// Ajouter un gestionnaire d'événement pour le bouton de suppression
 	$('.btn-delete').on('click', function () {
@@ -32,10 +32,6 @@ apiGet('/categories', function (categories) {
 $(document).ready(function(){
 	$(".header-symbols button").click(function(){
 	  $("#myModal").css("display", "block");
-	});
-  
-	$(".close").click(function(){
-	  $("#myModal").css("display", "none");
 	});
   
 	$(window).click(function(event) {
@@ -76,14 +72,14 @@ $(document).ready(function(){
 			  var translations = category.translations;
 			  var row = `
 				<tr>
-				  <td>${category.category}</td>
-				  <td>${translations.DE}</td>
-				  <td>${translations.EN}</td>
-				  <td>${translations.ES}</td>
-				  <td>${translations.FR}</td>
-				  <td>${translations.IT}</td>
-				  <td>${translations.PT}</td>
-				  <td><button class="btn-delete" data-id="${category.category_id}">Supprimer</button></td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="category">${category.category}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="DE">${translations.DE}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="EN">${translations.EN}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="ES">${translations.ES}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="FR">${translations.FR}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="IT">${translations.IT}</td>
+					<td class="editable" contenteditable="false" data-id="${category.category_id}" data-field="PT">${translations.PT}</td>
+					<td><button class="btn-delete" data-id="${category.category_id}">Supprimer</button></td>
 				</tr>
 			  `;
 			  return row;
@@ -125,9 +121,48 @@ $(document).ready(function(){
 	  }
 	});
   });
-  
+//_________________ Editable des cellules du tableau _________________
+$(document).on('dblclick', '.editable', function () {
+    $(this).attr('contenteditable', 'true').focus();
+});
 
+$(document).on('blur', '.editable', function () {
+    submitChanges($(this));
+}).on('keydown', '.editable', function (e) {
+    if (e.which === 13) { // Touche Entrée
+        e.preventDefault(); // Prévenir le saut de ligne
+        $(this).blur();
+    }
+});
 
+function submitChanges(element) {
+    var dataId = element.data('id');
+    var field = element.data('field');
+    var newData = {};
+    newData[field] = element.text();
+
+    var url;
+    if (field === 'category') {
+        url = apiBaseURL + '/categories/' + dataId;
+    } else {
+        url = apiBaseURL + '/translations/categories/' + dataId;
+    }
+
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        data: JSON.stringify(newData),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("Success: ", response);
+        },
+        error: function(error) {
+            console.log("Error: ", error);
+        }
+    });
+
+    element.attr('contenteditable', 'false');
+}
 
   
 //_________________ Ordre des catégories Draggable _________________

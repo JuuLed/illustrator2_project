@@ -1,4 +1,4 @@
-	/*********** PAGE GESTION DES CATEGORIES ***********/
+/*********** PAGE GESTION DES KEYWORDS ***********/
 
 /****** EN-TETE ******/
 .header-symbols {
@@ -75,7 +75,7 @@
 	border-radius: 0.5vh;
   }
   
-  .modal-content form input[name="category"] {
+  .modal-content form input[name="keyword"] {
 	font-weight: bold; 
   }
   
@@ -85,8 +85,8 @@
 	align-self: center;
   }  
 
-/****** Styles pour le tableau des catégories ******/
-.table-categories {
+/****** Styles pour le tableau des mots-clés ******/
+.table-keywords {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 20px;
@@ -99,32 +99,31 @@ thead th {
     z-index: 5;
 }
 
-
-.table-categories th,
-.table-categories td {
+.table-keywords th,
+.table-keywords td {
 	padding: 10px;
 	text-align: center;
 	border: 1px solid #ccc;
 }
 
-.table-categories th:not(:first-child, :last-child) {
+.table-keywords th:not(:first-child, :last-child) {
 	background-color: slategray;
 	color: #fff;
 	font-style: italic;
 }
 
-.table-categories th:first-child,
-.table-categories th:last-child {
+.table-keywords th:first-child,
+.table-keywords th:last-child {
 	background-color: #333;
 	color: #fff;
 	font-weight: bold;
 }
 
-.table-categories tr:nth-child(even) {
+.table-keywords tr:nth-child(even) {
 	background-color: #f2f2f2;
 }
 
-.table-categories tr:hover {
+.table-keywords tr:hover {
 	background-color: lightgray;
 	/* cursor: pointer; */
 }
@@ -140,91 +139,4 @@ thead th {
 
 .btn-delete:hover {
 	background-color: #a70000;
-}
-
-/****** Tableau Draggable ******/
-
-.category-order-bar {
-	background-color: #f2f2f2;
-	padding: 10px;
-	cursor: pointer;
-	margin-bottom: 2vh;
-
-	border-radius: 1vh;
-}
-
-.category-order-title {
-	padding: 10px;
-	background-color: #ddd;
-	border: 3px solid #999;
-	border-bottom: none;
-	box-shadow: 0 4px 0 #999;
-	cursor: pointer;
-	text-align: center;
-	transition: all 0.2s ease-in-out;
-
-	border-radius: 0.5vh;
-}
-
-.category-order-title:hover {
-	background-color: #ccc;
-}
-
-.category-order-title.open {
-	border-bottom: 3px solid #999;
-	border-top: none;
-	box-shadow: 0 -2px 0 #999;
-}
-
-.category-order-list {
-	display: none;
-
-	margin-top: 3vh;
-	margin-bottom: 2vh;
-}
-
-.category-order-item:hover {
-	background-color: #cce2f3;
-	border: 2px solid gold;
-}
-
-.grid {
-	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	gap: 10px;
-}
-
-.category-order-item {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	align-items: center;
-	border: 2px solid #ccc;
-	border-radius: 0.5vh;
-	padding: 10px;
-	cursor: move;
-	text-align: center;
-	height: 8vh;
-}
-
-.order-number {
-	color: orangered;
-	font-weight: bold;
-}
-
-
-.category-order-arrow {
-    width: 0;
-    height: 0;
-    margin: 10px auto;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #999;
-
-	transition: transform 0.5s; 
-    transform: rotate(0deg);
-}
-
-.category-order-bar.open .category-order-arrow {
-	transform: rotate(180deg);
 }
