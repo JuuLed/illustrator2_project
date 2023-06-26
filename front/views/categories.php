@@ -5,10 +5,10 @@
 
 <div class="header-symbols">
 	<h1>CATEGORIES</h1>
-	<div>
+	<button>
 		<i class="fa-solid fa-circle-plus add-icon"></i>
 		Ajouter une catégorie
-	</div>
+	</button>
 
 </div>
 

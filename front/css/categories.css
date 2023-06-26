@@ -7,6 +7,29 @@
 	align-items: center;
 }
 
+.header-symbols button {
+	background: #caebcd;
+	padding: 1vh;
+	border: 1px solid palegreen;
+	border-radius: 0.5em;
+
+	color: forestgreen;
+	font-size: 2.5vh;
+	cursor: pointer;
+	margin-right: 10vh;
+}
+
+.header-symbols button:hover {
+	border: 1px solid forestgreen;
+	color: #3A9D23;
+	/* background: greenyellow; */
+}
+
+.add-icon {
+	padding: 1vh;
+	/* font-size: 3vh; */
+}
+
 /* Styles pour le tableau des catégories */
 .table-symbols {
 	width: 100%;

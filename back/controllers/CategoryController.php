@@ -73,7 +73,6 @@ class CategoryController
 	// Json d'ajout :
 	// {
 	// 	"category": "pouette",
-	// 	"order": 16,
 	// 	"translations": {
 	// 		"EN": "pouetted",
 	// 		"DE": "pouetteEUU",
@@ -86,11 +85,16 @@ class CategoryController
 	public function createCategory($data)
 	{
 		$categoryName = $data['category'];
-		$categoryOrder = $data['order'];
 		$translations = $data['translations'];
 
+		// Récupérer le dernier ordre enregistré
+		$lastOrder = $this->categoryModel->getLastCategoryOrder();
+
+		// Calculer le nouvel ordre en incrémentant le dernier ordre
+		$categoryOrder = $lastOrder + 1;
+
 		// Créer la catégorie dans la base de données
-		$categoryId = $this->categoryModel->createCategory($categoryName, $categoryOrder);
+		$categoryId = $this->categoryModel->createCategory($categoryName);
 
 		if ($categoryId) {
 			// Créer les traductions pour la catégorie

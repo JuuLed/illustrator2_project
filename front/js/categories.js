@@ -29,7 +29,7 @@ apiGet('/categories', function (categories) {
   });
 
 
-//_________________________ Ordre des catégories _______________________
+//_________________________ Ordre des catégories Draggable _______________________
 
 
 function updateOrderNumbers() {
