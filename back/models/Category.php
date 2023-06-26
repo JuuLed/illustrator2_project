@@ -39,19 +39,38 @@ class Category
 		return $stmt->fetch(PDO::FETCH_ASSOC);
 	}
 
-	public function createCategory($category, $order)
+	public function createCategory($category)
 	{
-		$query = "INSERT INTO 
-					categories (category, `order`) 
-				  VALUES 
-				  	(:category, :order)";
+		$lastOrder = $this->getLastCategoryOrder();
+		$order = $lastOrder + 1;
 
-		$stmt = $this->pdo->prepare($query);
-		$stmt->bindParam(':category', $category);
-		$stmt->bindParam(':order', $order);
-		$stmt->execute();
+		$insertQuery = "INSERT INTO 
+							categories (category, `order`) 
+						VALUES 
+							(:category, :order)";
+
+		$insertStmt = $this->pdo->prepare($insertQuery);
+		$insertStmt->bindParam(':category', $category);
+		$insertStmt->bindParam(':order', $order);
+		$insertStmt->execute();
 
 		return $this->pdo->lastInsertId();
+	}
+
+	public function getLastCategoryOrder()
+	{
+		$query = "SELECT 
+					MAX(`order`) AS last_order 
+				  FROM 
+					categories";
+		$stmt = $this->pdo->query($query);
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		if ($result && isset($result['last_order'])) {
+			return (int) $result['last_order'];
+		}
+
+		return 0;
 	}
 
 	public function updateCategory($id, $category, $order)
@@ -66,7 +85,7 @@ class Category
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':category', $category);
-        $stmt->bindParam(':order', $order);
+		$stmt->bindParam(':order', $order);
 		$stmt->bindParam(':id', $id);
 		$stmt->execute();
 
