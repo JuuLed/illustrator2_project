@@ -59,40 +59,46 @@ class Translation
 		return $this->pdo->lastInsertId();
 	}
 
-	public function updateTranslationByTableAndId($table, $id, $value, $langCode)
+	public function updateTranslationByTableAndId($table, $id, $translations)
 	{
 		$currentTranslation = $this->getTranslationByTableAndId($table, $id);
-
+	
 		if (!$currentTranslation) {
 			return 0; // La traduction n'existe pas, retourne 0 pour indiquer l'échec de la mise à jour
 		}
-
-		$newValue = $value !== '' ? $value : $currentTranslation['value'];
-		$newLangCode = $langCode !== '' ? $langCode : $currentTranslation['language_code'];
-
-		if ($newValue === $currentTranslation['value'] && $newLangCode === $currentTranslation['language_code']) {
-			return 0; // Aucun champ à mettre à jour, retourne 0 pour indiquer l'absence de modification
+	
+		$updatedTranslations = 0;
+	
+		foreach ($translations as $langCode => $value) {
+			$currentValue = isset($currentTranslation['value']) ? $currentTranslation['value'] : null;
+			$value = isset($value) ? $value : $currentValue;
+	
+			$currentLangCode = isset($currentTranslation['language_code']) ? $currentTranslation['language_code'] : null;
+			$newLangCode = isset($langCode) && $langCode !== '' ? $langCode : $currentLangCode;
+	
+			if ($value !== $currentValue || $newLangCode !== $currentLangCode) {
+				$query = "UPDATE translations SET value = :value WHERE table_name = :table AND row_id = :id AND language_code = :language_code";
+	
+				$stmt = $this->pdo->prepare($query);
+				$stmt->bindParam(':table', $table);
+				$stmt->bindParam(':id', $id);
+				$stmt->bindParam(':value', $value);
+				$stmt->bindParam(':language_code', $newLangCode);
+				$stmt->execute();
+	
+				$updatedTranslations += $stmt->rowCount();
+			}
 		}
-
-		$query = "UPDATE 
-					translations 
-				  SET 
-					value = :value, 
-					language_code = :language_code 
-				  WHERE 
-					table_name = :table 
-				  AND 
-					row_id = :id";
-
-		$stmt = $this->pdo->prepare($query);
-		$stmt->bindParam(':table', $table);
-		$stmt->bindParam(':id', $id);
-		$stmt->bindParam(':value', $newValue);
-		$stmt->bindParam(':language_code', $newLangCode);
-		$stmt->execute();
-
-		return $stmt->rowCount();
+	
+		return $updatedTranslations;
 	}
+	
+
+	
+	
+	
+	
+	
 
 
 	public function deleteTranslationByTableAndId($table, $id)

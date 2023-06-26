@@ -39,24 +39,26 @@ class TranslationController {
         }
     }
 
-    public function updateTranslation($table, $id, $data) {
-        $translation = $this->translationModel->getTranslationByTableAndId($table, $id);
+// Dans la méthode updateTranslation du contrôleur
+public function updateTranslation($table, $id, $data)
+{
+    $translations = [];
 
-        if (!$translation) {
-            return ['error' => 'Translation not found'];
-        }
-
-        $value = isset($data['value']) ? $data['value'] : $translation['value'];
-        $langCode = isset($data['language_code']) ? $data['language_code'] : $translation['language_code'];
-
-        $result = $this->translationModel->updateTranslationByTableAndId($table, $id, $value, $langCode);
-
-        if ($result > 0) {
-            return ['message' => 'Translation updated successfully'];
-        } else {
-            return ['error' => 'Translation update failed'];
-        }
+    // Parcourir les clés et valeurs du JSON pour construire le tableau des traductions
+    foreach ($data as $langCode => $value) {
+        $translations[$langCode] = $value;
     }
+
+    $result = $this->translationModel->updateTranslationByTableAndId($table, $id, $translations);
+
+    if ($result === 0) {
+        return ['error' => 'Translation not found'];
+    } else {
+        return ['message' => 'Translations updated successfully'];
+    }
+}
+
+
 
     public function deleteTranslation($table, $id) {
         $translation = $this->translationModel->getTranslationByTableAndId($table, $id);

@@ -1,5 +1,6 @@
 	/*********** PAGE GESTION DES CATEGORIES ***********/
 
+/****** EN-TETE ******/
 .header-symbols {
 	display: flex;
 	flex-direction: row;
@@ -29,8 +30,67 @@
 	padding: 1vh;
 	/* font-size: 3vh; */
 }
+/****** MODAL ******/
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+	background-color: #fefefe;
+	margin: 10% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 60%;
+  }
+  .modal-content form {
+	display: flex;
+	flex-direction: column;
+  }
+  
+  .modal-content form input {
+	width: 30%; /* Réduire la largeur des champs d'entrée */
+	margin: 5px auto; /* Centrer les champs d'entrée et ajouter un espace vertical */
+	padding: 1.5vh;
+	border-radius: 0.5vh;
+  }
+  
+  .modal-content form input[name="category"] {
+	font-weight: bold; /* Rendre le nom de la catégorie plus distinct */
+	margin-top: 0; /* Supprimer l'espace au-dessus du premier champ d'entrée */
+  }
+  
+  .modal-content form button {
+	margin: 2vh auto;
+	width: fit-content;
+	align-self: center;
+  }
+  
+  
+  
+  .close {
+	color: #aaaaaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+  }
+  
 
-/* Styles pour le tableau des catégories */
+/****** Styles pour le tableau des catégories ******/
 .table-symbols {
 	width: 100%;
 	border-collapse: collapse;
@@ -80,7 +140,7 @@
 	background-color: #a70000;
 }
 
-/* __________________________________________ */
+/****** Tableau Draggable ******/
 
 .category-order-bar {
 	background-color: #f2f2f2;

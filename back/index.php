@@ -161,7 +161,7 @@ switch ($route) {
             http_response_code(405);
         }
     break;
-    case preg_match('/^translations\/[^\/]+\/\d+$/', $route) ? true : false:
+    case preg_match('/^translations\/(categories|keywords)\/\d+$/', $route) ? true : false:
         $params = explode('/', $route);
         $table = $params[1];
         $id = $params[2];

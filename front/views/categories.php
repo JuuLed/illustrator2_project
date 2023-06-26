@@ -10,6 +10,22 @@
 		Ajouter une catégorie
 	</button>
 
+
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+		<form id="add-category-form">
+			<input type="text" name="category" placeholder="Nom de la catégorie">
+			<input type="text" name="EN" placeholder="Anglais">
+			<input type="text" name="DE" placeholder="Allemand">
+			<input type="text" name="ES" placeholder="Espagnol">
+			<input type="text" name="FR" placeholder="Français">
+			<input type="text" name="IT" placeholder="Italien">
+			<input type="text" name="PT" placeholder="Portugais">
+			<button type="submit">Ajouter</button>
+		</form>
+		</div>
+	</div>
+
 </div>
 
 
@@ -37,7 +53,9 @@
 			<th>Portugais PT</th>
 			<th><i class="fa-solid fa-trash"></i></th>
 		</tr>
-		<!-- Les lignes du tableau seront ajoutées ici en JavaScript -->
+		<tbody id="category-rows">
+			<!-- Les lignes du tableau seront ajoutées ici en JavaScript -->
+		</tbody>
 	</table>
 
 

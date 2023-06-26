@@ -1,5 +1,5 @@
 //*********** PAGE CATEGORIES ***********//
-//_________________ Génération du tableau via ajax api categories __________________
+//_________________ Génération du tableau via ajax api categories _________________
 apiGet('/categories', function (categories) {
 	var tableContent = categories.map(function (category) {
 	  var translations = category.translations;
@@ -28,8 +28,109 @@ apiGet('/categories', function (categories) {
 	});
   });
 
+//_________________ MODAL D'AJOUT _________________ 
+$(document).ready(function(){
+	$(".header-symbols button").click(function(){
+	  $("#myModal").css("display", "block");
+	});
+  
+	$(".close").click(function(){
+	  $("#myModal").css("display", "none");
+	});
+  
+	$(window).click(function(event) {
+	  if (event.target.id == "myModal") {
+		$("#myModal").css("display", "none");
+	  }
+	});
+  });
+  
 
-//_________________________ Ordre des catégories Draggable _______________________
+  $(document).on('submit', '#add-category-form', function(e) {
+	e.preventDefault();
+  
+  
+	var categoryData = {
+	  category: $("input[name='category']").val(),
+	  translations: {
+		EN: $("input[name='EN']").val(),
+		DE: $("input[name='DE']").val(),
+		ES: $("input[name='ES']").val(),
+		FR: $("input[name='FR']").val(),
+		IT: $("input[name='IT']").val(),
+		PT: $("input[name='PT']").val()
+	  }
+	};
+  
+	$.ajax({
+	  url: apiBaseURL + '/categories', 
+	  type: 'POST',
+	  data: JSON.stringify(categoryData),
+	  contentType: 'application/json',
+	  success: function(response) {
+		console.log("Success: ", response);
+		$("#myModal").css("display", "none");
+		apiGet('/categories', function(categories) {
+			// Mise à jour de la liste des catégories affichée sur la page
+			var tableContent = categories.map(function (category) {
+			  var translations = category.translations;
+			  var row = `
+				<tr>
+				  <td>${category.category}</td>
+				  <td>${translations.DE}</td>
+				  <td>${translations.EN}</td>
+				  <td>${translations.ES}</td>
+				  <td>${translations.FR}</td>
+				  <td>${translations.IT}</td>
+				  <td>${translations.PT}</td>
+				  <td><button class="btn-delete" data-id="${category.category_id}">Supprimer</button></td>
+				</tr>
+			  `;
+			  return row;
+			}).join('');
+  
+			$('#category-rows').html(tableContent);
+  
+			// Ajouter un gestionnaire d'événement pour le bouton de suppression
+			$('.btn-delete').on('click', function () {
+			  var categoryId = $(this).data('id');
+			  // Appeler la fonction de suppression avec l'identifiant de la catégorie
+			  deleteCategory(categoryId);
+			});
+
+			// Ajouter la nouvelle catégorie au draggable
+			var categoryOrderList = $('.category-order-list');
+			var categoryOrderItem = $('<div>', {
+			  class: 'category-order-item',
+			  'data-category-id': response.category_id
+			}).appendTo(categoryOrderList);
+	
+			$('<div>', {
+			  class: 'order-number',
+			  text: categories.length
+			}).appendTo(categoryOrderItem);
+	
+			$('<div>', {
+			  class: 'category-name',
+			  text: response.category
+			}).appendTo(categoryOrderItem);
+	
+			// Mettre à jour les numéros d'ordre dans le draggable
+			updateOrderNumbers();
+		  });
+		},
+  
+	  error: function(error) {
+		console.log("Error: ", error);
+	  }
+	});
+  });
+  
+
+
+
+  
+//_________________ Ordre des catégories Draggable _________________
 
 
 function updateOrderNumbers() {
@@ -100,3 +201,28 @@ $(document).ready(function() {
 		$('.category-order-list').slideToggle();
     });
 });
+
+//_________________ Suppression d'une categorie _________________
+function deleteCategory(categoryId) {
+	$.ajax({
+	  url: apiBaseURL + '/categories/' + categoryId,
+	  type: 'DELETE',
+	  success: function(result) {
+		console.log("Cette catégorie à supprimée avec succès : ", categoryId);
+		// Supprimer la ligne correspondante dans le tableau
+		var rowToRemove = $('[data-id="' + categoryId + '"]').closest('tr');
+		rowToRemove.remove();
+  
+		// Supprimer la case correspondante dans le draggable
+		var itemToRemove = $('.category-order-item[data-category-id="' + categoryId + '"]');
+		itemToRemove.remove();
+		
+		// Mettre à jour les numéros d'ordre dans le draggable
+		updateOrderNumbers();
+	  },
+	  error: function(jqXHR, textStatus, errorThrown) {
+		console.log("Erreur lors de la suppression de la catégorie", textStatus, errorThrown);
+	  }
+	});
+  }
+  
