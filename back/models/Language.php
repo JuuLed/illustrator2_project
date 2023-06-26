@@ -1,70 +1,86 @@
 <?php
-class Language {
-    protected $pdo;
+class Language
+{
+	protected $pdo;
 
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
-    }
+	public function __construct($pdo)
+	{
+		$this->pdo = $pdo;
+	}
 
-    public function getAllLanguages() {
-        $query = "SELECT * FROM languages";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
+	public function getAllLanguages()
+	{
+		$query = "SELECT 
+					* 
+				  FROM 
+					languages";
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+		$stmt = $this->pdo->prepare($query);
+		$stmt->execute();
 
-    public function getLanguageByCode($code) {
-        $query = "SELECT * FROM languages WHERE language_code = :code";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':code', $code);
-        $stmt->execute();
+		return $stmt->fetchAll(PDO::FETCH_ASSOC);
+	}
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-	
-	public function getAvailableLanguages() {
-        $query = "SELECT * FROM languages";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute();
+	public function getLanguageByCode($code)
+	{
+		$query = "SELECT 
+					* 
+				  FROM 
+					languages 
+				  WHERE 
+					language_code = :code";
 
-        $languages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':code', $code);
+		$stmt->execute();
 
-        $result = [];
-        foreach ($languages as $language) {
-            $result[$language['language_code']] = $language['language_name'];
-        }
+		return $stmt->fetch(PDO::FETCH_ASSOC);
+	}
 
-        return $result;
-    }
+	public function createLanguage($code, $name)
+	{
+		$query = "INSERT INTO 
+					languages (language_code, language_name) 
+				  VALUES 
+					(:code, :name)";
 
-    public function createLanguage($code, $name) {
-        $query = "INSERT INTO languages (language_code, language_name) VALUES (:code, :name)";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':code', $code);
-        $stmt->bindParam(':name', $name);
-        $stmt->execute();
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':code', $code);
+		$stmt->bindParam(':name', $name);
+		$stmt->execute();
 
-        return $this->pdo->lastInsertId();
-    }
+		return $this->pdo->lastInsertId();
+	}
 
-    public function updateLanguage($code, $name) {
-        $query = "UPDATE languages SET language = :name WHERE language_code = :code";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':code', $code);
-        $stmt->execute();
+	public function updateLanguage($code, $name)
+	{
+		$query = "UPDATE 
+					languages 
+				  SET 
+					language = :name 
+				  WHERE 
+					language_code = :code";
 
-        return $stmt->rowCount();
-    }
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':name', $name);
+		$stmt->bindParam(':code', $code);
+		$stmt->execute();
 
-    public function deleteLanguage($code) {
-        $query = "DELETE FROM languages WHERE language_code = :code";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':code', $code);
-        $stmt->execute();
+		return $stmt->rowCount();
+	}
 
-        return $stmt->rowCount();
-    }
+	public function deleteLanguage($code)
+	{
+		$query = "DELETE FROM 
+					languages 
+				  WHERE 
+					language_code = :code";
+
+		$stmt = $this->pdo->prepare($query);
+		$stmt->bindParam(':code', $code);
+		$stmt->execute();
+
+		return $stmt->rowCount();
+	}
 }
 ?>

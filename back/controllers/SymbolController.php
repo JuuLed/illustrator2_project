@@ -93,7 +93,7 @@ class SymbolController
 		return null;
 	}
 
-	// Json d'ajout ou de update :
+	// Json d'ajout :
 	// {
 	// 	"symbol_name": "Anniversaire",
 	// 	"size": 50,

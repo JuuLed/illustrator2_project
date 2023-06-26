@@ -17,3 +17,9 @@ Pour la table symbols, vous pouvez envisager d'ajouter une colonne pour stocker 
 de 8 caractères qui est utilisé dans le nom du fichier. Cela pourrait faciliter la gestion des noms de fichiers,
 surtout si vous devez conserver plusieurs versions d'un même symbole.
 
+___________________________________________________________________________
+
+
+le nez dans la gestion des categories
+fini sur le header-categories, la 1er ligne en css, tu verra julien !
+jallais exactement faire du css sur " Ajouter une catégorie" en haut a droite !

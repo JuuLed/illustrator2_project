@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="./css/symbols.css">
+<script src="./js/symbols.js"></script>
 
 <div class="header-symbols">
 	<h1>SYMBOLS</h1>

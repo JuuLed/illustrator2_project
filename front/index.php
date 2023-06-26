@@ -8,7 +8,8 @@
 		integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="icon" href="public/logo-rubicode.png" type="image/x-icon">
-	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/index.css">
+	<script src="js/api.js"></script>
 </head>
 <?
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -57,13 +58,13 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 			</li>
 
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'category' ? 'active' : ""; ?>" href="index.php?page=category">
-					Category
+				<a class="navbar-link <?= $currentPage === 'categories' ? 'active' : ""; ?>" href="index.php?page=categories">
+					Categories
 				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">
-					Keyword
+				<a class="navbar-link <?= $currentPage === 'keywords' ? 'active' : ""; ?>" href="index.php?page=keywords">
+					Mots-clés
 				</a>
 			</li>
 			<li class="navbar-item">
@@ -97,7 +98,8 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 		?>
 	</div>
 
-	<script src="js/script.js"></script>
+	<!-- <script src="js/api.js"></script> -->
+
 </body>
 
 </html>
