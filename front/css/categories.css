@@ -1,5 +1,3 @@
-	/*********** PAGE GESTION DES CATEGORIES ***********/
-
 /****** EN-TETE ******/
 .header-symbols {
 	display: flex;
@@ -29,6 +27,7 @@
 	padding: 1vh;
 	/* font-size: 3vh; */
 }
+
 /****** MODAL ******/
 .modal {
 	display: none;
@@ -39,10 +38,10 @@
 	width: 100%;
 	height: 100%;
 	/* overflow: auto; */
-	background-color: rgba(0,0,0,0.4);
-  }
-  
-  .modal-content {
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
 	background-color: #fefefe;
 	/* margin: 5% auto; */
 	padding: 20px;
@@ -54,36 +53,37 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-  }
-  .modal-content form {
+}
+
+.modal-content form {
 	display: flex;
 	flex-direction: column;
-  }
-  
-  .modal-content form label:first-of-type {
-	font-weight: bold;
-  }
-  
-  .modal-content form label {
-	padding-top: 0.5vh;
-  }
+}
 
-  .modal-content form input {
-	width: 30%; 
-	margin: 5px auto; 
+.modal-content form label:first-of-type {
+	font-weight: bold;
+}
+
+.modal-content form label {
+	padding-top: 0.5vh;
+}
+
+.modal-content form input {
+	width: 30%;
+	margin: 5px auto;
 	padding: 1.5vh;
 	border-radius: 0.5vh;
-  }
-  
-  .modal-content form input[name="category"] {
-	font-weight: bold; 
-  }
-  
-  .modal-content form button {
+}
+
+.modal-content form input[name="category"] {
+	font-weight: bold;
+}
+
+.modal-content form button {
 	margin: 2vh auto;
 	width: fit-content;
 	align-self: center;
-  }  
+}
 
 /****** Styles pour le tableau des catégories ******/
 .table-categories {
@@ -94,11 +94,10 @@
 }
 
 thead th {
-    position: sticky;
-    top: 0;
-    z-index: 5;
+	position: sticky;
+	top: 0;
+	z-index: 5;
 }
-
 
 .table-categories th,
 .table-categories td {
@@ -142,8 +141,31 @@ thead th {
 	background-color: #a70000;
 }
 
-/****** Tableau Draggable ******/
+.editable {
+	background-color: #f5f5f5;
+	cursor: pointer;
+	position: relative;
+}
 
+.editable:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	pointer-events: none;
+	border: 2px solid #007bff;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.editable:hover:after,
+.editable:focus:after {
+	opacity: 1;
+}
+
+/****** Tableau Draggable ******/
 .category-order-bar {
 	background-color: #f2f2f2;
 	padding: 10px;
@@ -212,17 +234,16 @@ thead th {
 	font-weight: bold;
 }
 
-
 .category-order-arrow {
-    width: 0;
-    height: 0;
-    margin: 10px auto;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid #999;
+	width: 0;
+	height: 0;
+	margin: 10px auto;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-top: 10px solid #999;
 
-	transition: transform 0.5s; 
-    transform: rotate(0deg);
+	transition: transform 0.5s;
+	transform: rotate(0deg);
 }
 
 .category-order-bar.open .category-order-arrow {

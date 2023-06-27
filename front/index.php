@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
-	<title>Mon application</title>
+	<title>Illustrateur V2</title>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
 		integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
@@ -50,7 +51,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 						</a>
 					</li>
 					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>" href="index.php?page=stats">
+						<a class="navbar-link <?= $currentPage === 'archives' ? 'active' : ""; ?>" href="index.php?page=archives">
 							Archives
 						</a>
 					</li>
@@ -68,7 +69,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'keyword' ? 'active' : ""; ?>" href="index.php?page=keyword">
+				<a class="navbar-link <?= $currentPage === 'setting' ? 'active' : ""; ?>" href="index.php?page=setting">
 					Parametrages
 				</a>
 			</li>
@@ -81,7 +82,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>" href="index.php?page=login">
+				<a class="navbar-link <?= $currentPage === 'register' ? 'active' : ""; ?>" href="index.php?page=register">
 					Enregistrement
 				</a>
 			</li>

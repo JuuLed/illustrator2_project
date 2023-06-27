@@ -1,6 +1,6 @@
 <h1>
 
-	STAT
+	STATISTIQUES
 
 </h1>
 

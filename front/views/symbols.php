@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="./css/symbols.css">
-<script src="./js/symbols.js"></script>
 
 <div class="header-symbols">
 	<h1>SYMBOLS</h1>
@@ -40,3 +39,7 @@
 	<!-- Les lignes du tableau seront ajoutées ici en JavaScript -->
 </table>
 
+
+
+
+<script src="./js/symbols.js"></script>

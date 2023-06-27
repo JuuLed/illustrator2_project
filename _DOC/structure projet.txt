@@ -41,16 +41,18 @@ illustrator2_project/
     ├── README.md
     ├── index.php
     ├── css/
-    │   └── style.css
+    │   ├── style.js
+    │   └── autreFichierCSS.css
     ├── js/
     │   ├── script.js
+    │   ├── autreFichierJS.js
     │   └── svg-validation.js
     └── views/
         ├── home.php
         ├── symbols.php
-        ├── category.php
-        ├── keyword.php
-        ├── language.php
+        ├── categories.php
+        ├── keywords.php
+        ├── setting.php
         ├── upload.php
         ├── stats.php
         ├── login.php
