@@ -18,7 +18,7 @@ apiGet('/keywords', function (keywords) {
 	  return row;
 	}).join('');
   
-	$('.table-keywords').append(tableContent);
+	$('#keyword-rows').append(tableContent);
   
 	// Ajouter un gestionnaire d'événement pour le bouton de suppression
 	$('.btn-delete').on('click', function () {
@@ -42,63 +42,57 @@ $(document).ready(function(){
 });
 
 $(document).on('submit', '#add-keyword-form', function(e) {
-	e.preventDefault();
-  
-	var keywordData = {
-	  keyword: $("input[name='keyword']").val(),
-	  translations: {
-		EN: $("input[name='EN']").val(),
-		DE: $("input[name='DE']").val(),
-		ES: $("input[name='ES']").val(),
-		FR: $("input[name='FR']").val(),
-		IT: $("input[name='IT']").val(),
-		PT: $("input[name='PT']").val()
-	  }
-	};
-  
-	$.ajax({
-	  url: apiBaseURL + '/keywords', 
-	  type: 'POST',
-	  data: JSON.stringify(keywordData),
-	  contentType: 'application/json',
-	  success: function(response) {
-		console.log("Success: ", response);
-		$("#myModal").css("display", "none");
-		apiGet('/keywords', function(keywords) {
-			// Mise à jour de la liste des mots-clés affichée sur la page
-			var tableContent = keywords.map(function (keyword) {
-			  var translations = keyword.translations;
-			  var row = `
-				<tr>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="keyword">${keyword.keyword}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="DE">${translations.DE}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="EN">${translations.EN}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="ES">${translations.ES}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="FR">${translations.FR}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="IT">${translations.IT}</td>
-					<td class="editable" contenteditable="false" data-id="${keyword.keyword_id}" data-field="PT">${translations.PT}</td>
-					<td><button class="btn-delete" data-id="${keyword.keyword_id}">Supprimer</button></td>
-				</tr>
-			  `;
-			  return row;
-			}).join('');
-  
-			$('#keyword-rows').html(tableContent);
-  
-			// Ajouter un gestionnaire d'événement pour le bouton de suppression
-			$('.btn-delete').on('click', function () {
-			  var keywordId = $(this).data('id');
-			  // Appeler la fonction de suppression avec l'identifiant du mot-clé
-			  deleteKeyword(keywordId);
+    e.preventDefault();
+
+    var keywordData = {
+        keyword: $("input[name='keyword']").val(),
+        translations: {
+            EN: $("input[name='EN']").val(),
+            DE: $("input[name='DE']").val(),
+            ES: $("input[name='ES']").val(),
+            FR: $("input[name='FR']").val(),
+            IT: $("input[name='IT']").val(),
+            PT: $("input[name='PT']").val()
+        }
+    };
+
+    $.ajax({
+        url: apiBaseURL + '/keywords', 
+        type: 'POST',
+        data: JSON.stringify(keywordData),
+        contentType: 'application/json',
+        success: function(response) {
+            console.log("Success: ", response);
+            $("#myModal").css("display", "none");
+            var newKeyword = response;
+            var newRow = `
+                <tr>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="keyword">${newKeyword.keyword}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="DE">${newKeyword.translations.DE}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="EN">${newKeyword.translations.EN}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="ES">${newKeyword.translations.ES}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="FR">${newKeyword.translations.FR}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="IT">${newKeyword.translations.IT}</td>
+                    <td class="editable" contenteditable="false" data-id="${newKeyword.keyword_id}" data-field="PT">${newKeyword.translations.PT}</td>
+                    <td><button class="btn-delete" data-id="${newKeyword.keyword_id}">Supprimer</button></td>
+                </tr>
+            `;
+            $('#keyword-rows').append(newRow);
+
+
+            // Ajouter un gestionnaire d'événement pour le bouton de suppression
+			$(newRow).find('.btn-delete').on('click', function () {
+				var keywordId = $(this).data('id');
+				deleteKeyword(keywordId);
 			});
-		  });
-		},
-  
-	  error: function(error) {
-		console.log("Error: ", error);
-	  }
-	});
+			
+        },
+        error: function(error) {
+            console.log("Error: ", error);
+        }
+    });
 });
+
 
 //_________________ Editable des cellules du tableau _________________
 $(document).on('dblclick', '.editable', function () {
