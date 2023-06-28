@@ -1,0 +1,98 @@
+                          GESTIONNAIRE DE SYMBOLES (Employé)
+                                       |
+                                       |
+                               Se connecter
+                                       |
+                                       |
+        -----------------------------------------------------------------------
+        |                         |                        |                      |
+Ajouter des symboles      Chercher des symboles   Modifier des symboles   Gérer les catégories
+        |                         |                        |                      |
+Uploader des fichiers    Rechercher avec mots-clés Changer les attributs   Créer des catégories
+SVG monochromes           Filtrer par catégories   Changer les mots-clés   Modifier les catégories
+Supprimer des symboles    Activer/désactiver symboles Changer la taille    Ordonner les catégories
+(Garde le fichier et                              par défaut 
+l'entrée de base de données
+intactes)  
+Voir les statistiques
+(afficher la liste des 
+personnalisations et des 
+commandes contenant ce 
+symbole)
+
+
+
+                         GESTIONNAIRE DE SYMBOLES (Employé)
+                                       |
+                                       |
+                                Authentification
+                                       |
+                                       |
+     --------------------------------------------------------------------------------------
+     |                  |                  |                   |                 |           |
+Ajouter des         Chercher des      Modifier des     Gérer les       Voir les      Supprimer des
+symboles           symboles          symboles         catégories      statistiques   symboles
+     |                  |                  |                   |                 |           |
+Uploader des   Rechercher avec   Changer les attributs  Créer des       Afficher la   Garder le fichier
+fichiers SVG   mots-clés        Changer les mots-clés  catégories       liste des     et l'entrée de 
+monochromes    Filtrer par      Changer la taille      Modifier les     personnalisations  base de données
+               catégories       par défaut             catégories       et des        intactes
+                                 Activer/désactiver     Ordonner les    commandes
+                                 symboles               catégories      contenant ce
+                                 Ajouter des mots       Ajouter des     symbole
+                                 clés multilingues      mots clés
+                                                         multilingues
+
+Acteur
+	gestion symboles
+		Recherche avec mots-clé
+		Filtrer par categories
+		Supprimer symbole avec option selection multiple
+		Ajouter/Supprimer mots-clés ou catégories lié a un symbole
+		Modifier taille symbole
+		Activé/désactiver symbole
+		Aperçu du symbole
+		Afficher les statistiques
+			Ouvre une modal avec le detail des stats du symbole
+		Modifier le symboles
+			Upload fichier SVG
+
+	Ajouter symboles
+		Upload fichier SVG
+
+	gestion des categories
+		Ordonner les catégories
+		créer categories et ses traductions
+		modifier categories et ses traductions
+		supprimer categories
+
+	gestion des mots-clés
+		créer mots-clés et ses traductions
+		modifier mots-clés et ses traductions
+		supprimer mots-clés
+
+	Authentification <<include>>
+		gestion symboles
+		Ajouter symboles
+		gestion des categories
+		gestion des mots-clés
+
+
+
+
+
+
+
+
+
+			  ┌─── gestion des symboles ───┼
+			  │
+			  │
+			  ├
+			  │
+			  │
+Acteur ───────┼───
+
+
+
+

@@ -1,167 +1,87 @@
-<style>
-#dropArea {
-  width: 300px;
-  height: 200px;
-  border: 2px dashed #ccc;
-  text-align: center;
-  padding: 20px;
-  font-size: 18px;
-}
 
-#dropArea.dragging {
-  background-color: #f9f9f9;
-}
+<h2>Choisissez un fichier SVG à télécharger :</h2>
+<input type="file" id="uploadedFile">
 
-#dropArea.error {
-  border-color: #ff0000;
-}
-
-
-
-</style>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<h1>
-
-	UPLOAD
-
-</h1>
-
-<div id="dropArea">
-  <p>Déposez vos fichiers SVG ici</p>
-</div>
 
 
 <script>
-
-
-var dropArea = document.getElementById('dropArea');
-
-// Empêcher le comportement par défaut pour le drag-and-drop
-dropArea.addEventListener('dragenter', preventDefault, false);
-dropArea.addEventListener('dragleave', preventDefault, false);
-dropArea.addEventListener('dragover', preventDefault, false);
-dropArea.addEventListener('drop', preventDefault, false);
-
-function preventDefault(event) {
-  event.preventDefault();
-  event.stopPropagation();
-}
-
-// Ajouter une classe lorsque l'élément est survolé avec un fichier
-dropArea.addEventListener('dragenter', function(event) {
-  dropArea.classList.add('dragging');
-});
-
-// Supprimer la classe lorsque l'élément n'est plus survolé avec un fichier
-dropArea.addEventListener('dragleave', function(event) {
-  dropArea.classList.remove('dragging');
-});
-
-
-// Vérifier les fichiers lors du dépôt
-dropArea.addEventListener('drop', function(event) {
-  dropArea.classList.remove('dragging');
-  dropArea.classList.remove('error');
-
-  var files = event.dataTransfer.files;
-  var errors = [];
-  var validFiles = [];
-
-  var checkFile = function(file) {
-    var reader = new FileReader();
-
-    reader.onload = function(event) {
-      var svgContent = event.target.result;
-
-      // Vérifier les problèmes sur le fichier SVG
-      var hasMultipleColors = !isMonochrome(svgContent);
-      var hasNonBlackFill = !isBlackFill(svgContent);
-
-      if (hasMultipleColors || hasNonBlackFill) {
-        errors.push({
-          file: file,
-          hasMultipleColors: hasMultipleColors,
-          hasNonBlackFill: hasNonBlackFill
-        });
-      } else {
-        // Ajouter le fichier à la liste des fichiers valides
-        validFiles.push(file);
-      }
-
-      // Vérifier si tous les fichiers ont été vérifiés
-      if (validFiles.length + errors.length === files.length) {
-        // Afficher les erreurs détectées
-        if (errors.length > 0) {
-          dropArea.classList.add('error');
-          var errorMessages = errors.map(function(error) {
-            var errorMessage = 'Le fichier "' + error.file.name + '" ';
-            if (error.hasMultipleColors) {
-              errorMessage += 'contient plusieurs couleurs.';
-            }
-            if (error.hasNonBlackFill) {
-              errorMessage += 'utilise une couleur fill autre que #000000.';
-            }
-            return errorMessage;
-          });
-          alert(errorMessages.join('\n'));
-        } else {
-          // Traiter les fichiers SVG valides ici
-          validFiles.forEach(function(validFile) {
-            alert('Le fichier SVG est valide : ' + validFile.name);
-            // Effectuer d'autres actions sur les fichiers SVG valides si nécessaire
-          });
+    // Attachez un gestionnaire d'événements 'change' au champ de fichier
+    document.getElementById('uploadedFile').addEventListener('change', function(e) {
+        // Récupérez le fichier sélectionné par l'utilisateur
+        var file = e.target.files[0];
+        // Si aucun fichier n'a été sélectionné, terminez la fonction
+        if (!file) {
+            return;
         }
-      }
-    };
 
-    reader.readAsText(file);
-  };
+        // Créez un nouvel objet FileReader pour lire le contenu du fichier
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // Récupérez le contenu du fichier (code source SVG)
+            var contents = e.target.result;
+            console.log(contents); // Affiche le code source du SVG
 
-  // Vérifier chaque fichier individuellement
-  for (var i = 0; i < files.length; i++) {
-    checkFile(files[i]);
-  }
-});
+            // Créez un nouvel objet DOMParser pour analyser le code source SVG
+            var parser = new DOMParser();
+            var doc = parser.parseFromString(contents, "image/svg+xml");
 
+            // Sélectionnez tous les éléments avec les attributs 'fill' et 'stroke', et les balises de style
+            var fills = doc.querySelectorAll('[fill]');
+            var strokes = doc.querySelectorAll('[stroke]');
+            var styles = doc.querySelectorAll('style');
 
+            // Créez un Set pour stocker les couleurs trouvées (élimine les doublons)
+            var colors = new Set();
 
+            // Vérifiez les attributs 'fill'
+            for(var i = 0; i < fills.length; i++) {
+                var color = fills[i].getAttribute('fill');
+                // Si une couleur autre que #000000 est trouvée, refusez le fichier
+                if (color && color !== "#000000") {
+                    alert("Le fichier '" + file.name + "' contient une couleur 'fill' autre que #000000. Le fichier n'a pas été accepté.");
+                    return;
+                }
+                colors.add(color);
+            }
 
-// Vérifier si le fichier SVG est monochrome (une seule couleur fill)
-function isMonochrome(svgContent) {
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(svgContent, 'image/svg+xml');
-  var fillNodes = doc.getElementsByTagName('path');
-  
-  var uniqueFillColors = new Set();
-  
-  for (var i = 0; i < fillNodes.length; i++) {
-    var fillAttribute = fillNodes[i].getAttribute('fill');
-    if (fillAttribute && fillAttribute !== '#000000') {
-      uniqueFillColors.add(fillAttribute);
-    }
-  }
-  
-  return uniqueFillColors.size <= 1;
-}
+            // Vérifiez les attributs 'stroke'
+            for(var i = 0; i < strokes.length; i++) {
+                var color = strokes[i].getAttribute('stroke');
+                // Si une couleur autre que #000000 est trouvée, refusez le fichier
+                if (color && color !== "#000000") {
+                    alert("Le fichier '" + file.name + "' contient une couleur 'stroke' autre que #000000. Le fichier n'a pas été accepté.");
+                    return;
+                }
+                colors.add(color);
+            }
 
-// Vérifier si le fichier SVG utilise uniquement la couleur fill #000000
-function isBlackFill(svgContent) {
-  var parser = new DOMParser();
-  var doc = parser.parseFromString(svgContent, 'image/svg+xml');
-  var fillNodes = doc.getElementsByTagName('path');
+            // Vérifiez les déclarations de couleur dans les balises de style
+            for(var i = 0; i < styles.length; i++) {
+                var styleContent = styles[i].textContent;
+                // Utilisez une expression régulière pour trouver toutes les déclarations de couleur
+                var colorMatches = styleContent.match(/(fill|stroke):\s*(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})/g) || [];
+                for(var j = 0; j < colorMatches.length; j++) {
+                    var color = colorMatches[j].split(':')[1].trim();
+                    // Si une couleur autre que #000000 est trouvée, refusez le fichier
+                    if (color !== "#000000") {
+                        alert("Le fichier '" + file.name + "' contient une couleur '" + colorMatches[j].split(':')[0] + "' autre que #000000 dans une balise de style. Le fichier n'a pas été accepté.");
+                        return;
+                    }
+                    colors.add(color);
+                }
+            }
 
-  for (var i = 0; i < fillNodes.length; i++) {
-    var fillAttribute = fillNodes[i].getAttribute('fill');
-    if (fillAttribute && fillAttribute !== '#000000') {
-      return false;
-    }
-  }
+            // Si plus d'une couleur est trouvée, refusez le fichier
+            if (colors.size > 1) {
+                alert("Le fichier '" + file.name + "' contient plusieurs couleurs. Le fichier n'a pas été accepté.");
+                return;
+            }
 
-  return true;
-}
+            console.log(colors); // Affiche les couleurs 'fill' et 'stroke' trouvées
 
-
-
-
+            alert("Fichier '" + file.name + "' est monochrome et a été accepté.");
+        };
+        // Commencez à lire le contenu du fichier
+        reader.readAsText(file);
+    });
 </script>

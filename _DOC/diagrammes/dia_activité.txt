@@ -1,0 +1,37 @@
+(C) Démarrer
+|
+V
+[Authentification de l'utilisateur]
+|   
+V   
+{Vérification de l'authentification en back-end}
+|   |
+V   V
+{Succès} ----> [Message d'erreur et retour à la page de connexion]
+|   
+V   
+[Accès à la page d'ajout de symbole]
+|
+V
++---+
+|   
+V   
+[Ajout d'un nouveau symbole]
+|   
+V   
+{Vérification de l'unicité du symbole en back-end}
+|   |
+V   V
+{Succès} ----> [Message d'erreur et retour à la page d'ajout de symbole]
+|   
+V   
+{Vérification du format SVG en back-end}
+|   |
+V   V
+{Succès} ----> [Message d'erreur et retour à la page d'ajout de symbole]
+|   
+V   
+[Enregistrement du symbole]
+|
+V
+(C) Fin
