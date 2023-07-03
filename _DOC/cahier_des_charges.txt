@@ -46,3 +46,97 @@ Indépendance du projet
 Communication
 
 - Les échanges doivent se faire principalement via GitHub.
+
+
+
+____________________________________________________________________________________________________________________________________
+
+Cahier des charges : Gestionnaire de symboles pour le configurateur V2
+
+1. Présentation du projet, son contexte et sa finalité
+
+1.1. Porteur du projet :
+La société Atelier du Gobelet, spécialisée dans la personnalisation de gobelets.
+
+1.2. Le projet :
+La prochaine version du configurateur (V2) doit inclure un gestionnaire de symboles avancé pour
+permettre aux utilisateurs de personnaliser leurs gobelets plus efficacement.
+La version actuelle du configurateur présente des limitations concernant le parcours
+des utilisateurs et l'absence d'un outil de gestion des symboles.
+
+1.3. Cible du projet :
+Les utilisateurs du site de l'Atelier du Gobelet qui souhaitent personnaliser leurs gobelets.
+
+1.4. Objectifs :
+Optimiser le parcours de la liste de symboles pour les utilisateurs
+Permettre une gestion plus simple et efficace des symboles à partir de l'interface d'administration
+
+1.5. État des lieux des méthodes actuelles :
+L'outil actuel ne permet pas une gestion facile des symboles et rend difficile la navigation pour les utilisateurs.
+
+2. Contraintes
+
+2.1. Techniques :
+L'application sera développée en PHP 5.6.40 et MariaDB sans utiliser de framework.
+
+2.2. Réglementation légale :
+Non spécifié.
+
+2.3. Exigences particulières :
+L'outil doit être totalement indépendant de Loguy, sauf pour une copie de la classe DB.
+
+3. Expression du besoin
+
+3.1. Gestion des symboles :
+L'outil doit permettre la création, modification, suppression et gestion de symboles via une interface d'administration.
+Les symboles correspondent à des fichiers SVG, qui devront être uploadés via l'interface d'administration.
+
+3.2. Gestion des couleurs :
+Le système devra détecter les problèmes potentiels sur les fichiers SVG lors de leur upload,
+en particulier vérifier que le fichier ne contient qu'une seule couleur
+(correspondant aux attributs fill dans le fichier svg) et que cette couleur est #000000.
+
+3.3. Fonctionnalités d'upload :
+L'upload des fichiers SVG devra être possible via drag'n'drop, avec la possibilité de multiupload.
+
+3.4. Noms de fichiers :
+Les noms de fichiers doivent être une chaîne aléatoire unique sur 8 caractères, suivie d'un tiret et de l'identifiant du symbole.
+
+3.5. Gestion des mots-clés :
+Chaque symbole devra être associé à une liste de mots-clés en plusieurs langues (Anglais, Allemand, Espagnol, Français, Italien, Portugais).
+
+3.6. Gestion des catégories :
+Les symboles seront classés par catégories, qui peuvent être ordonnées via un système JS draggable. Les catégories sont multilingues.
+
+3.7. Statistiques :
+Pour chaque symbole, l'outil devra afficher des statistiques, notamment la liste des personnalisations et des commandes contenant ce symbole.
+
+4. Prestations attendues
+
+4.1. Design :
+Non spécifié.
+
+4.2. Développement :
+Développement du gestionnaire de symboles.
+
+4.3. Webmarketing, rédaction de contenu, référencement :
+Non applicable.
+
+4.4. Déploiement :
+Installation et mise en service de l'outil.
+
+4.5. Hébergement :
+Non spécifié.
+
+4.6. Réservation nom de domaine, certificat SSL :
+Non applicable.
+
+4.7. Maintenance :
+Maintenance et mise à jour de l'outil.
+
+4.8. Livrables attendus :
+Code source commenté
+Documentation technique et utilisateur
+
+4.9. Propriétés et droits souhaités :
+La propriété du code source et tous les droits associés.

@@ -19,6 +19,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 <body>
 	<div class="navbar">
 		<div class="navbar-brand">
+			<img class="rubicode" src="public/logo-rubicode.png">
 			<a class="navbar-logo" href="index.php">Illustrateur V2</a>
 		</div>
 		<ul class="navbar-menu">

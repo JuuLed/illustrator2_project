@@ -42,7 +42,7 @@ class Symbol
                   LEFT JOIN keywords 
 				  	ON symbol_keyword.keyword_id = keywords.keyword_id
                   WHERE symbols.symbol_id = :id
-				  	AND symbols.deleted = 0
+				  	-- AND symbols.deleted = 0
                   GROUP BY symbols.symbol_id";
 
 		$stmt = $this->pdo->prepare($query);

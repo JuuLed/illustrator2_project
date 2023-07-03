@@ -1,33 +1,50 @@
 Pour la conception de la structure du site, 
 proposition des éléments du menu ainsi que leurs fonctionnalités :
 
-1. Tableau de bord (Dashboard)
-	- Affichage d'un résumé des statistiques générales (nombre total de symboles, symboles actifs/inactifs, etc.)
-	- Affichage des derniers symboles ajoutés/modifiés.
 
-2. Gestion des symboles (Symbols Management)
-	2.1 Liste des symboles (Symbols List)
+1. Gestion des symboles (Symbols Management)
+	1.1 Liste des symboles (Symbols List)
 		- Affichage de tous les symboles existants.
 		- Fonctionnalités de recherche par mot-clé et filtrage par catégorie.
 		- Fonctionnalités de modification rapide (activation/désactivation, modification des mots-clés, changement de catégorie, etc.)
 		- Possibilité de visualiser et de télécharger chaque symbole.
-	2.2 Ajout de symboles (Add Symbols)
+	1.2 Ajout de symboles (Add Symbols)
 		- Fonctionnalité d'upload en drag'n'drop avec détection de problèmes.
 		- Option de multiupload pour uploader plusieurs fichiers à la fois.
 		- Entrée de mots-clés et choix de la catégorie pour chaque symbole.
-	2.3 Statistiques de symboles (Symbols Statistics)
+	1.3 Statistiques de symboles (Symbols Statistics)
 		- Affichage de la liste des personnalisations et des commandes contenant chaque symbole.
 
-3. Gestion des catégories (Categories Management)
+2. Gestion des catégories (Categories Management)
 		- Création, modification et suppression des catégories.
 		- Fonctionnalités pour ordonner les catégories (via un système JS draggable).
 
-4. Gestion des mots-clés (Keywords Management)
+3. Gestion des mots-clés (Keywords Management)
 		- Création, modification et suppression des mots-clés.
 
-5. Paramètres (Settings)
-	- Paramétrage du chemin du dossier de stockage des symboles.
-	- Configuration des noms des tables utilisées.
-
-6. Connexion/Enregistrement/Deconnexion (Users Management)
+4. Connexion/Enregistrement/Deconnexion (Users Management)
 	- Fonctionnalité pour déconnecter l'utilisateur actuel.
+__________________________________________________________________________________
+MENU :
+
+Connexion
+├── Symboles
+│   ├── Recherche et filtrage des Symboles
+│   ├── Création de Symbole
+│   ├── Aperçu de Symbole
+│   ├── Suppression simple ou multiple de Symbole
+│   ├── Statistiques des Symboles
+│   └── Modification
+│       ├── Gestions des liaisons de catégories ou mots-clés
+│       ├── Activer/Désactiver Symboles
+│       └── Modifier taille
+├── Catégories
+│   ├── Organisation de l'ordre des catégories
+│   ├── Création de catégorie
+│   ├── Modification de catégorie
+│   └── Suppression de categorie
+├── Mots-clés
+│   ├── Création de mots-clés
+│   ├── Modification de mots-clés
+│   └── Suppression de mots-clés
+└── Déconnexion

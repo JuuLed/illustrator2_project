@@ -548,14 +548,16 @@ INSERT INTO `translations` (`table_name`, `row_id`, `value`, `language_code`) VA
 -- Contraintes pour la table `symbol_category`
 --
 ALTER TABLE `symbol_category`
-  ADD CONSTRAINT `symbol_category_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
+  ADD CONSTRAINT `symbol_category_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`);
+ALTER TABLE `symbol_category`
   ADD CONSTRAINT `symbol_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
 --
 -- Contraintes pour la table `symbol_keyword`
 --
 ALTER TABLE `symbol_keyword`
-  ADD CONSTRAINT `symbol_keyword_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
+  ADD CONSTRAINT `symbol_keyword_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`);
+ALTER TABLE `symbol_keyword`
   ADD CONSTRAINT `symbol_keyword_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`keyword_id`);
 
 --

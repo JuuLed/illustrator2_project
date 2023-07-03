@@ -29,6 +29,7 @@
 
 	.navbar-brand {
 		padding-bottom: 5vh;
+		vertical-align: center;
 	}
 
 	.navbar-logo {
@@ -36,6 +37,11 @@
 		font-size: 3vh;
 		font-weight: bold;
 		text-decoration: none;
+	}
+
+	.rubicode {
+		width: 3vh;
+		padding-right: 2vh;
 	}
 
 	.navbar-menu {

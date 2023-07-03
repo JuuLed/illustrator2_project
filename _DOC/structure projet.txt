@@ -45,7 +45,7 @@ illustrator2_project/
     │   └── autreFichierCSS.css
     ├── js/
     │   ├── script.js
-    │   ├── autreFichierJS.js
+    │   ├── autre-fichier-JS.js
     │   └── svg-validation.js
     └── views/
         ├── home.php
@@ -53,7 +53,6 @@ illustrator2_project/
         ├── categories.php
         ├── keywords.php
         ├── setting.php
-        ├── upload.php
         ├── stats.php
         ├── login.php
         └── register.php

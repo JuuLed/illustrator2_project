@@ -1,0 +1,226 @@
+methode :
+- Symbols
+	getAllSymbols
+	getSymbol
+	createSymbol
+	updateSymbol
+	deleteSymbol
+
+- Category
+	getAllCategories
+	getCategory
+	createCategory
+	updateCategory
+	deleteCategory
+
+- Keyword
+	getAllKeywords
+	getKeyword
+	createKeyword
+	updateKeyword
+	deleteKeyword
+	
+- Language
+	getAllLanguages
+	getLanguage
+	updateLanguage
+	deleteLanguage
+
+- SymbolCategory
+	getAllCategoriesBySymbolId
+	addCategoryToSymbol
+	removeCategoryFromSymbol
+
+-SymbolKeyword
+	getAllKeywordsBySymbolId
+	addKeywordToSymbol
+	removeKeywordFromSymbol
+
+- Translation
+	getAllTranslations
+	getTranslationByTableAndId
+	createTranslation
+	updateTranslation
+	deleteTranslation
+
+- User 
+	getUser
+	login
+
+
+_________________________________________________________
+
+class Symbols {
+    - symbol_id: Integer (PK, AI)
+    - unique_id: String
+    - file_name: String
+    - symbol_name: String
+    - size: Integer (Default: 50)
+    - active: Boolean (Default: 0)
+    - deleted: Boolean (Default: 0)
+    
+    + getAllSymbols(): Array
+    + getSymbol(): Object
+    + createSymbol(): Boolean
+    + updateSymbol(): Boolean
+    + deleteSymbol(): Boolean
+}
+
+class Categories {
+    - category_id: Integer (PK, AI)
+    - category: String (Unique)
+    - order: Integer
+    
+    + getAllCategories(): Array
+    + getCategory(): Object
+    + createCategory(): Boolean
+    + updateCategory(): Boolean
+    + deleteCategory(): Boolean
+}
+
+class Keywords {
+    - keyword_id: Integer (PK, AI)
+    - keyword: String (Unique)
+    
+    + getAllKeywords(): Array
+    + getKeyword(): Object
+    + createKeyword(): Boolean
+    + updateKeyword(): Boolean
+    + deleteKeyword(): Boolean
+}
+
+class Symbol_Category {
+    - symbol_id: Integer (FK -> Symbols.symbol_id)
+    - category_id: Integer (FK -> Categories.category_id)
+    
+    + getAllCategoriesBySymbolId(): Array
+    + addCategoryToSymbol(): Boolean
+    + removeCategoryFromSymbol(): Boolean
+}
+
+class Symbol_Keyword {
+    - symbol_id: Integer (FK -> Symbols.symbol_id)
+    - keyword_id: Integer (FK -> Keywords.keyword_id)
+    
+    + getAllKeywordsBySymbolId(): Array
+    + addKeywordToSymbol(): Boolean
+    + removeKeywordFromSymbol(): Boolean
+}
+
+class Translations {
+    - table_name: String
+    - row_id: Integer
+    - value: String
+    - language_code: String (FK -> Languages.language_code)
+    
+    + getAllTranslations(): Array
+    + getTranslationByTableAndId(): Object
+    + createTranslation(): Boolean
+    + updateTranslation(): Boolean
+    + deleteTranslation(): Boolean
+}
+
+class Languages {
+    - language_code: String (PK)
+    - language_name: String (Unique)
+    
+    + getAllLanguages(): Array
+    + getLanguage(): Object
+    + updateLanguage(): Boolean
+    + deleteLanguage(): Boolean
+}
+
+class Users {
+    - user_id: Integer (PK, AI)
+    - username: String
+    - email: String (Unique)
+    - password: String (Hash)
+    
+    + getUser(): Object
+    + login(): Boolean
+}
+
+_________________________________________________________
+
+
+
+          +---------------------+
+          |       Symbol        |
+          +---------------------+
+          | - unique_id         |
+          | - file_name         |
+          | - symbol_name       |
+          | - size              |
+          | - active            |
+          +---------------------+
+          | + getSymbol()       |
+          | + createSymbol()    |
+          | + updateSymbol()    |
+          | + deleteSymbol()    |
+          | + uploadSvgFile()   |
+          | + validateSvgFile() |
+          +---------------------+
+                 ^          ^
+                 |          |
+                 |          |
++---------------------+ +---------------------+
+|    SymbolCategory   | |   SymbolKeyword    |
++---------------------+ +---------------------+
+| - category_id       | | - keyword_id        |
+| - symbol_id         | | - symbol_id         |
++---------------------+ +---------------------+
+| + addCategoryToSymbol()  | + addKeywordToSymbol()   |
+| + removeCategoryFromSymbol()  | + removeKeywordFromSymbol()   |
++---------------------+ +---------------------+
+       ^                         ^
+       |                         |
++---------------------+ +---------------------+
+|      Category       | |      Keyword        |
++---------------------+ +---------------------+
+| - category_id       | | - keyword_id        |
+| - category          | | - keyword           |
++---------------------+ +---------------------+
+| + getCategory()     | | + getKeyword()      |
+| + createCategory()  | | + createKeyword()   |
+| + updateCategory()  | | + updateKeyword()   |
+| + deleteCategory()  | | + deleteKeyword()   |
++---------------------+ +---------------------+
+                         ^
+                         |
+                +---------------------+
+                |     Translation     |
+                +---------------------+
+                | - keyword_id        |
+                | - language_id       |
+                | - translation       |
+                +---------------------+
+                | + getTranslationByTableAndId() |
+                | + createTranslation()          |
+                | + updateTranslation()          |
+                | + deleteTranslation()          |
+                +---------------------+
+                          ^
+                          |
+                +---------------------+
+                |      Language       |
+                +---------------------+
+                | - language_id       |
+                | - language          |
+                +---------------------+
+                | + getLanguage()     |
+                | + updateLanguage()  |
+                | + deleteLanguage()  |
+                +---------------------+
+                          ^
+                          |
+                 +---------------------+
+                 |        User         |
+                 +---------------------+
+                 | - user_id           |
+                 | - username          |
+                 | - password          |
+                 +---------------------+
+                 | + getUser()         |
+                 | + loginUser()       |
+                 | + logoutUser()      |
+                 +---------------------+
