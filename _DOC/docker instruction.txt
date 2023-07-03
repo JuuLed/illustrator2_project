@@ -3,7 +3,7 @@
 		config/config.php : ligne 7 à 10
 		index.php	 : ligne 28 à 32
 	FRONT :
-		js/script.js	 : ligne 3 à 7
+		js/api.js	 : ligne 3 à 7
 
 2. Lancer Docker/Container :
 	- Ouvrir terminal/console
