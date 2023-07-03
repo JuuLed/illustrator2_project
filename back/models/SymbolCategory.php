@@ -12,13 +12,13 @@ class SymbolCategory
 	public function getAllCategoriesBySymbolId($symbolId)
 	{
 		$query = "SELECT 
-					categories.* 
+					c.* 
                   FROM 
-				  	categories
-                  INNER JOIN symbol_category
-                  	ON categories.category_id = symbol_category.category_id 
+				  	".TABLE_CATEGORIES." c
+                  INNER JOIN ".TABLE_SYMBOL_CATEGORY." sc
+                  	ON c.category_id = sc.category_id 
                   WHERE 
-				  	symbol_category.symbol_id = :symbolId";
+				  	sc.symbol_id = :symbolId";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':symbolId', $symbolId);
@@ -30,7 +30,7 @@ class SymbolCategory
 	public function addCategoryToSymbol($symbolId, $categoryId)
 	{
 		$query = "INSERT INTO 
-					symbol_category (symbol_id, category_id) 
+					".TABLE_SYMBOL_CATEGORY." (symbol_id, category_id) 
                   VALUES 
 				  	(:symbolId, :categoryId)";
 
@@ -43,7 +43,7 @@ class SymbolCategory
 	public function removeCategoryFromSymbol($symbolId, $categoryId)
 	{
 		$query = "DELETE FROM 
-					symbol_category 
+					".TABLE_SYMBOL_CATEGORY." 
                   WHERE 
 				  	symbol_id = :symbolId 
                   AND 
@@ -58,7 +58,7 @@ class SymbolCategory
 	public function updateSymbolCategories($symbolId, $categoryIds)
 	{	
 		$query = "INSERT INTO 
-					symbol_category (symbol_id, category_id) 
+					".TABLE_SYMBOL_CATEGORY." (symbol_id, category_id) 
 				  VALUES 
 					(:symbolId, :categoryId)";
 	
@@ -79,7 +79,7 @@ class SymbolCategory
 	public function deleteSymbolCategories($symbolId)
 	{
 		$query = "DELETE FROM 
-					symbol_category 
+					".TABLE_SYMBOL_CATEGORY." 
 				  WHERE 
 				  	symbol_id = :symbolId";
 

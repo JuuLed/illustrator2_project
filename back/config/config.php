@@ -21,3 +21,4 @@ define('TABLE_SYMBOL_KEYWORD', 'symbol_keyword');
 define('TABLE_SYMBOL_CATEGORY', 'symbol_category');
 define('TABLE_LANGUAGES', 'languages');
 define('TABLE_TRANSLATIONS', 'translations');
+define('TABLE_USERS', 'users');

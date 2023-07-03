@@ -13,7 +13,7 @@ class Language
 		$query = "SELECT 
 					* 
 				  FROM 
-					languages";
+				  	".TABLE_LANGUAGES;
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
@@ -26,7 +26,7 @@ class Language
 		$query = "SELECT 
 					* 
 				  FROM 
-					languages 
+				  	".TABLE_LANGUAGES."
 				  WHERE 
 					language_code = :code";
 
@@ -40,7 +40,7 @@ class Language
 	public function createLanguage($code, $name)
 	{
 		$query = "INSERT INTO 
-					languages (language_code, language_name) 
+					".TABLE_LANGUAGES." (language_code, language_name) 
 				  VALUES 
 					(:code, :name)";
 
@@ -55,7 +55,7 @@ class Language
 	public function updateLanguage($code, $name)
 	{
 		$query = "UPDATE 
-					languages 
+					".TABLE_LANGUAGES." 
 				  SET 
 					language = :name 
 				  WHERE 
@@ -72,7 +72,7 @@ class Language
 	public function deleteLanguage($code)
 	{
 		$query = "DELETE FROM 
-					languages 
+					".TABLE_LANGUAGES." 
 				  WHERE 
 					language_code = :code";
 

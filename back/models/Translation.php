@@ -14,7 +14,7 @@ class Translation
 		$query = "SELECT 
 					* 
 				  FROM 
-					translations";
+					".TABLE_TRANSLATIONS;
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
@@ -27,7 +27,7 @@ class Translation
 		$query = "SELECT 
 					* 
 				  FROM 
-					translations 
+					".TABLE_TRANSLATIONS." 
 				  WHERE 
 					table_name = :table 
 				  AND 
@@ -45,7 +45,7 @@ class Translation
 	public function createTranslation($table, $id, $value, $langCode)
 	{
 		$query = "INSERT INTO 
-					translations (table_name, row_id, value, language_code) 
+					".TABLE_TRANSLATIONS." (table_name, row_id, value, language_code) 
 				  VALUES 
 					(:table_name, :row_id, :value, :language_code)";
 
@@ -77,7 +77,16 @@ class Translation
 			$newLangCode = isset($langCode) && $langCode !== '' ? $langCode : $currentLangCode;
 	
 			if ($value !== $currentValue || $newLangCode !== $currentLangCode) {
-				$query = "UPDATE translations SET value = :value WHERE table_name = :table AND row_id = :id AND language_code = :language_code";
+				$query = "UPDATE 
+							".TABLE_TRANSLATIONS."  
+						  SET 
+							value = :value 
+						  WHERE 
+							table_name = :table 
+						  AND 
+							row_id = :id 
+						  AND 
+							language_code = :language_code";
 	
 				$stmt = $this->pdo->prepare($query);
 				$stmt->bindParam(':table', $table);

@@ -34,7 +34,7 @@ class KeywordController {
 			}
 	
 			// Récupérer les traductions pour le mot-clé
-			$translations = $this->translationModel->getTranslationByTableAndId('keywords', $keywordId);
+			$translations = $this->translationModel->getTranslationByTableAndId(TABLE_KEYWORDS, $keywordId);
 	
 			foreach ($translations as $translation) {
 				$languageCode = $translation['language_code'];
@@ -62,7 +62,7 @@ class KeywordController {
 			];
 	
 			// Récupérer les traductions pour le mot-clé
-			$translations = $this->translationModel->getTranslationByTableAndId('keywords', $keywordId);
+			$translations = $this->translationModel->getTranslationByTableAndId(TABLE_KEYWORDS, $keywordId);
 	
 			foreach ($translations as $translation) {
 				$languageCode = $translation['language_code'];
@@ -100,7 +100,7 @@ class KeywordController {
         if ($keywordId) {
             // Créer les traductions pour le mot-clé
             foreach ($translations as $languageCode => $translation) {
-                $this->translationModel->createTranslation('keywords', $keywordId, $translation, $languageCode);
+                $this->translationModel->createTranslation(TABLE_KEYWORDS, $keywordId, $translation, $languageCode);
             }
 
             // Récupérer les traductions pour construire la réponse
@@ -160,7 +160,7 @@ class KeywordController {
 		$result = $this->keywordModel->deleteKeyword($id);
 	
 		// Supprimer les traductions associées au mot-clé de la table "translations"
-		$this->translationModel->deleteTranslationByTableAndId('keywords', $id);
+		$this->translationModel->deleteTranslationByTableAndId(TABLE_KEYWORDS, $id);
 	
 		if ($result > 0) {
 			return ['message' => 'Keyword deleted successfully'];

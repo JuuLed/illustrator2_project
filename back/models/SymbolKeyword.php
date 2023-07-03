@@ -12,13 +12,13 @@ class SymbolKeyword
 	public function getAllKeywordsBySymbolId($symbolId)
 	{
 		$query = "SELECT 
-					keywords.* 
+					k.* 
 				  FROM 
-				  	keywords
-				  INNER JOIN symbol_keyword
-				  	ON keywords.keyword_id = symbol_keyword.keyword_id 
+				  	".TABLE_KEYWORDS." k
+				  INNER JOIN ".TABLE_SYMBOL_KEYWORD." sk
+				  	ON k.keyword_id = sk.keyword_id 
 				  WHERE 
-				  	symbol_keyword.symbol_id = :symbolId";
+				  	sk.symbol_id = :symbolId";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':symbolId', $symbolId);
@@ -31,7 +31,7 @@ class SymbolKeyword
 	public function addKeywordToSymbol($symbolId, $keywordId)
 	{
 		$query = "INSERT INTO 
-					symbol_keyword (symbol_id, keyword_id) 
+					".TABLE_SYMBOL_KEYWORD." (symbol_id, keyword_id) 
                   VALUES 
 				  	(:symbolId, :keywordId)";
 
@@ -44,7 +44,7 @@ class SymbolKeyword
 	public function removeKeywordFromSymbol($symbolId, $keywordId)
 	{
 		$query = "DELETE FROM 
-					symbol_keyword 
+					".TABLE_SYMBOL_KEYWORD." 
                   WHERE 
 				  	symbol_id = :symbolId 
                   AND 
@@ -59,7 +59,7 @@ class SymbolKeyword
 	public function updateSymbolKeywords($symbolId, $keywordIds)
 	{
 		$query = "INSERT INTO 
-					symbol_keyword (symbol_id, keyword_id) 
+					".TABLE_SYMBOL_KEYWORD." (symbol_id, keyword_id) 
 				  VALUES 
 					(:symbolId, :keywordId)";
 
@@ -80,7 +80,7 @@ class SymbolKeyword
 	public function deleteSymbolKeywords($symbolId)
 	{
 		$query = "DELETE FROM 
-					symbol_keyword 
+					".TABLE_SYMBOL_KEYWORD." 
 				  WHERE 
 				  	symbol_id = :symbolId";
 

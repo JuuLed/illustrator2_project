@@ -10,19 +10,21 @@ class Symbol
 
 	public function getAllSymbols()
 	{
-		$query = "SELECT symbols.symbol_id, symbols.unique_id, symbols.file_name, symbols.symbol_name, symbols.size, symbols.active, 
-						 categories.category_id, categories.category, 
-						 keywords.keyword_id, keywords.keyword
-				  FROM symbols 
-				  LEFT JOIN symbol_category 
-				  	ON symbols.symbol_id = symbol_category.symbol_id
-				  LEFT JOIN categories 
-				  	ON symbol_category.category_id = categories.category_id
-				  LEFT JOIN symbol_keyword 
-				  	ON symbols.symbol_id = symbol_keyword.symbol_id
-				  LEFT JOIN keywords 
-				  	ON symbol_keyword.keyword_id = keywords.keyword_id
-				  WHERE symbols.deleted = 0";
+		$query = "SELECT 
+					s.symbol_id, s.unique_id, s.file_name, s.symbol_name, s.size, s.active, 
+					c.category_id, c.category, 
+					k.keyword_id, k.keyword
+				  FROM 
+				  	".TABLE_SYMBOLS." s
+				  LEFT JOIN ".TABLE_SYMBOL_CATEGORY." sc
+				  	ON s.symbol_id = sc.symbol_id
+				  LEFT JOIN ".TABLE_CATEGORIES." c
+				  	ON sc.category_id = c.category_id
+				  LEFT JOIN ".TABLE_SYMBOL_KEYWORD." sk
+				  	ON s.symbol_id = sk.symbol_id
+				  LEFT JOIN ".TABLE_KEYWORDS." k
+				  	ON sk.keyword_id = k.keyword_id
+				  WHERE s.deleted = 0";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
@@ -31,19 +33,18 @@ class Symbol
 
 	public function getSymbolById($id)
 	{
-		$query = "SELECT symbols.*, GROUP_CONCAT(DISTINCT categories.category_id) AS category_ids, GROUP_CONCAT(DISTINCT keywords.keyword_id) AS keyword_ids
-                  FROM symbols
-                  LEFT JOIN symbol_category 
-				  	ON symbols.symbol_id = symbol_category.symbol_id
-                  LEFT JOIN categories 
-				  	ON symbol_category.category_id = categories.category_id
-                  LEFT JOIN symbol_keyword 
-				  	ON symbols.symbol_id = symbol_keyword.symbol_id
-                  LEFT JOIN keywords 
-				  	ON symbol_keyword.keyword_id = keywords.keyword_id
-                  WHERE symbols.symbol_id = :id
-				  	-- AND symbols.deleted = 0
-                  GROUP BY symbols.symbol_id";
+		$query = "SELECT s.*, GROUP_CONCAT(DISTINCT c.category_id) AS category_ids, GROUP_CONCAT(DISTINCT k.keyword_id) AS keyword_ids
+                  FROM ".TABLE_SYMBOLS." s
+                  LEFT JOIN ".TABLE_SYMBOL_CATEGORY." sc
+				  	ON s.symbol_id = sc.symbol_id
+                  LEFT JOIN ".TABLE_CATEGORIES." c
+				  	ON sc.category_id = c.category_id
+                  LEFT JOIN ".TABLE_SYMBOL_KEYWORD." sk
+				  	ON s.symbol_id = sk.symbol_id
+                  LEFT JOIN ".TABLE_KEYWORDS." k
+				  	ON sk.keyword_id = k.keyword_id
+                  WHERE s.symbol_id = :id
+                  GROUP BY s.symbol_id";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->bindParam(':id', $id);
@@ -65,7 +66,7 @@ class Symbol
 		$uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
 
 		$query = "INSERT INTO 
-					symbols (unique_id, symbol_name, size, active) 
+					".TABLE_SYMBOLS." (unique_id, symbol_name, size, active) 
               	  VALUES 
 				  	(:uniqueId, :symbolName, :size, :active)";
 
@@ -82,7 +83,7 @@ class Symbol
 		$fileName = $uniqueId . '-' . $symbolId;
 
 		$updateQuery = "UPDATE 
-							symbols 
+							".TABLE_SYMBOLS." 
 						SET 
 							file_name = :fileName 
 						WHERE 
@@ -108,7 +109,7 @@ class Symbol
 		// $this->deleteSymbol($id);
 
 		$query = "INSERT INTO 
-					symbols (unique_id, symbol_name, size, active) 
+					".TABLE_SYMBOLS." (unique_id, symbol_name, size, active) 
               	  VALUES 
 				  	(:uniqueId, :symbolName, :size, :active)";
 
@@ -130,7 +131,7 @@ class Symbol
 		$fileName = $uniqueId . '-' . $symbolId;
 
 		$updateQuery = "UPDATE 
-							symbols 
+							".TABLE_SYMBOLS." 
 						SET 
 							file_name = :fileName 
 						WHERE 
@@ -147,7 +148,7 @@ class Symbol
 	public function deleteSymbol($id)
 	{
 		$query = "UPDATE 
-					symbols 
+					".TABLE_SYMBOLS." 
 				  SET 
 				  	deleted = 1 
 				  WHERE 

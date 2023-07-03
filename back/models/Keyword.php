@@ -7,9 +7,14 @@ class Keyword {
     }
 
     public function getAllKeywords() {
-		$query = "SELECT k.keyword_id, k.keyword, t.language_code, t.value
-				  FROM keywords k
-				  LEFT JOIN translations t ON t.table_name = 'keywords' AND t.row_id = k.keyword_id";
+		$query = "SELECT 
+					k.keyword_id, k.keyword, t.language_code, t.value
+				  FROM 
+				   ".TABLE_KEYWORDS." k
+				  LEFT JOIN 
+				  	translations t 
+				  ON 
+				  	t.table_name = '".TABLE_KEYWORDS."' AND t.row_id = k.keyword_id";
 	
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
@@ -19,7 +24,12 @@ class Keyword {
 	
 
     public function getKeywordById($id) {
-        $query = "SELECT * FROM keywords WHERE keyword_id = :id";
+        $query = "SELECT 
+					* 
+				  FROM 
+				  	".TABLE_KEYWORDS." 
+				  WHERE 
+				  	keyword_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
@@ -28,7 +38,9 @@ class Keyword {
     }
 
     public function createKeyword($keyword) {
-        $query = "INSERT INTO keywords (keyword) VALUES (:keyword)";
+        $query = "INSERT INTO 
+					".TABLE_KEYWORDS." (keyword) 
+				  VALUES (:keyword)";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':keyword', $keyword);
         $stmt->execute();
@@ -37,7 +49,12 @@ class Keyword {
     }
 
     public function updateKeyword($id, $keyword) {
-        $query = "UPDATE keywords SET keyword = :keyword WHERE keyword_id = :id";
+        $query = "UPDATE 
+					".TABLE_KEYWORDS." 
+				  SET 
+					keyword = :keyword 
+				  WHERE 
+					keyword_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':keyword', $keyword);
         $stmt->bindParam(':id', $id);
@@ -47,7 +64,10 @@ class Keyword {
     }
 
     public function deleteKeyword($id) {
-        $query = "DELETE FROM keywords WHERE keyword_id = :id";
+        $query = "DELETE FROM 
+					".TABLE_KEYWORDS." 
+				  WHERE 
+					keyword_id = :id";
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();

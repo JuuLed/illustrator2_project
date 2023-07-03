@@ -54,7 +54,7 @@ class CategoryController
 			];
 
 			// Récupérer les traductions pour la catégorie
-			$translations = $this->translationModel->getTranslationByTableAndId('categories', $categoryId);
+			$translations = $this->translationModel->getTranslationByTableAndId(TABLE_CATEGORIES, $categoryId);
 
 			foreach ($translations as $translation) {
 				$languageCode = $translation['language_code'];
@@ -99,7 +99,7 @@ class CategoryController
 		if ($categoryId) {
 			// Créer les traductions pour la catégorie
 			foreach ($translations as $languageCode => $translation) {
-				$this->translationModel->createTranslation('categories', $categoryId, $translation, $languageCode);
+				$this->translationModel->createTranslation(TABLE_CATEGORIES, $categoryId, $translation, $languageCode);
 			}
 
 			// Récupérer les traductions pour construire la réponse
@@ -162,7 +162,7 @@ class CategoryController
 		$result = $this->categoryModel->deleteCategory($id);
 
 		// Supprimer les traductions associées à la catégorie de la table "translations"
-		$this->translationModel->deleteTranslationByTableAndId('categories', $id);
+		$this->translationModel->deleteTranslationByTableAndId(TABLE_CATEGORIES, $id);
 
 		if ($result > 0) {
 			return ['message' => 'Category deleted successfully'];

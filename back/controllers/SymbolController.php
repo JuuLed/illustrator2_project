@@ -60,7 +60,7 @@ class SymbolController
 			// Fetch categories
 			$categories = $this->symbolCategoryModel->getAllCategoriesBySymbolId($symbol['symbol_id']);
 			foreach ($categories as $category) {
-				$translations = $this->translationModel->getTranslationByTableAndId('categories', $category['category_id']);
+				$translations = $this->translationModel->getTranslationByTableAndId(TABLE_CATEGORIES, $category['category_id']);
 				$categoryData = [
 					'id' => $category['category_id'],
 					'category' => $category['category'],
@@ -75,7 +75,7 @@ class SymbolController
 			// Fetch keywords
 			$keywords = $this->symbolKeywordModel->getAllKeywordsBySymbolId($symbol['symbol_id']);
 			foreach ($keywords as $keyword) {
-				$translations = $this->translationModel->getTranslationByTableAndId('keywords', $keyword['keyword_id']);
+				$translations = $this->translationModel->getTranslationByTableAndId(TABLE_KEYWORDS, $keyword['keyword_id']);
 				$keywordData = [
 					'id' => $keyword['keyword_id'],
 					'keyword' => $keyword['keyword'],

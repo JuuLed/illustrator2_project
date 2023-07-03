@@ -1,4 +1,5 @@
 <?php
+
 class Category
 {
 	protected $pdo;
@@ -13,9 +14,9 @@ class Category
 		$query = "SELECT 
 					*
                   FROM 
-				  	categories
+				  	".TABLE_CATEGORIES." c
 				  ORDER BY 
-				  	categories.order ASC";
+				  	c.order ASC";
 
 		$stmt = $this->pdo->prepare($query);
 		$stmt->execute();
@@ -28,7 +29,7 @@ class Category
 		$query = "SELECT 
 					* 
 				  FROM 
-				  	categories 
+				  	".TABLE_CATEGORIES." 
 				  WHERE 
 				  	category_id = :id";
 
@@ -45,7 +46,7 @@ class Category
 		$order = $lastOrder + 1;
 
 		$insertQuery = "INSERT INTO 
-							categories (category, `order`) 
+							".TABLE_CATEGORIES." (category, `order`) 
 						VALUES 
 							(:category, :order)";
 
@@ -60,9 +61,9 @@ class Category
 	public function getLastCategoryOrder()
 	{
 		$query = "SELECT 
-					MAX(`order`) AS last_order 
+					MAX(`order`) AS last_order
 				  FROM 
-					categories";
+				  	".TABLE_CATEGORIES;
 		$stmt = $this->pdo->query($query);
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -76,7 +77,7 @@ class Category
 	public function updateCategory($id, $category, $order)
 	{
 		$query = "UPDATE 
-					categories 
+					".TABLE_CATEGORIES." 
 				  SET 
 					category = :category,
 					`order` = :order
@@ -95,7 +96,7 @@ class Category
 	public function deleteCategory($id)
 	{
 		$query = "DELETE FROM 
-					categories 
+					".TABLE_CATEGORIES." 
 				  WHERE 
 					category_id = :id";
 
