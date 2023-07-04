@@ -118,3 +118,83 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+function register(username, email, password) {
+	const apiUrl = apiBaseURL + '/register'; // Remplacez par l'URL de votre API d'inscription
+
+	const data = {
+		username: username,
+		email: email,
+		password: password,
+	};
+
+	fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	})
+		.then(response => response.json())
+		.then(result => {
+			if (result.error) {
+				console.error('Registration failed:', result.error);
+			} else {
+				console.log('Registration success!');
+				// Vous pouvez rediriger l'utilisateur vers la page de connexion, ou faire autre chose
+				window.location.href = 'index.php?page=login';
+			}
+		})
+		.catch(error => {
+			console.error('An error occurred:', error);
+		});
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+	const registerForm = document.getElementById('register-form');
+
+	registerForm.addEventListener('submit', e => {
+		e.preventDefault(); // Empêche la soumission du formulaire
+
+		// Récupère les valeurs du formulaire
+		const username = document.getElementById('username').value;
+		const email = document.getElementById('email').value;
+		const password = document.getElementById('password').value;
+
+		// Appelle la fonction d'inscription
+		register(username, email, password);
+	});
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault(); // Empêche la soumission du formulaire
+
+            // Récupère les valeurs du formulaire
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Appelle la fonction de connexion
+            login(email, password);
+        });
+    }
+
+    if (registerForm) {
+        registerForm.addEventListener('submit', e => {
+            e.preventDefault(); // Empêche la soumission du formulaire
+
+            // Récupère les valeurs du formulaire
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Appelle la fonction d'inscription
+            register(username, email, password);
+        });
+    }
+});
