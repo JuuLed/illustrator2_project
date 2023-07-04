@@ -1,0 +1,2 @@
+compose install
+composer require firebase/php-jwt

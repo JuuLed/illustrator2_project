@@ -3,6 +3,8 @@
 require_once './config/database.php';
 require_once './models/User.php';
 
+use \Firebase\JWT\JWT;
+
 class UserController
 {
     protected $userModel;
@@ -36,12 +38,21 @@ class UserController
         $result = $this->userModel->register($username, $email, $password);
 
 		if (isset($result['error'])) {
-			$message = 'Registration failed! ' . $result['error'];
+			return ['error' => $result['error']];
 		} else {
-			$message = 'Registration success!';
+            // Si l'enregistrement a réussi, vous pouvez générer un token JWT
+            $userId = $result['user_id'];
+            $token = $this->generateToken($userId);
+
+            // Stockez le token dans une session
+            $_SESSION['token'] = $token;
+
+            // Ou renvoyez le token en réponse à l'appelant
+            // echo json_encode(['token' => $token]);
+
+			return ['Registration success!'];
 		}
 		
-		return $message;
     }
 
     public function login($email, $password)
@@ -49,15 +60,62 @@ class UserController
         $result = $this->userModel->login($email, $password);
 
         if (isset($result['error'])) {
-            echo 'Login failed! ' . $result['error'];
+            return ['error' => $result['error']];
         } else {
-            // Si la connexion a réussi, vous pouvez rediriger l'utilisateur vers une autre page
-            // et éventuellement stocker les données de l'utilisateur dans une session
-            $_SESSION['user'] = $result;
-			return $result;
+            // Si la connexion a réussi, vous pouvez générer un token JWT
+            $userId = $result['user_id'];
+            $token = $this->generateToken($userId);
+
+            // Stockez le token dans une session
+            $_SESSION['token'] = $token;
+
+			return [
+				'statut' => 'Login success!',
+				'username' => $result['username'],
+				'token' => $token
+			];
+
 
         }
     }
+
+
+// Gestion des TOKENS -----------------------------------------------
+private function generateToken($userId)
+    {
+        $key = "your_secret_key";
+        $tokenId = base64_encode(openssl_random_pseudo_bytes(32));
+        $issuedAt = time();
+        $notBefore = $issuedAt;
+        $expire = $notBefore + (60 * 60 * 24);  // Expire dans 24 heures
+
+        $data = [
+            'iat'  => $issuedAt,  // Temps d'émission du token
+            'jti'  => $tokenId,   // ID du token
+            'iss'  => $_SERVER['SERVER_NAME'], // Émetteur du token
+            'nbf'  => $notBefore, // Token non valide avant cette date
+            'exp'  => $expire,    // Token expire à cette date
+            'data' => [           // Données supplémentaires que vous pouvez inclure dans le token
+                'userId' => $userId,
+            ],
+        ];
+
+        return JWT::encode($data, $key, 'HS256');
+    }
+
+    private function verifyToken($token)
+    {
+        $key = "your_secret_key";
+
+        try {
+            $decoded = JWT::decode($token, $key, array('HS256'));
+            return $decoded->data->userId;
+        } catch (Exception $e) {
+            // Gérer l'erreur de token invalide
+            return null;
+        }
+    }
+
 }
 
 ?>

@@ -5,12 +5,25 @@
 	<meta charset="UTF-8">
 	<title>Illustrateur V2</title>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
-		integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+		integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="icon" href="public/logo-rubicode.png" type="image/x-icon">
 	<link rel="stylesheet" href="css/index.css">
 	<script src="js/api.js"></script>
+	<script src="js/auth.js"></script>
+	<script>
+		// Vérifiez si l'utilisateur est connecté
+		document.addEventListener('DOMContentLoaded', () => {
+
+			if (isLoggedIn()) {
+				const logoutButton = document.getElementById('logout-button');
+				if (logoutButton) {
+					logoutButton.style.display = 'block'; // Affiche le bouton de déconnexion
+				}
+			}
+		});
+	</script>
 </head>
 <?
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -32,27 +45,32 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 
 			<li class="navbar-item">
-				<a class="navbar-link <?= ($currentPage === 'symbols' || $currentPage === 'upload' || $currentPage === 'stats') ? 'active' : ''; ?>" href="index.php?page=symbols">
+				<a class="navbar-link <?= ($currentPage === 'symbols' || $currentPage === 'upload' || $currentPage === 'stats') ? 'active' : ''; ?>"
+					href="index.php?page=symbols">
 					Symboles
 				</a>
 				<ul class="submenu">
 					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>" href="index.php?page=symbols">
+						<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>"
+							href="index.php?page=symbols">
 							Liste
 						</a>
 					</li>
 					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>" href="index.php?page=upload">
+						<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>"
+							href="index.php?page=upload">
 							Ajouter (upload)
 						</a>
 					</li>
 					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>" href="index.php?page=stats">
+						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>"
+							href="index.php?page=stats">
 							Statistiques
 						</a>
 					</li>
 					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'archives' ? 'active' : ""; ?>" href="index.php?page=archives">
+						<a class="navbar-link <?= $currentPage === 'archives' ? 'active' : ""; ?>"
+							href="index.php?page=archives">
 							Archives
 						</a>
 					</li>
@@ -60,12 +78,14 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 			</li>
 
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'categories' ? 'active' : ""; ?>" href="index.php?page=categories">
+				<a class="navbar-link <?= $currentPage === 'categories' ? 'active' : ""; ?>"
+					href="index.php?page=categories">
 					Categories
 				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'keywords' ? 'active' : ""; ?>" href="index.php?page=keywords">
+				<a class="navbar-link <?= $currentPage === 'keywords' ? 'active' : ""; ?>"
+					href="index.php?page=keywords">
 					Mots-clés
 				</a>
 			</li>
@@ -74,7 +94,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 					Parametrages
 				</a>
 			</li>
-			
+
 			<div class="gradient-line"></div>
 
 			<li class="navbar-item">
@@ -83,10 +103,16 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 				</a>
 			</li>
 			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'register' ? 'active' : ""; ?>" href="index.php?page=register">
+				<a class="navbar-link <?= $currentPage === 'register' ? 'active' : ""; ?>"
+					href="index.php?page=register">
 					Enregistrement
 				</a>
 			</li>
+			<li class="navbar-item navbar-connected">
+				<span id="username-display"></span>
+				<a class="navbar-link" id="logout-button" style="display: none;">Déconnexion</a>
+			</li>
+
 		</ul>
 	</div>
 
@@ -100,7 +126,6 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 		?>
 	</div>
 
-	<!-- <script src="js/api.js"></script> -->
 
 </body>
 

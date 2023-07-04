@@ -62,10 +62,33 @@
 
 	.navbar-link:hover {
 		text-shadow: 0 0 .25rem gold, -.125rem -.125rem 1rem gold, .125rem .125rem 1rem gold;
+		cursor: pointer;
 	}
 
 	.navbar-link.active {
 		text-shadow: 0 0 .25rem white, -.125rem -.125rem 1rem white, .125rem .125rem 1rem white;
+	}
+
+	#username-display {
+		font-style: italic;
+		font-weight: bold;
+		font-size: 2.5vh;
+	}
+	#logout-button {
+		/* color: red; */
+		text-shadow: 0 0 .25rem red, -.125rem -.125rem 1rem red, .125rem .125rem 1rem red;
+
+	}
+	#logout-button:hover {
+		text-shadow: 0 0 .25rem pink, -.125rem -.125rem 1rem pink, .125rem .125rem 1rem pink;
+
+	}
+	.navbar-connected {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		color: lightcoral;
 	}
 
 	.submenu {

@@ -16,6 +16,9 @@ require_once './controllers/SymbolKeywordController.php';
 require_once './controllers/SymbolCategoryController.php';
 require_once './controllers/UserController.php';
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
+
 $symbolController = new SymbolController();
 $categoryController = new CategoryController();
 $keywordController = new KeywordController();
