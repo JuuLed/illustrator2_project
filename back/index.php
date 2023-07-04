@@ -14,6 +14,7 @@ require_once './controllers/LanguageController.php';
 require_once './controllers/TranslationController.php';
 require_once './controllers/SymbolKeywordController.php';
 require_once './controllers/SymbolCategoryController.php';
+require_once './controllers/UserController.php';
 
 $symbolController = new SymbolController();
 $categoryController = new CategoryController();
@@ -22,6 +23,7 @@ $languageController = new LanguageController();
 $translationController = new TranslationController();
 $symbolKeywordController = new SymbolKeywordController();
 $symbolCategoryController = new SymbolCategoryController();
+$userController = new UserController();
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -232,6 +234,43 @@ switch ($route) {
             http_response_code(405);
         }
     break;
+
+	case 'users':
+		if ($method === 'GET') {
+			$response = $userController->getAllUsers();
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	case preg_match('/^users\/\d+$/', $route) ? true : false:
+		$id = explode('/', $route)[1];
+		if ($method === 'GET') {
+			$response = $userController->getUserById($id);
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	case 'register':
+		if ($method === 'POST') {
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = $userController->register($data['username'], $data['email'], $data['password']);
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	case 'login':
+		if ($method === 'POST') {
+			$data = json_decode(file_get_contents('php://input'), true);
+			$response = $userController->login($data['email'], $data['password']);
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	
 
     default:
         $response = ['error' => 'Endpoint not found'];
