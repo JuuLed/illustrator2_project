@@ -1,4 +1,3 @@
-// auth.js
 
 // Fonction pour envoyer une requête de connexion à l'API
 function login(email, password) {
@@ -34,92 +33,6 @@ function login(email, password) {
 		});
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-
-
-	// Exemple d'utilisation du formulaire de connexion
-	const loginForm = document.getElementById('login-form');
-
-	loginForm.addEventListener('submit', e => {
-		e.preventDefault(); // Empêche la soumission du formulaire
-
-		// Récupère les valeurs du formulaire
-		const email = document.getElementById('email').value;
-		const password = document.getElementById('password').value;
-
-		// Appelle la fonction de connexion
-		login(email, password);
-	});
-
-});
-
-// Fonction pour vérifier si l'utilisateur est connecté
-function isLoggedIn() {
-	const token = localStorage.getItem('token');
-	return !!token;
-}
-
-
-// Fonction pour afficher ou masquer le bouton de déconnexion
-function toggleLogoutButton() {
-	const logoutButton = document.getElementById('logout-button');
-	if (logoutButton) {
-		logoutButton.style.display = isLoggedIn() ? 'block' : 'none';
-	}
-}
-
-function checkLoginState() {
-	const logoutButton = document.getElementById('logout-button');
-	const loginLink = document.querySelector('a[href="index.php?page=login"]');
-	const registerLink = document.querySelector('a[href="index.php?page=register"]');
-	const usernameDisplay = document.getElementById('username-display');
-  
-	if (isLoggedIn()) {
-	  // L'utilisateur est connecté
-	  const username = localStorage.getItem('username');
-	  if (logoutButton) logoutButton.style.display = 'block';
-	  if (loginLink) loginLink.style.display = 'none';
-	  if (registerLink) registerLink.style.display = 'none';
-	  if (usernameDisplay) usernameDisplay.textContent = username;
-	} else {
-	  // L'utilisateur n'est pas connecté
-	  if (logoutButton) logoutButton.style.display = 'none';
-	  if (loginLink) loginLink.style.display = 'block';
-	  if (registerLink) registerLink.style.display = 'block';
-	  if (usernameDisplay) usernameDisplay.textContent = '';
-	}
-  }
-  
-  document.addEventListener('DOMContentLoaded', () => {
-	checkLoginState();
-	// Autres codes...
-  });
-
-document.addEventListener('DOMContentLoaded', () => {
-	toggleLogoutButton();
-});
-
-// Fonction pour gérer la déconnexion
-function logout() {
-    localStorage.removeItem('token');
-	localStorage.removeItem('username');
-    console.log('Logout success!');
-    // Redirection ou autres actions après la déconnexion
-    checkLoginState(); // ou toggleLogoutButton() si vous utilisez cette fonction
-}
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    toggleLogoutButton();
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            logout();
-        });
-    }
-});
-
-
 function register(username, email, password) {
 	const apiUrl = apiBaseURL + '/register'; // Remplacez par l'URL de votre API d'inscription
 
@@ -151,50 +64,90 @@ function register(username, email, password) {
 		});
 }
 
+// Fonction pour vérifier si l'utilisateur est connecté
+function isLoggedIn() {
+	const token = localStorage.getItem('token');
+	return !!token;
+}
+
+// Fonction pour afficher ou masquer le bouton de déconnexion
+function toggleLogoutButton() {
+	const logoutButton = document.getElementById('logout-button');
+	if (logoutButton) {
+		logoutButton.style.display = isLoggedIn() ? 'block' : 'none';
+	}
+}
+
+// Fonction pour gérer la déconnexion
+function logout() {
+	localStorage.removeItem('token');
+	localStorage.removeItem('username');
+	console.log('Logout success!');
+	// Redirection ou autres actions après la déconnexion
+	checkLoginState(); // ou toggleLogoutButton() si vous utilisez cette fonction
+}
+
+function checkLoginState() {
+	const logoutButton = document.getElementById('logout-button');
+	const loginLink = document.querySelector('a[href="index.php?page=login"]');
+	const registerLink = document.querySelector('a[href="index.php?page=register"]');
+	const usernameDisplay = document.getElementById('username-display');
+
+	if (isLoggedIn()) {
+		// L'utilisateur est connecté
+		const username = localStorage.getItem('username');
+		if (logoutButton) logoutButton.style.display = 'block';
+		if (loginLink) loginLink.style.display = 'none';
+		if (registerLink) registerLink.style.display = 'none';
+		if (usernameDisplay) usernameDisplay.textContent = username;
+	} else {
+		// L'utilisateur n'est pas connecté
+		if (logoutButton) logoutButton.style.display = 'none';
+		if (loginLink) loginLink.style.display = 'block';
+		if (registerLink) registerLink.style.display = 'block';
+		if (usernameDisplay) usernameDisplay.textContent = '';
+	}
+}
+
+// Attachement des gestionnaires d'événements lors du chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
+	const loginForm = document.getElementById('login-form');
 	const registerForm = document.getElementById('register-form');
+	const logoutButton = document.getElementById('logout-button');
 
-	registerForm.addEventListener('submit', e => {
-		e.preventDefault(); // Empêche la soumission du formulaire
+	if (loginForm) {
+		loginForm.addEventListener('submit', e => {
+			e.preventDefault(); // Empêche la soumission du formulaire
 
-		// Récupère les valeurs du formulaire
-		const username = document.getElementById('username').value;
-		const email = document.getElementById('email').value;
-		const password = document.getElementById('password').value;
+			// Récupère les valeurs du formulaire
+			const email = document.getElementById('email').value;
+			const password = document.getElementById('password').value;
 
-		// Appelle la fonction d'inscription
-		register(username, email, password);
-	});
-});
+			// Appelle la fonction de connexion
+			login(email, password);
+		});
+	}
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
+	if (registerForm) {
+		registerForm.addEventListener('submit', e => {
+			e.preventDefault(); // Empêche la soumission du formulaire
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', e => {
-            e.preventDefault(); // Empêche la soumission du formulaire
+			// Récupère les valeurs du formulaire
+			const username = document.getElementById('username').value;
+			const email = document.getElementById('email').value;
+			const password = document.getElementById('password').value;
 
-            // Récupère les valeurs du formulaire
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+			// Appelle la fonction d'inscription
+			register(username, email, password);
+		});
+	}
 
-            // Appelle la fonction de connexion
-            login(email, password);
-        });
-    }
+	if (logoutButton) {
+		logoutButton.addEventListener('click', () => {
+			logout();
+		});
+	}
 
-    if (registerForm) {
-        registerForm.addEventListener('submit', e => {
-            e.preventDefault(); // Empêche la soumission du formulaire
-
-            // Récupère les valeurs du formulaire
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            // Appelle la fonction d'inscription
-            register(username, email, password);
-        });
-    }
+	// Verifier l'etat de la connexion à chaque chargement de la page
+	checkLoginState();
 });

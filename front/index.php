@@ -12,18 +12,6 @@
 	<link rel="stylesheet" href="css/index.css">
 	<script src="js/api.js"></script>
 	<script src="js/auth.js"></script>
-	<script>
-		// Vérifiez si l'utilisateur est connecté
-		document.addEventListener('DOMContentLoaded', () => {
-
-			if (isLoggedIn()) {
-				const logoutButton = document.getElementById('logout-button');
-				if (logoutButton) {
-					logoutButton.style.display = 'block'; // Affiche le bouton de déconnexion
-				}
-			}
-		});
-	</script>
 </head>
 <?
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
