@@ -14,7 +14,17 @@
 	<script src="js/auth.js"></script>
 </head>
 <?
-$currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
+// Liste des pages autorisées
+$allowedPages = ['symbols', 'upload', 'categories', 'keywords', 'login', 'register'];
+
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 'login';
+
+if(!in_array($currentPage, $allowedPages)) {
+    // La page demandée n'est pas dans la liste des pages autorisées
+    // Vous pouvez rediriger l'utilisateur vers une page 404 ou vers la page d'accueil
+    header('Location: index.php?page=symbols');
+    exit;
+}
 ?>
 
 <body>
@@ -24,90 +34,70 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'home';
 			<a class="navbar-logo" href="index.php">Illustrateur V2</a>
 		</div>
 		<ul class="navbar-menu">
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'home' ? 'active' : ""; ?>" href="index.php?page=home">
-					Accueil
-				</a>
-			</li>
+			<div>
 
+				<li class="navbar-item">
+					<a class="navbar-link <?= ($currentPage === 'symbols' || $currentPage === 'upload' || $currentPage === 'stats') ? 'active' : ''; ?>"
+						href="index.php?page=symbols">
+						Symboles
+					</a>
+					<ul class="submenu">
+						<li class="navbar-item">
+							<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>"
+								href="index.php?page=symbols">
+								Liste
+							</a>
+						</li>
+						<li class="navbar-item">
+							<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>"
+								href="index.php?page=upload">
+								Ajouter (upload)
+							</a>
+						</li>
+					</ul>
+				</li>
 
+				<li class="navbar-item">
+					<a class="navbar-link <?= $currentPage === 'categories' ? 'active' : ""; ?>"
+						href="index.php?page=categories">
+						Categories
+					</a>
+				</li>
+				<li class="navbar-item">
+					<a class="navbar-link <?= $currentPage === 'keywords' ? 'active' : ""; ?>"
+						href="index.php?page=keywords">
+						Mots-clés
+					</a>
+				</li>
 
-			<li class="navbar-item">
-				<a class="navbar-link <?= ($currentPage === 'symbols' || $currentPage === 'upload' || $currentPage === 'stats') ? 'active' : ''; ?>"
-					href="index.php?page=symbols">
-					Symboles
-				</a>
-				<ul class="submenu">
-					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'symbols' ? 'active' : ""; ?>"
-							href="index.php?page=symbols">
-							Liste
-						</a>
-					</li>
-					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'upload' ? 'active' : ""; ?>"
-							href="index.php?page=upload">
-							Ajouter (upload)
-						</a>
-					</li>
-					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'stats' ? 'active' : ""; ?>"
-							href="index.php?page=stats">
-							Statistiques
-						</a>
-					</li>
-					<li class="navbar-item">
-						<a class="navbar-link <?= $currentPage === 'archives' ? 'active' : ""; ?>"
-							href="index.php?page=archives">
-							Archives
-						</a>
-					</li>
-				</ul>
-			</li>
+			</div>
+			<div>
 
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'categories' ? 'active' : ""; ?>"
-					href="index.php?page=categories">
-					Categories
-				</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'keywords' ? 'active' : ""; ?>"
-					href="index.php?page=keywords">
-					Mots-clés
-				</a>
-			</li>
-			<li class="navbar-item">
-				<a class="navbar-link <?= $currentPage === 'setting' ? 'active' : ""; ?>" href="index.php?page=setting">
-					Parametrages
-				</a>
-			</li>
+				<div class="gradient-line"></div>
 
-			<div class="gradient-line"></div>
-
-			<li class="navbar-item">
 				<a class="navbar-link <?= $currentPage === 'login' ? 'active' : ""; ?>" href="index.php?page=login">
 					Connexion
 				</a>
-			</li>
-			<li class="navbar-item">
 				<a class="navbar-link <?= $currentPage === 'register' ? 'active' : ""; ?>"
 					href="index.php?page=register">
 					Enregistrement
 				</a>
-			</li>
-			<li class="navbar-item navbar-connected">
-				<span id="username-display"></span>
+				<div class="welcome">
+					<a>Bienvenue </a>
+					<a id="username-display"></a>
+				</div>
+				<!-- <a id="username-display">Bienvenue </a> -->
 				<a class="navbar-link" id="logout-button" style="display: none;">Déconnexion</a>
-			</li>
-
+			</div>
 		</ul>
 	</div>
 
-	<div class="content">
+	<div class="content"
+	style="visibility: <?= ($currentPage === 'register' || $currentPage === 'login') ? 'visible' : 'hidden'; ?>;"
+	>
 		<?php
 		// Routeur pour gérer les différentes pages
-		$page = isset($_GET['page']) ? $_GET['page'] : 'home';
+		$page = isset($_GET['page']) ? $_GET['page'] : 'symbols';
 
 		// Inclusion de la page correspondante
 		include_once 'views/' . $page . '.php';

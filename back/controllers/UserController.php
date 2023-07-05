@@ -83,7 +83,7 @@ class UserController
 // Gestion des TOKENS -----------------------------------------------
 private function generateToken($userId)
     {
-        $key = "your_secret_key";
+        $key = JWT_SECRET_KEY;
         $tokenId = base64_encode(openssl_random_pseudo_bytes(32));
         $issuedAt = time();
         $notBefore = $issuedAt;
@@ -103,18 +103,18 @@ private function generateToken($userId)
         return JWT::encode($data, $key, 'HS256');
     }
 
-    private function verifyToken($token)
-    {
-        $key = "your_secret_key";
+    // private function verifyToken($token)
+    // {
+    //     $key = JWT_SECRET_KEY;
 
-        try {
-            $decoded = JWT::decode($token, $key, array('HS256'));
-            return $decoded->data->userId;
-        } catch (Exception $e) {
-            // Gérer l'erreur de token invalide
-            return null;
-        }
-    }
+    //     try {
+    //         $decoded = JWT::decode($token, $key, array('HS256'));
+    //         return $decoded->data->userId;
+    //     } catch (Exception $e) {
+    //         // Gérer l'erreur de token invalide
+    //         return null;
+    //     }
+    // }
 
 }
 

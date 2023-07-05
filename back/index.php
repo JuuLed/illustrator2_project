@@ -238,6 +238,7 @@ switch ($route) {
         }
     break;
 
+    // Routes pour les utilisateurs et authentification
 	case 'users':
 		if ($method === 'GET') {
 			$response = $userController->getAllUsers();

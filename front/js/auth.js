@@ -25,7 +25,7 @@ function login(email, password) {
 				localStorage.setItem('username', result.username);
 				console.log('Login success!');
 				// Redirigez l'utilisateur vers une autre page ou effectuez d'autres actions
-				window.location.href = 'index.php?page=home';
+				window.location.href = 'index.php?page=symbols';
 			}
 		})
 		.catch(error => {
@@ -70,13 +70,6 @@ function isLoggedIn() {
 	return !!token;
 }
 
-// Fonction pour afficher ou masquer le bouton de déconnexion
-function toggleLogoutButton() {
-	const logoutButton = document.getElementById('logout-button');
-	if (logoutButton) {
-		logoutButton.style.display = isLoggedIn() ? 'block' : 'none';
-	}
-}
 
 // Fonction pour gérer la déconnexion
 function logout() {
@@ -92,6 +85,7 @@ function checkLoginState() {
 	const loginLink = document.querySelector('a[href="index.php?page=login"]');
 	const registerLink = document.querySelector('a[href="index.php?page=register"]');
 	const usernameDisplay = document.getElementById('username-display');
+	const welcomeBlock = document.querySelector('.welcome');
 
 	if (isLoggedIn()) {
 		// L'utilisateur est connecté
@@ -100,12 +94,14 @@ function checkLoginState() {
 		if (loginLink) loginLink.style.display = 'none';
 		if (registerLink) registerLink.style.display = 'none';
 		if (usernameDisplay) usernameDisplay.textContent = username;
+		if (welcomeBlock) welcomeBlock.style.display = 'block';
 	} else {
 		// L'utilisateur n'est pas connecté
 		if (logoutButton) logoutButton.style.display = 'none';
 		if (loginLink) loginLink.style.display = 'block';
 		if (registerLink) registerLink.style.display = 'block';
 		if (usernameDisplay) usernameDisplay.textContent = '';
+		if (welcomeBlock) welcomeBlock.style.display = 'none';
 	}
 }
 
@@ -145,9 +141,31 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (logoutButton) {
 		logoutButton.addEventListener('click', () => {
 			logout();
+			window.location.href = 'index.php?page=login';
 		});
+	}
+
+	// Obtenir l'élément .content
+	const contentElement = document.querySelector('.content');
+
+	// Vérifiez si vous êtes sur la page 'login' ou 'register'
+	const currentPage = window.location.href.split('page=')[1];
+	const allowedPages = ['login', 'register'];
+
+	if (allowedPages.includes(currentPage) || isLoggedIn()) {
+		// Si vous êtes sur la page 'login', 'register', ou si l'utilisateur est connecté, alors rendre le contenu visible
+		contentElement.style.visibility = 'visible';
+	} else {
+		// Sinon, cacher le contenu
+		contentElement.style.visibility = 'hidden';
+	}
+
+	// Gérer la redirection pour les utilisateurs non connectés
+	if (!isLoggedIn() && !allowedPages.includes(currentPage)) {
+		window.location.href = 'index.php?page=login';
 	}
 
 	// Verifier l'etat de la connexion à chaque chargement de la page
 	checkLoginState();
+
 });
