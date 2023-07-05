@@ -22,6 +22,8 @@ SET time_zone = "+00:00";
 -- Base de données : `illustrator2`
 --
 -- --------------------------------------------------------
+CREATE DATABASE IF NOT EXISTS `illustrator2`;
+USE `illustrator2`;
 
 --
 -- Structure de la table `categories`

@@ -3,6 +3,9 @@
 // Chemin du dossier où les symboles sont stockés
 define('SYMBOLS_PATH', '/back/assets/');
 
+// variable du token utilisateur
+define('JWT_SECRET_KEY', 'P7UZSOYLI2AdG+WAOh5v/R4rV5u9WIdROns/Ssa/gBJ0f7JsqXH7ZH4Ie/S/8o+bR1yGaj0Lpe750F3z2tSRBQ==');
+
 // Informations de connexion à la base de données
 //! _____ docker : _____
 // define('DB_HOST', 'db');
@@ -23,5 +26,4 @@ define('TABLE_LANGUAGES', 'languages');
 define('TABLE_TRANSLATIONS', 'translations');
 define('TABLE_USERS', 'users');
 
-define('JWT_SECRET_KEY', 'P7UZSOYLI2AdG+WAOh5v/R4rV5u9WIdROns/Ssa/gBJ0f7JsqXH7ZH4Ie/S/8o+bR1yGaj0Lpe750F3z2tSRBQ==');
 

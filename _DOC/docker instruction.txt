@@ -5,14 +5,20 @@
 	FRONT :
 		js/api.js	 : ligne 3 à 7
 
-2. Lancer Docker/Container :
+2.configurer le fichier back/config/config.php selon vos besoins:
+	- le chemin de upload des symboles
+	- la clé secréte du token
+	- les configuration d'accés a la BDD et le noms des ces tables
+		!!! --> si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier init.sql !
+
+3. Lancer Docker/Container :
 	- Ouvrir terminal/console
 	- Navigué jusqu'à la racine du projet (là où il y a docker-compose.yml)
 	- Lancé la commande : 
 		docker-compose up --build
 		et laissé docker travailler 2 minutes.
 
-3. Accés aux aperçus :
+4. Accés aux aperçus :
 	front 
 		http://localhost
 	back
@@ -21,7 +27,7 @@
 		http://localhost:8081/
 
 
-Si une erreur persiste sur la db (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
+Si une erreur persiste sur la BDD (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
 	- docker-compose down --volumes
 puis :
 	- docker-compose up
