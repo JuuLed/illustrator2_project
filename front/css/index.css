@@ -55,7 +55,8 @@
 		flex-direction: column;
 		justify-content: space-between;
 	}
-	.navbar-menu > div:nth-child(2) {
+
+	.navbar-menu>div:nth-child(2) {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
@@ -88,20 +89,24 @@
 		font-size: 2vh;
 		width: 100%;
 	}
+
 	#username-display {
 		font-style: italic;
 		font-weight: bold;
 		color: tomato;
 	}
+
 	#logout-button {
 		/* color: red; */
 		text-shadow: 0 0 .25rem red, -.125rem -.125rem 1rem red, .125rem .125rem 1rem red;
 
 	}
+
 	#logout-button:hover {
 		text-shadow: 0 0 .25rem pink, -.125rem -.125rem 1rem pink, .125rem .125rem 1rem pink;
 
 	}
+
 	/* .navbar-connected {
 		display: flex;
 		flex-direction: column;
@@ -129,94 +134,104 @@
 		height: calc(100vh - 20px);
 	}
 
-/* ________________________________ Authentification ______________________________ */
+	/* ________________________________ Authentification ______________________________ */
 
-/* Style pour le formulaire de connexion */
-#login-form {
-	max-width: 300px;
-	margin: 0 auto;
-	padding: 20px;
-	background-color: #f2f2f2;
-	border: 2px solid #333;
-	border-radius: 8px;
-	box-sizing: border-box; /* Ajuste la boîte pour inclure les bordures */
-  }
-  
-  #login-form label {
-	display: block;
-	margin-bottom: 10px;
-	color: #333;
-	font-weight: bold;
-  }
-  
-  #login-form input[type="email"],
-  #login-form input[type="password"] {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin-bottom: 10px;
-	box-sizing: border-box; /* Ajuste la boîte pour inclure les bordures */
-  }
-  
-  #login-form button[type="submit"] {
-	width: 100%;
-	padding: 10px;
-	background-color: #333;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background-color 0.3s ease;
-  }
-  
-  #login-form button[type="submit"]:hover {
-	background-color: #555;
-  }
-  
-  /* Style pour le formulaire d'enregistrement */
-  #register-form {
-	max-width: 300px;
-	margin: 0 auto;
-	padding: 20px;
-	background-color: #f2f2f2;
-	border: 2px solid #007bff;
-	border-radius: 8px;
-	box-sizing: border-box; /* Ajuste la boîte pour inclure les bordures */
-  }
-  
-  #register-form label {
-	display: block;
-	margin-bottom: 10px;
-	color: #007bff;
-	font-weight: bold;
-  }
-  
-  #register-form input[type="text"],
-  #register-form input[type="email"],
-  #register-form input[type="password"] {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	margin-bottom: 10px;
-	box-sizing: border-box; /* Ajuste la boîte pour inclure les bordures */
-  }
-  
-  #register-form input[type="submit"] {
-	width: 100%;
-	padding: 10px;
-	background-color: #007bff;
-	color: #fff;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-weight: bold;
-	transition: background-color 0.3s ease;
-  }
-  
-  #register-form input[type="submit"]:hover {
-	background-color: #0056b3;
-  }
-  
+	/* Style pour le formulaire de connexion */
+	#login-form {
+		max-width: 300px;
+		margin: 0 auto;
+		padding: 20px;
+		background-color: #f2f2f2;
+		border: 2px solid #333;
+		border-radius: 8px;
+		box-sizing: border-box;
+		/* Ajuste la boîte pour inclure les bordures */
+	}
+
+	#login-form label {
+		display: block;
+		margin-bottom: 10px;
+		color: #333;
+		font-weight: bold;
+	}
+
+	#login-form input[type="email"],
+	#login-form input[type="password"] {
+		width: 100%;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		margin-bottom: 10px;
+		box-sizing: border-box;
+		/* Ajuste la boîte pour inclure les bordures */
+	}
+
+	#login-form button[type="submit"] {
+		width: 100%;
+		padding: 10px;
+		background-color: #333;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: bold;
+		transition: background-color 0.3s ease;
+	}
+
+	#login-form button[type="submit"]:hover {
+		background-color: #555;
+	}
+
+	/* Style pour le formulaire d'enregistrement */
+	#register-form {
+		max-width: 300px;
+		margin: 0 auto;
+		padding: 20px;
+		background-color: #f2f2f2;
+		border: 2px solid #007bff;
+		border-radius: 8px;
+		box-sizing: border-box;
+		/* Ajuste la boîte pour inclure les bordures */
+	}
+
+	#register-form label {
+		display: block;
+		margin-bottom: 10px;
+		color: #007bff;
+		font-weight: bold;
+	}
+
+	#register-form input[type="text"],
+	#register-form input[type="email"],
+	#register-form input[type="password"] {
+		width: 100%;
+		padding: 10px;
+		border: 1px solid #ccc;
+		border-radius: 4px;
+		margin-bottom: 10px;
+		box-sizing: border-box;
+		/* Ajuste la boîte pour inclure les bordures */
+	}
+
+	#register-form input[type="submit"] {
+		width: 100%;
+		padding: 10px;
+		background-color: #007bff;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-weight: bold;
+		transition: background-color 0.3s ease;
+	}
+
+	#register-form input[type="submit"]:hover {
+		background-color: #0056b3;
+	}
+
+	.error {
+		color: red;
+		text-align: center;
+		padding-top: 2vh;
+		font-weight: bold;
+	}

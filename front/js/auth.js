@@ -1,3 +1,7 @@
+function displayError(formId, message) {
+    const errorElement = document.querySelector(`#${formId}-error`);
+    errorElement.textContent = message;
+}
 
 // Fonction pour envoyer une requête de connexion à l'API
 function login(email, password) {
@@ -19,6 +23,7 @@ function login(email, password) {
 		.then(result => {
 			if (result.error) {
 				console.error('Login failed:', result.error);
+				displayError('login', "Adresse mail ou mot de passe invalide.");
 			} else {
 				// Enregistrez le token dans le stockage local (LocalStorage ou SessionStorage)
 				localStorage.setItem('token', result.token);
@@ -53,6 +58,7 @@ function register(username, email, password) {
 		.then(result => {
 			if (result.error) {
 				console.error('Registration failed:', result.error);
+				displayError('register', 'Cette adresse mail existe déja.');
 			} else {
 				console.log('Registration success!');
 				// Vous pouvez rediriger l'utilisateur vers la page de connexion, ou faire autre chose
