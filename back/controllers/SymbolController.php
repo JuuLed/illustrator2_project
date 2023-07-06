@@ -128,6 +128,11 @@ class SymbolController
 		
 			// Appel à la méthode du model pour créer le symbole
 			$symbolId = $this->symbolModel->createSymbol($symbolName);
+
+			$symbolData = $this->getSymbol($symbolId);
+
+			$newFileName = SYMBOLS_PATH . $symbolData['file_name'] . '.svg';
+			rename($fileDestination, $newFileName);
 		
 			// Retournez une réponse appropriée
 			$response = array(
@@ -135,7 +140,7 @@ class SymbolController
 				"message" => "Symbol has been successfully created.",
 				"data" => array(
 					"symbol_name" => $symbolName,
-					"file_name" => $fileName
+					"file_name" => $newFileName
 				)
 			);
 		} else {
