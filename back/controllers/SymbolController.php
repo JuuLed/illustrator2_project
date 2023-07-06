@@ -53,6 +53,7 @@ class SymbolController
 				'symbol_name' => $symbol['symbol_name'],
 				'size' => $symbol['size'],
 				'active' => $symbol['active'] ? 1 : 0,
+				'src' => SYMBOLS_PATH . $symbol['file_name'],
 				'categories' => [],
 				'keywords' => []
 			];
@@ -99,16 +100,54 @@ class SymbolController
 	// 	"size": 50,
 	// 	"active": 0
 	// }
-	public function createSymbol($data)
-	{
-		$symbolName = $data['symbol_name'];
-		$size = $data['size'];
-		$active = $data['active'];
+	// public function createSymbol($data)
+	// {
+	// 	$symbolName = $data['symbol_name'];
+	// 	$size = $data['size'];
+	// 	$active = $data['active'];
 
-		$symbolId = $this->symbolModel->createSymbol($symbolName, $size, $active);
+	// 	$symbolId = $this->symbolModel->createSymbol($symbolName, $size, $active);
 
-		return $symbolId;
+	// 	return $symbolId;
+	// }
+
+	public function createSymbol($file, $symbolName) {
+		// Récupérez les informations du fichier
+		$fileName = $file['name'];
+		$fileTmpName = $file['tmp_name'];
+		$fileSize = $file['size'];
+		$fileError = $file['error'];
+		$fileType = $file['type'];
+	
+		// Validez les informations du fichier et le nom du symbole avant de les utiliser
+	
+		// Utilisez move_uploaded_file pour déplacer le fichier dans le dossier de destination
+		$fileDestination = SYMBOLS_PATH . $fileName;
+		if (move_uploaded_file($fileTmpName, $fileDestination)) {
+			// Enregistrez les informations du fichier et le nom du symbole dans votre base de données
+		
+			// Appel à la méthode du model pour créer le symbole
+			$symbolId = $this->symbolModel->createSymbol($symbolName);
+		
+			// Retournez une réponse appropriée
+			$response = array(
+				"status" => "success",
+				"message" => "Symbol has been successfully created.",
+				"data" => array(
+					"symbol_name" => $symbolName,
+					"file_name" => $fileName
+				)
+			);
+		} else {
+			$response = array(
+				"status" => "error",
+				"message" => "Failed to upload file."
+			);
+		}
+	
+		return $response;
 	}
+	
 
 	// Json de update :
 	// {
@@ -162,4 +201,35 @@ class SymbolController
 		}
 	}
 
+	// Verification du .svg
+	function checkSvgFile($file_path)
+	{
+		$svg_content = file_get_contents($file_path);
+
+		// Cherchez toutes les occurrences de fill et stroke avec leur couleur respective
+		preg_match_all('/(fill|stroke):\s*(#[0-9a-fA-F]{6}|#[0-9a-fA-F]{3})/i', $svg_content, $matches);
+
+		// Initialise un tableau pour stocker les couleurs uniques trouvées
+		$colors = array();
+
+		foreach ($matches[2] as $color) {
+			// Si une couleur autre que #000000 est trouvée, refusez le fichier
+			if (strtolower($color) !== "#000000") {
+				return false;
+			}
+			if (!in_array($color, $colors)) {
+				$colors[] = $color;
+			}
+		}
+
+		// Si plus d'une couleur est trouvée, refusez le fichier
+		if (count($colors) > 1) {
+			return false;
+		}
+
+		echo "Colors: ";
+		print_r($colors); // Imprimez le tableau des couleurs
+
+		return true;
+	}
 }

@@ -32,7 +32,7 @@ illustrator2_project/
 │   │   └── Test.php
 │   ├── utils/
 │   │   └── SvgValidator.php
-│   └── svg_storage/
+│   └── assets/
 │       └── ... (fichiers SVG)
 │
 └── front/
@@ -48,11 +48,9 @@ illustrator2_project/
     │   ├── autre-fichier-JS.js
     │   └── svg-validation.js
     └── views/
-        ├── home.php
         ├── symbols.php
         ├── categories.php
         ├── keywords.php
-        ├── setting.php
-        ├── stats.php
         ├── login.php
+        ├── upload.php
         └── register.php

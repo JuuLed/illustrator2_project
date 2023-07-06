@@ -50,13 +50,26 @@ switch ($route) {
     case 'symbols':
         if ($method === 'GET') {
             $response = $symbolController->getAllSymbols();
-        } elseif ($method === 'POST') {
-            $data = json_decode(file_get_contents('php://input'), true);
-            $response = $symbolController->createSymbol($data);
-        } else {
-            $response = ['error' => 'Method not allowed'];
-            http_response_code(405);
-        }
+        }    elseif ($method === 'POST') {
+			if (!empty($_FILES['file']) && !empty($_POST['symbol_name'])) {
+				$file = $_FILES['file'];
+				$symbolName = $_POST['symbol_name'];
+	
+				// Valider le fichier et le nom du symbole
+	
+				$response = $symbolController->createSymbol($file, $symbolName);
+			} else {
+				$response = array(
+					"status" => "error",
+					"message" => "File and symbol name are required."
+				);
+			}
+	
+			// Afficher la réponse sous forme de JSON
+			header('Content-Type: application/json');
+			echo json_encode($response);
+		}
+	
     break;
     case preg_match('/^symbols\/\d+$/', $route) ? true : false:
         $id = explode('/', $route)[1];

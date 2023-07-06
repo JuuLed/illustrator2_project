@@ -24,12 +24,15 @@
 
 <table class="table-symbols">
 	<tr>
-		<th>Fichier</th>
 		<th>Nom du symbole</th>
 		<th class="cln-size">Taille</th>
 		<th class="cln-size">Actif</th>
+        <th>Aperçu</th>
 		<th>Catégories</th>
 		<th>Mots-clés</th>
+        <th>Statistiques</th>
+        <th>Modifier</th> 
+        <th>Télécharger</th>
 		
 		<th>
 			<input type="checkbox" id="selectAllCheckbox">
