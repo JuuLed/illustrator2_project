@@ -1,10 +1,16 @@
 <style>
+	.content-upload {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
 	#drop_zone {
 		margin: 30px;
 		padding: 20px;
 		border: 2px dashed #ccc;
-		width: 50%;
-		height: 200px;
+		width: 45%;
+		height: 400px;
 		text-align: center;
 		position: relative;
 		display: flex;
@@ -14,58 +20,46 @@
 		overflow: hidden;
 	}
 
-	#drop_zone i {
-		font-size: 40px;
-		margin-bottom: 10px;
-		padding: 2vh;
+	#uploadProgress {
+		margin: 30px;
+		padding: 20px;
+		width: 45%;
+		height: 400px;
+		overflow-y: auto;
+		border: 2px solid #ccc;
 	}
 
 	#drop_zone.hover {
 		border-color: #888;
 	}
 
-	/* Style pour les barres de progression */
 	.upload-progress {
 		margin-top: 10px;
 		padding: 3px;
 		border: 1px solid #ccc;
-		text-align: center;
 		color: #000;
+		width: 100%;
 	}
 
-	/* Style pour les messages d'erreur */
 	.upload-error {
 		color: red;
 	}
 
-	/* Style pour les messages de succès */
 	.upload-success {
 		color: green;
 	}
 
-
-	.content-upload {
+	.upload-progress>div:nth-child(1) {
+		flex: 0 0 33%;
 		display: flex;
-		width: 60%;
 	}
 
-	.upload-progress {
-  display: flex;
-  flex-wrap: wrap;
-  /* width: 50%; */
-}
-
-.upload-progress > div:nth-child(1) {
-  flex: 0 0 33%;
-  display: flex;
-}
-
-.upload-progress .upload-error {
-  flex-basis: 100%;
-  margin-top: 10px;
-}
-
+	.upload-progress .upload-error {
+		flex-basis: 100%;
+		margin-top: 10px;
+	}
 </style>
+
 
 
 
