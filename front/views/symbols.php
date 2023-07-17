@@ -1,7 +1,19 @@
 <link rel="stylesheet" href="./css/symbols.css">
 
 <div class="header-symbols">
-	<h1>SYMBOLS</h1>
+	<div>
+		<h1>SYMBOLS</h1>
+
+
+		<button type="button" id="openUploadModal">AJOUTER SYMBOLES</button>
+
+
+
+
+
+
+	</div>
+
 
 	<div class="header-symbols search-bar">
 		<div>
@@ -27,13 +39,12 @@
 		<th>Nom du symbole</th>
 		<th class="cln-size">Taille</th>
 		<th class="cln-size">Actif</th>
-        <th>Aperçu</th>
+		<th>Aperçu</th>
 		<th>Catégories</th>
 		<th>Mots-clés</th>
-        <th>Statistiques</th>
-        <th>Modifier</th> 
-        <th>Télécharger</th>
-		
+		<th>Modifier</th>
+		<th>Télécharger</th>
+
 		<th>
 			<input type="checkbox" id="selectAllCheckbox">
 			<button id="deleteSelectedBtn" disabled="true">Supp. sélect.</button>
@@ -44,5 +55,13 @@
 
 
 
+<div class="uploadModal">
+	<div class="uploadModal-content">
+		<!-- Le contenu du formulaire -->
+	</div>
+</div>
+
+
 
 <script src="./js/symbols.js"></script>
+

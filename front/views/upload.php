@@ -61,8 +61,6 @@
 </style>
 
 
-
-
 <div class="content-upload">
 
 
@@ -101,7 +99,12 @@
 		this.className = '';
 		e.preventDefault();
 
-		fileInput.files = e.dataTransfer.files;
+		// fileInput.files = e.dataTransfer.files;
+		var dataTransfer = new DataTransfer();
+for (var i = 0; i < e.dataTransfer.files.length; i++) {
+    dataTransfer.items.add(e.dataTransfer.files[i]);
+}
+fileInput.files = dataTransfer.files;
 
 		//  gérer plusieurs fichiers
 		for (var i = 0; i < fileInput.files.length; i++) {
@@ -184,7 +187,6 @@
 			this.disabled = true;
 		}
 
-
 		progressBarContainer.appendChild(submitButton);
 		uploadProgress.appendChild(progressBarContainer);
 
@@ -242,8 +244,6 @@
 
 
 	}
-
-
 
 	function handleFile(file) {
 		return new Promise((resolve, reject) => {
