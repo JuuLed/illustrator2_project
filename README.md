@@ -17,20 +17,20 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 3. DOCKER :
 
-1. Pour passé de local a docker ou inversement, commenté/décommenté ces lignes dans ces fichiers :
-	BACK :
-		config/config.php : ligne 7 à 10
-		index.php	 : ligne 28 à 32
-	FRONT :
-		js/api.js	 : ligne 3 à 7
+4. Pour passé de local a docker ou inversement, commenté/décommenté ces lignes dans ces fichiers :
+	- BACK :
+		- config/config.php : ligne 7 à 10
+		- index.php	 : ligne 28 à 32
+	- FRONT :
+		- js/api.js	 : ligne 3 à 7
 
-2. configurer les variables du fichier back/config/config.php selon vos besoins:
+5. configurer les variables du fichier back/config/config.php selon vos besoins:
 	- le chemin de upload des symboles
 	- la clé secréte du token
-	- les configuration d'accés a la BDD et le noms des ces tables
-	 --> si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql
+	- les configurations d'accés a la BDD et le noms des ses tables 
+	(si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql)
 
-3. Lancer Docker/Container :
+6. Lancer Docker/Container :
 	- Ouvrir terminal/console
 	- Navigué jusqu'à la racine du projet (là où il y a docker-compose.yml)
 	- Lancé la commande : 
@@ -38,7 +38,7 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 		
 		et laissé docker travailler 2 minutes.
 
-4. Accés aux aperçus :
+7. Accés aux aperçus :
 	front 
 		http://localhost
 	back
