@@ -5,7 +5,7 @@
 	FRONT :
 		js/api.js	 : ligne 3 à 7
 
-2.configurer le fichier back/config/config.php selon vos besoins:
+2. configurer le fichier back/config/config.php selon vos besoins:
 	- le chemin de upload des symboles
 	- la clé secréte du token
 	- les configuration d'accés a la BDD et le noms des ces tables
