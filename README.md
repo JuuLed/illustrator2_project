@@ -10,13 +10,11 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 	```bash
    git clone https://github.com/JuuLed/illustrator2_project.git
-   ```
 
 2.Accédez au répertoire du projet :
 
 	```bash
    cd illustrator2_project
-   ```
 
 
 ## Utilisation
