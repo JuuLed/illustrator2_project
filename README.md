@@ -8,18 +8,14 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 1. Clonez ce dépôt sur votre machine locale :
 
-	```
-   git clone https://github.com/JuuLed/illustrator2_project.git
-   ```
+	``git clone https://github.com/JuuLed/illustrator2_project.git``
 
 
 
 2.Accédez au répertoire du projet :
 
 
-	
-   cd illustrator2_project
-   ```
+	``cd illustrator2_project``
 
 
 ## Utilisation
