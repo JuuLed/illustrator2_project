@@ -31,7 +31,7 @@ illustrator2_project/
 │   │   ├── Translation.php
 │   │   └── User.php
 │   ├── tests/ 
-│   │   └── Test.php
+│   │   └── UserControllerTest.php
 │   ├── utils/
 │   │   └── SvgValidator.php
 │   └── assets/
