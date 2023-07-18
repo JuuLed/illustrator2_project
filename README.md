@@ -28,7 +28,7 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 	- le chemin de upload des symboles
 	- la clé secréte du token
 	- les configurations d'accés a la BDD et le noms des ses tables 
-	(si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql)
+		- (si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql)
 
 6. Lancer Docker/Container :
 	- Ouvrir terminal/console
@@ -39,12 +39,12 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 		et laissé docker travailler 2 minutes.
 
 7. Accés aux aperçus :
-	front 
-		http://localhost
-	back
-		http://localhost:8000/index.php/symbols
-	phpMyAdmin :
-		http://localhost:8081/
+	- front 
+		- http://localhost
+	- back
+		- http://localhost:8000/index.php/symbols
+	- phpMyAdmin :
+		- http://localhost:8081/
 
 
 Si une erreur persiste sur la BDD (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
