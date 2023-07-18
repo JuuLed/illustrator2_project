@@ -24,17 +24,18 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 	FRONT :
 		js/api.js	 : ligne 3 à 7
 
-2. configurer le fichier back/config/config.php selon vos besoins:
+2. configurer les variables du fichier back/config/config.php selon vos besoins:
 	- le chemin de upload des symboles
 	- la clé secréte du token
 	- les configuration d'accés a la BDD et le noms des ces tables
-		!!! --> si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier init.sql !
+	 --> si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql
 
 3. Lancer Docker/Container :
 	- Ouvrir terminal/console
 	- Navigué jusqu'à la racine du projet (là où il y a docker-compose.yml)
 	- Lancé la commande : 
-		docker-compose up --build
+		```docker-compose up --build```
+		
 		et laissé docker travailler 2 minutes.
 
 4. Accés aux aperçus :
@@ -47,9 +48,12 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 
 Si une erreur persiste sur la BDD (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
-	- docker-compose down --volumes
+
+```docker-compose down --volumes```
+
 puis :
-	- docker-compose up
+
+```docker-compose up```
 
 ## Documentation API
 
