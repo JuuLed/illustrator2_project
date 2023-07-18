@@ -15,6 +15,7 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 	```bash
    cd illustrator2_project
+   ```
 
 
 ## Utilisation
