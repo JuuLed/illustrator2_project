@@ -42,7 +42,7 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 	- front 
 		- http://localhost
 	- back
-		- http://localhost:8000/index.php/symbols
+		- http://localhost:8000/index.php
 	- phpMyAdmin :
 		- http://localhost:8081/
 
