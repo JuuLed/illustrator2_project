@@ -1,0 +1,819 @@
+openapi: 3.0.0
+info:
+  title: Illustrator2
+  version: 1.0.0
+servers:
+# Added by API Auto Mocking Plugin
+# Added by API Auto Mocking Plugin
+- description: SwaggerHub API Auto Mocking
+  url: https://virtserver.swaggerhub.com/JLED44_1/illustrator2/1.0.0
+- url: http://localhost:8000/
+paths:
+  /register:
+    post:
+      summary: Register a new user
+      description: This endpoint registers a new user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                username: "john_doe"
+                email: "john.doe@example.com"
+                password: "password123"
+      responses:
+        '200':
+          description: Registration was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statut:
+                    type: string
+                  username:
+                    type: string
+                  token:
+                    type: string
+              example:
+                statut: "Registration success!"
+                username: "john_doe"
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Registration failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Username or Email already exists."
+  /login:
+    post:
+      summary: Log in a user
+      description: This endpoint logs in a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              example:
+                email: "john.doe@example.com"
+                password: "password123"
+      responses:
+        '200':
+          description: Login was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statut:
+                    type: string
+                  username:
+                    type: string
+                  token:
+                    type: string
+              example:
+                statut: "Login success!"
+                username: "john_doe"
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Login failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              examples:
+                emailNotFound:
+                  value:
+                    error: "Email doesn't exist."
+                invalidPassword:
+                  value:
+                    error: "Invalid password."
+  /users:
+    get:
+      summary: Get all users
+      description: This endpoint returns all registered users.
+      responses:
+        '200':
+          description: Operation was successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    user_id:
+                      type: integer
+                    username:
+                      type: string
+                    password:
+                      type: string
+              examples:
+                MultipleUsers:
+                  summary: Multiple users
+                  value:
+                    - user_id: 2
+                      username: "testuser"
+                      password: "$2y$10$dw2UG9P8MAvgWMEwk4AW6eFIh8yKuGmAmG57K7MUz0F47oK2ySPku"
+                    - user_id: 8
+                      username: "test"
+                      password: "$2y$10$b6ZItl2P.pgmnyA8trPIGOXTurpUqRfQ7.V7qmYnOthf9KIFiZOG2"
+                    - user_id: 12
+                      username: "sukunAkaza"
+                      password: "$2y$10$RmYtfUGaCvgaY/B9w96p3.jDBPwvHroBXPiGe.U5x3.AczRjQKvry"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Method not allowed"
+
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      description: This endpoint returns a specific user identified by their ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The user ID.
+      responses:
+        '200':
+          description: Operation was successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_id:
+                    type: integer
+                  username:
+                    type: string
+                  email:
+                    type: string
+              examples:
+                SingleUser:
+                  summary: Single user
+                  value:
+                    user_id: 2
+                    username: "testuser"
+                    email: "test@test.com"
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+              example:
+                error: "Method not allowed"
+  /symbols:
+    get:
+      summary: Returns a list of all symbols
+      responses:
+        200:
+          description: A JSON array of symbols
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Symbol'
+    post:
+      summary: Create a new symbol
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                symbol_name:
+                  type: string
+      responses:
+        200:
+          description: A JSON object of the created symbol
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Symbol'
+  /symbols/{id}:
+    get:
+      summary: Get a symbol by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A JSON object of the symbol
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Symbol'
+    put:
+      summary: Update a symbol by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Symbol'
+      responses:
+        200:
+          description: A JSON object of the updated symbol
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Symbol'
+    delete:
+      summary: Delete a symbol by id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: A message indicating the symbol was deleted
+          content:
+            application/json:
+              schema: 
+                type: object
+                properties:
+                  message:
+                    type: string
+  /categories:
+    get:
+      summary: "Récupère toutes les catégories"
+      responses:
+        200:
+          description: "Liste des catégories"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/Category'
+    post:
+      summary: "Crée une nouvelle catégorie"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryToCreate'
+      responses:
+        200:
+          description: "Catégorie créée avec succès"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+  /categories/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+        format: int64
+    get:
+      summary: "Récupère une catégorie par ID"
+      responses:
+        200:
+          description: "Catégorie récupérée"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+    put:
+      summary: "Met à jour une catégorie"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryToUpdate'
+      responses:
+        200:
+          description: "Catégorie mise à jour"
+    delete:
+      summary: "Supprime une catégorie"
+      responses:
+        200:
+          description: "Catégorie supprimée"
+  /keywords:
+    get:
+      summary: Returns a list of all keywords.
+      responses:
+        '200':
+          description: A JSON array of keywords.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Keyword'
+    post:
+      summary: Creates a new keyword.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeywordToCreate'
+      responses:
+        '200':
+          description: Returns the created keyword.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Keyword'
+  /keywords/{keywordId}:
+    parameters:
+      - name: keywordId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Returns a keyword by ID.
+      responses:
+        '200':
+          description: A keyword object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Keyword'
+    put:
+      summary: Updates a keyword by ID.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KeywordToUpdate'
+      responses:
+        '200':
+          description: Returns the updated keyword.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Keyword'
+    delete:
+      summary: Deletes a keyword by ID.
+      responses:
+        '200':
+          description: Returns a success message.
+  /symbols/{symbolId}/categories:
+    parameters:
+      - name: symbolId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Returns all categories associated with a particular symbol, specified by its ID.
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+        '405':
+          description: Method not allowed
+
+  /symbols/{symbolId}/categories/{categoryId}:
+    parameters:
+      - name: symbolId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: categoryId
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Adds a category to a symbol.
+      responses:
+        '200':
+          description: Category successfully added to symbol.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '405':
+          description: Method not allowed
+    delete:
+      summary: Removes a category from a symbol.
+      responses:
+        '200':
+          description: Category successfully removed from symbol.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '405':
+          description: Method not allowed        
+  /symbols/{symbolId}/keywords:
+    parameters:
+      - name: symbolId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Returns all keywords associated with a particular symbol, specified by its ID.
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keywords:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Keyword'
+        '405':
+          description: Method not allowed
+
+  /symbols/{symbolId}/keywords/{keywordId}:
+    parameters:
+      - name: symbolId
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: keywordId
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      summary: Adds a keyword to a symbol.
+      responses:
+        '200':
+          description: Keyword successfully added to symbol.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '405':
+          description: Method not allowed
+    delete:
+      summary: Removes a keyword from a symbol.
+      responses:
+        '200':
+          description: Keyword successfully removed from symbol.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '405':
+          description: Method not allowed
+  /languages:
+    get:
+      summary: Get a list of all languages
+      responses:
+        '200':
+          description: List of languages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Language'
+    post:
+      summary: Create a new language
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language_code:
+                  type: string
+                language_name:
+                  type: string
+      responses:
+        '200':
+          description: Language created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        '405':
+          description: Method not allowed
+
+  /languages/{languageCode}:
+    parameters:
+      - name: languageCode
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Returns a specific language by its code
+      responses:
+        '200':
+          description: Specific language
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        '404':
+          description: Language not found
+        '405':
+          description: Method not allowed
+    put:
+      summary: Updates a specific language
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language_name:
+                  type: string
+      responses:
+        '200':
+          description: Language updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Language not found
+        '405':
+          description: Method not allowed
+    delete:
+      summary: Deletes a specific language
+      responses:
+        '200':
+          description: Language deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '404':
+          description: Language not found
+        '405':
+          description: Method not allowed
+  /translations:
+    get:
+      summary: Récupère toutes les traductions
+      responses:
+        200:
+          description: Une liste de traductions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Translation'
+    post:
+      summary: Crée une nouvelle traduction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Translation'
+      responses:
+        200:
+          description: La traduction créée
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Translation'
+  /translations/{id}:
+    get:
+      summary: Récupère les traductions par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la traduction
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Traduction pour l'ID donné
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Translation'
+    put:
+      summary: Met à jour les traductions par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la traduction
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Translation'
+      responses:
+        200:
+          description: Traductions mises à jour avec succès
+    delete:
+      summary: Supprime les traductions par ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la traduction
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Traductions supprimées avec succès
+
+          
+          
+components:
+  schemas:
+    Symbol:
+      type: object
+      properties:
+        id:
+          type: integer
+        unique_id:
+          type: string
+        file_name:
+          type: string
+        symbol_name:
+          type: string
+        size:
+          type: integer
+        active:
+          type: integer
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+        keywords:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Keyword'
+    Category:
+      type: "object"
+      properties:
+        category_id:
+          type: integer
+        category:
+          type: string
+        order:
+          type: integer
+        translations:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Translation'
+    CategoryToCreate:
+      type: "object"
+      properties:
+        category:
+          type: string
+        translations:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Translation'
+    CategoryToUpdate:
+      type: "object"
+      properties:
+        category:
+          type: string
+        order:
+          type: integer
+    Keyword:
+      type: object
+      properties:
+        keyword_id:
+          type: integer
+        keyword:
+          type: string
+        translations:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Translation'
+    KeywordToCreate:
+      type: object
+      properties:
+        keyword:
+          type: string
+        translations:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Translation'
+    KeywordToUpdate:
+      type: object
+      properties:
+        keyword:
+          type: string
+    Language:
+      type: object
+      properties:
+        language_code:
+          type: string
+          example: "FR"
+        language_name:
+          type: string
+          example: "Français"
+    Translation:
+      type: object
+      properties:
+        table_name:
+          type: string
+        row_id:
+          type: integer
+        value:
+          type: string
+        language_code:
+          type: string
+      required:
+        - table_name
+        - row_id
+        - value
+        - language_code

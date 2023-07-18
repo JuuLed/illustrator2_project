@@ -50,7 +50,11 @@ class UserController
             // Ou renvoyez le token en réponse à l'appelant
             // echo json_encode(['token' => $token]);
 
-			return ['Registration success!'];
+			return [
+				'statut' => 'Registration success!',
+				'username' => $result['username'],
+				'token' => $token
+			];
 		}
 		
     }

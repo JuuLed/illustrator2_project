@@ -115,53 +115,6 @@ class Symbol
 		return $stmt->rowCount();
 	}
 	
-	// public function updateSymbol($id, $symbolName, $size, $active)
-	// {
-	// 	// Stocker les informations du symbole viser a etre modifié
-	// 	$symbolDeleted = $this->getSymbolById($id);
-
-	// 	// Récupérer unique_id pour le nouveau symbole modifier
-	// 	$uniqueId = $symbolDeleted['unique_id'];
-
-	// 	// // Marquer le symbole existant comme supprimé
-	// 	// $this->deleteSymbol($id);
-
-	// 	$query = "INSERT INTO 
-	// 				".TABLE_SYMBOLS." (unique_id, symbol_name, size, active) 
-    //           	  VALUES 
-	// 			  	(:uniqueId, :symbolName, :size, :active)";
-
-	// 	$stmt = $this->pdo->prepare($query);
-	// 	$stmt->bindParam(':uniqueId', $uniqueId);
-	// 	$stmt->bindParam(':symbolName', $symbolName);
-	// 	$stmt->bindParam(':size', $size);
-	// 	$stmt->bindParam(':active', $active);
-	// 	$stmt->execute();
-
-	// 	$symbolId = $this->pdo->lastInsertId();
-
-	// 	if ($symbolId) {
-	// 		// Marquer le symbole existant comme supprimé
-	// 		$this->deleteSymbol($id);
-	// 	}		
-
-	// 	// Mettre à jour la ligne avec le file_name approprié
-	// 	$fileName = $uniqueId . '-' . $symbolId;
-
-	// 	$updateQuery = "UPDATE 
-	// 						".TABLE_SYMBOLS." 
-	// 					SET 
-	// 						file_name = :fileName 
-	// 					WHERE 
-	// 						symbol_id = :symbolId";
-
-	// 	$updateStmt = $this->pdo->prepare($updateQuery);
-	// 	$updateStmt->bindParam(':fileName', $fileName);
-	// 	$updateStmt->bindParam(':symbolId', $symbolId);
-	// 	$updateStmt->execute();
-
-	// 	return $symbolId;
-	// }
 
 	public function deleteSymbol($id)
 	{

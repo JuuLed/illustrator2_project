@@ -96,22 +96,6 @@ class SymbolController
 		return null;
 	}
 
-	// Json d'ajout :
-	// {
-	// 	"symbol_name": "Anniversaire",
-	// 	"size": 50,
-	// 	"active": 0
-	// }
-	// public function createSymbol($data)
-	// {
-	// 	$symbolName = $data['symbol_name'];
-	// 	$size = $data['size'];
-	// 	$active = $data['active'];
-
-	// 	$symbolId = $this->symbolModel->createSymbol($symbolName, $size, $active);
-
-	// 	return $symbolId;
-	// }
 
 	public function createSymbol($file, $symbolName) {
 		// Récupérez les informations du fichier
@@ -156,14 +140,6 @@ class SymbolController
 	}
 	
 
-	// Json de update :
-	// {
-	// 	"symbol_name": "Anniversaire",
-	// 	"size": 50,
-	// 	"active": 0,
-	// 	"categories": [5, 15],
-	// 	"keywords": [10]
-	// }
 	public function updateSymbol($id, $data)
 	{
 		$symbolName = isset($data['symbol_name']) ? $data['symbol_name'] : null;

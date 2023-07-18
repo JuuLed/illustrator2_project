@@ -152,7 +152,7 @@ switch ($route) {
             http_response_code(405);
         }
     break;
-    case preg_match('/^languages\/\d+$/', $route) ? true : false:
+    case preg_match('/^languages\/[A-Za-z]+$/', $route) ? true : false:
         $id = explode('/', $route)[1];
         if ($method === 'GET') {
             $response = $languageController->getLanguage($id);
