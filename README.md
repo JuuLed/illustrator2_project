@@ -2,7 +2,7 @@
 
 ## Description
 
-Une courte description de votre projet ici.
+"Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets"
 
 ## Installation
 
@@ -20,10 +20,6 @@ ou https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0.
 ## Tests
 
 Si vous avez des tests, expliquez ici comment les exécuter.
-
-## Contribuer
-
-Si vous souhaitez que d'autres développeurs contribuent à votre projet, expliquez ici comment ils peuvent le faire.
 
 ## Licence
 
