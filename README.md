@@ -2,11 +2,15 @@
 
 ## Description
 
-"Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets"
+Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets
 
 ## Installation
 
-Expliquez ici comment installer et exécuter votre projet.
+1. Clonez ce dépôt sur votre machine locale :
+
+	```bash
+   git clone https://github.com/JuuLed/illustrator2_project.git
+
 
 ## Utilisation
 
