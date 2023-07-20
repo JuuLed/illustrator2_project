@@ -1,23 +1,36 @@
-<?
+<?php
 
-require_once '../requireTests.php';
+echo "Test script is running...\n";
 
-// Dans UserControllerTest.php
+require_once __DIR__ . '/../controllers/UserController.php';
 
-require_once '../requireTests.php';
 
-function testGetAllUsers()
-{
-    $controller = new UserController();
-    $users = $controller->getAllUsers();
-    
-    // Par exemple, vérifiez que le résultat est un tableau
-    if (is_array($users)) {
-        echo "testGetAllUsers passed!\n";
+function testGetAllUsers() {
+    $userController = new UserController();
+
+    $users = $userController->getAllUsers();
+    if(!is_array($users)) {
+        echo "Failed: Expected an array. \n";
     } else {
-        echo "testGetAllUsers failed: expected array, got " . gettype($users) . "\n";
+        echo "Passed: getAllUsers returns an array. \n";
     }
 }
 
-// Appeler la fonction de test
+function testGetUserById() {
+    $userController = new UserController();
+    
+    // Ici, remplacer 1 par un ID utilisateur valide dans votre base de données.
+    $user = $userController->getUserById(1); 
+
+    if(!is_array($user)) {
+        echo "Failed: Expected an array. \n";
+    } else {
+        echo "Passed: getUserById returns an array. \n";
+    }
+}
+
+// Exécute les tests
 testGetAllUsers();
+testGetUserById();
+
+?>

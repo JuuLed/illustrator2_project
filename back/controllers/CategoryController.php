@@ -1,8 +1,8 @@
 <?php
-require_once './config/database.php';
-require_once './models/Category.php';
-require_once './models/Translation.php';
-require_once './models/Language.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/Category.php';
+require_once __DIR__ . '/../models/Translation.php';
+require_once __DIR__ . '/../models/Language.php';
 
 class CategoryController
 {

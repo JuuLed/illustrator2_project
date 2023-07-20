@@ -1,7 +1,7 @@
 <?php
 
-require_once './config/database.php';
-require_once './models/SymbolCategory.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/SymbolCategory.php';
 
 class SymbolCategoryController
 {

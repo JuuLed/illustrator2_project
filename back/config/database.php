@@ -1,5 +1,6 @@
 <?php
-require_once './config/config.php';
+require_once __DIR__ . '/config.php';
+
 
 
 $host = DB_HOST;

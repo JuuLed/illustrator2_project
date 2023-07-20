@@ -1,7 +1,7 @@
 <?php
 
-require_once './config/database.php';
-require_once './models/SymbolKeyword.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/SymbolKeyword.php';
 
 class SymbolKeywordController
 {

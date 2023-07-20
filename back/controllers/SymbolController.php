@@ -1,11 +1,11 @@
 <?php
 
-require_once './config/database.php';
-require_once './models/Symbol.php';
-require_once './models/Translation.php';
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../models/Symbol.php';
+require_once __DIR__ . '/../models/Translation.php';
 
-require_once './models/SymbolCategory.php';
-require_once './models/SymbolKeyword.php';
+require_once __DIR__ . '/../models/SymbolCategory.php';
+require_once __DIR__ . '/../models/SymbolKeyword.php';
 
 class SymbolController
 {
