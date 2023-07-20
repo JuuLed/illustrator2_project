@@ -4,7 +4,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    exit; // Si c'est une requête de type OPTIONS, on termine le script ici.
+    exit;
 }
 
 require_once './controllers/SymbolController.php';
