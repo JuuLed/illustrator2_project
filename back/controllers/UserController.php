@@ -93,6 +93,10 @@ private function generateToken($userId)
         $notBefore = $issuedAt;
         $expire = $notBefore + (60 * 60 * 24);  // Expire dans 24 heures
 
+		if (!isset($_SERVER['SERVER_NAME'])) {
+			$_SERVER['SERVER_NAME'] = DB_HOST;
+		}
+
         $data = [
             'iat'  => $issuedAt,  // Temps d'émission du token
             'jti'  => $tokenId,   // ID du token
