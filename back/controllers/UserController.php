@@ -44,11 +44,12 @@ class UserController
             $userId = $result['user_id'];
             $token = $this->generateToken($userId);
 
-            // Stockez le token dans une session
-            $_SESSION['token'] = $token;
-
-            // Ou renvoyez le token en réponse à l'appelant
-            // echo json_encode(['token' => $token]);
+			// Stockez le token dans un cookie sécurisé
+			$expire = time() + 60*60*24; // Expire dans 24 heures
+			// HTTPS =
+			//! setcookie('token', $token, $expire, '/', '', true, true);
+			// HTTP =
+			setcookie('token', $token, $expire, '/', '', false, true);
 
 			return [
 				'statut' => 'Registration success!',
@@ -70,8 +71,12 @@ class UserController
             $userId = $result['user_id'];
             $token = $this->generateToken($userId);
 
-            // Stockez le token dans une session
-            $_SESSION['token'] = $token;
+			// Stockez le token dans un cookie sécurisé
+			$expire = time() + 60*60*24; // Expire dans 24 heures
+			// HTTPS =
+			//! setcookie('token', $token, $expire, '/', '', true, true);
+			// HTTP =
+			setcookie('token', $token, $expire, '/', '', false, true);
 
 			return [
 				'statut' => 'Login success!',
@@ -110,19 +115,20 @@ private function generateToken($userId)
 
         return JWT::encode($data, $key, 'HS256');
     }
+	
+private function verifyToken($token)
+{
+    $key = JWT_SECRET_KEY;
 
-    // private function verifyToken($token)
-    // {
-    //     $key = JWT_SECRET_KEY;
+    try {
+        $decoded = JWT::decode($token, $key, array('HS256'));
+        return $decoded->data->userId;
+    } catch (Exception $e) {
+        // Gérer l'erreur de token invalide
+        return ['error' => 'Invalid token: ' . $e->getMessage()];
+    }
+}
 
-    //     try {
-    //         $decoded = JWT::decode($token, $key, array('HS256'));
-    //         return $decoded->data->userId;
-    //     } catch (Exception $e) {
-    //         // Gérer l'erreur de token invalide
-    //         return null;
-    //     }
-    // }
 
 }
 

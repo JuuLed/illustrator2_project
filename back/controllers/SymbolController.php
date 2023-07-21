@@ -53,9 +53,11 @@ class SymbolController
 				'symbol_name' => $symbol['symbol_name'],
 				'size' => $symbol['size'],
 				'active' => $symbol['active'] ? 1 : 0,
-				// 'src' => SYMBOLS_PATH . $symbol['file_name'] . ".svg",
-				'src' => str_replace("C:\\wamp64\\www\\", "http://".DB_HOST."/", SYMBOLS_PATH) . $symbol['file_name'] . ".svg",
-
+				
+				'src' => (DB_HOST == "db") ? 
+					('http://localhost:8000/assets/' . $symbol['file_name'] . ".svg") : 
+					(str_replace("C:\\wamp64\\www\\", "http://".DB_HOST."/", SYMBOLS_PATH) . $symbol['file_name'] . ".svg"),
+				
 				'categories' => [],
 				'keywords' => []
 			];

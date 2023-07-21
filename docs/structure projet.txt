@@ -8,6 +8,9 @@ illustrator2_project/
 │   ├── .htaccess
 │   ├── Dockerfile
 │   ├── index.php
+│   ├── composer.lock
+│   ├── composer.json
+│   ├── vendor
 │   ├── config/
 │   │   ├── init.sql
 │   │   ├── config.php
