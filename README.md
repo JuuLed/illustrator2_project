@@ -2,7 +2,8 @@
 
 ## Description
 
-Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets
+Un gestionnaire de symboles avancé pour le configurateur de gobelets V2.
+Il permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets.
 
 ## Installation
 
@@ -17,28 +18,28 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 
 3. DOCKER :
 
-4. Pour passé de local a docker ou inversement, commenté/décommenté ces lignes dans ces fichiers :
+4. Pour passer de local à docker ou inversement, commentez/décommentez ces lignes dans ces fichiers :
 	- BACK :
 		- config/config.php : ligne 7 à 10
 		- index.php	 : ligne 28 à 32
 	- FRONT :
 		- js/api.js	 : ligne 3 à 7
 
-5. configurer les variables du fichier back/config/config.php selon vos besoins:
-	- le chemin de upload des symboles
-	- la clé secréte du token
-	- les configurations d'accés a la BDD et le noms des ses tables 
-		- (si il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql)
+5. Configurez les variables du fichier back/config/config.php selon vos besoins :
+	- le chemin d'upload des symboles
+	- la clé secrète du token
+	- les configurations d'accès à la BDD et les noms de ses tables
+		- (s'il y a modification du nom de la BDD ou des tables, il faut aussi modifier le fichier back/config/init.sql)
 
 6. Lancer Docker/Container :
 	- Ouvrir terminal/console
-	- Navigué jusqu'à la racine du projet (là où il y a docker-compose.yml)
-	- Lancé la commande : 
+	- Naviguez jusqu'à la racine du projet (là où se trouve docker-compose.yml)
+	- Lancez la commande : 
 		```docker-compose up --build```
 		
-		et laissé docker travailler 2 minutes.
+		et laissez docker travailler 2 minutes.
 
-7. Accés aux aperçus :
+7. Accédez aux aperçus :
 	- front 
 		- http://localhost
 	- back
@@ -47,7 +48,7 @@ Un gestionnaire de symboles avancé pour le configurateur de gobelets V2. Permet
 		- http://localhost:8081/
 
 
-Si une erreur persiste sur la BDD (erreur lors du premier démarrage du conteneur MariaDB), ouvrir terminal/console et entrée:
+Si une erreur persiste sur la BDD (erreur lors du premier démarrage du conteneur MariaDB), ouvrez un terminal/console et entrez :
 
 ```docker-compose down --volumes```
 
@@ -57,7 +58,7 @@ puis :
 
 ## Documentation API
 
-La documentation de l'API pour ce projet est disponible dans le fichier : 
+La documentation de l'API pour ce projet est disponible dans le fichier :
 - [`docs/illustrator2-1.0.0-resolved.json`](docs/illustrator2-1.0.0-resolved.json).
 
 ou sur le lien :
