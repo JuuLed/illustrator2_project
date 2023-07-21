@@ -7,10 +7,10 @@ class TranslationController
 {
 	protected $translationModel;
 
-	public function __construct()
+	public function __construct(Translation $translationModel = null)
 	{
 		global $pdo;
-		$this->translationModel = new Translation($pdo);
+		$this->translationModel = $translationModel ? $translationModel : new Translation($pdo);
 	}
 
 	public function getAllTranslations()

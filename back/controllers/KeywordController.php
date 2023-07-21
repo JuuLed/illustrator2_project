@@ -10,13 +10,14 @@ class KeywordController
 	protected $translationModel;
 	protected $languageModel;
 
-	public function __construct()
-	{
-		global $pdo;
-		$this->keywordModel = new Keyword($pdo);
-		$this->translationModel = new Translation($pdo);
-		$this->languageModel = new Language($pdo);
-	}
+	public function __construct(Keyword $keywordModel = null, Translation $translationModel = null, Language $languageModel = null)
+    {
+        global $pdo;
+        $this->keywordModel = $keywordModel ? $keywordModel : new Keyword($pdo);
+        $this->translationModel = $translationModel ? $translationModel : new Translation($pdo);
+        $this->languageModel = $languageModel ? $languageModel : new Language($pdo);
+
+    }
 
 	public function getAllKeywords()
 	{

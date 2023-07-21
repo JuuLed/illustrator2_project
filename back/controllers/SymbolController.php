@@ -14,14 +14,19 @@ class SymbolController
 	protected $symbolCategoryModel;
 	protected $symbolKeywordModel;
 
-	public function __construct()
+	public function __construct(
+		Symbol $symbolModel = null, 
+		Translation $translationModel = null, 
+		SymbolCategory $symbolCategoryModel = null, 
+		SymbolKeyword $symbolKeywordModel = null
+		)
 	{
 		global $pdo;
-		$this->symbolModel = new Symbol($pdo);
-		$this->translationModel = new Translation($pdo);
+		$this->symbolModel = $symbolModel ? $symbolModel : new Symbol($pdo);
+		$this->translationModel = $translationModel ? $translationModel : new Translation($pdo);
 
-		$this->symbolCategoryModel = new SymbolCategory($pdo);
-		$this->symbolKeywordModel = new SymbolKeyword($pdo);
+		$this->symbolCategoryModel = $symbolCategoryModel ? $symbolCategoryModel : new SymbolCategory($pdo);
+		$this->symbolKeywordModel = $symbolKeywordModel ? $symbolKeywordModel : new SymbolKeyword($pdo);
 	}
 
 	public function getAllSymbols()

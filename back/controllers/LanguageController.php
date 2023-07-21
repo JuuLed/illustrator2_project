@@ -6,10 +6,10 @@ class LanguageController
 {
 	protected $languageModel;
 
-	public function __construct()
+	public function __construct(Language $languageModel = null)
 	{
 		global $pdo;
-		$this->languageModel = new Language($pdo);
+		$this->languageModel = $languageModel ? $languageModel : new Language($pdo);
 	}
 
 	public function getAllLanguages()

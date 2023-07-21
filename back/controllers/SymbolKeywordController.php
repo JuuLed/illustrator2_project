@@ -7,10 +7,10 @@ class SymbolKeywordController
 {
 	protected $symbolKeywordModel;
 
-	public function __construct()
+	public function __construct(SymbolKeyword $symbolKeywordModel = null)
 	{
 		global $pdo;
-		$this->symbolKeywordModel = new SymbolKeyword($pdo);
+		$this->symbolKeywordModel = $symbolKeywordModel ? $symbolKeywordModel : new SymbolKeyword($pdo);
 	}
 
 	public function getAllKeywordsBySymbolId($symbolId)

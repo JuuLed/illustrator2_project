@@ -7,10 +7,10 @@ class SymbolCategoryController
 {
 	protected $symbolCategoryModel;
 
-	public function __construct()
+	public function __construct(SymbolCategory $symbolCategoryModel = null)
 	{
 		global $pdo;
-		$this->symbolCategoryModel = new SymbolCategory($pdo);
+		$this->symbolCategoryModel = $symbolCategoryModel ? $symbolCategoryModel : new SymbolCategory($pdo);
 	}
 
 	public function getAllCategoriesBySymbolId($symbolId)
