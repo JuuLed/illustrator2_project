@@ -2,17 +2,21 @@
 
 require_once __DIR__ . '/.././config/database.php';
 require_once __DIR__ . '/.././models/User.php';
+require_once __DIR__ . '/../utils/RealCookieSetter.php';
 
 use \Firebase\JWT\JWT;
 
 class UserController
 {
     protected $userModel;
+    protected $cookieSetter;
 
-    public function __construct()
+    public function __construct(User $userModel = null, CookieSetter $cookieSetter = null)
     {
         global $pdo;
-        $this->userModel = new User($pdo);
+        $this->userModel = $userModel ? $userModel : new User($pdo);
+        $this->cookieSetter = $cookieSetter ? $cookieSetter : new RealCookieSetter();
+
     }
 
     public function getAllUsers()
@@ -49,7 +53,9 @@ class UserController
 			// HTTPS =
 			//! setcookie('token', $token, $expire, '/', '', true, true);
 			// HTTP =
-			setcookie('token', $token, $expire, '/', '', false, true);
+			// setcookie('token', $token, $expire, '/', '', false, true);
+
+			$this->cookieSetter->set('token', $token, $expire, '/', '', false, true);
 
 			return [
 				'statut' => 'Registration success!',
@@ -76,7 +82,8 @@ class UserController
 			// HTTPS =
 			//! setcookie('token', $token, $expire, '/', '', true, true);
 			// HTTP =
-			setcookie('token', $token, $expire, '/', '', false, true);
+			// setcookie('token', $token, $expire, '/', '', false, true);
+			$this->cookieSetter->set('token', $token, $expire, '/', '', false, true);
 
 			return [
 				'statut' => 'Login success!',

@@ -66,5 +66,7 @@ ou sur le lien :
 
 ## Tests
 
-Si vous avez des tests, expliquez ici comment les exécuter.
-
+- Naviguez jusqu'au dossier back/tests/ à l'aide du terminal
+- puis lancez, toujours dans le terminal : ..\vendor\bin\phpunit + LeNomDuFichierTest.php.
+exemple :
+```..\vendor\bin\phpunit UserControllerTest.php```
