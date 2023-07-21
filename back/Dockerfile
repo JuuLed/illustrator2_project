@@ -28,8 +28,9 @@ COPY composer.lock composer.json /var/www/html/
 RUN composer install
 
 RUN a2enmod rewrite
+RUN a2enmod ssl
 
 # Copier le code de l'application dans le conteneur
 COPY . /var/www/html/
 
-EXPOSE 80
+EXPOSE 80 443

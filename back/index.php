@@ -30,7 +30,7 @@ $userController = new UserController();
 
 $request = $_SERVER['REQUEST_URI'];
 
-//* Chemin de base de votre API REST
+//* Chemin de base de l'API REST
 //! _____ docker : _____
 // $base_path = '/index.php';
 //! _____ local : _____

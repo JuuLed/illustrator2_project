@@ -1,6 +1,8 @@
 illustrator2_project/
 ├── README.md
 ├── docker-compose.yml
+├── localhost.crt
+├── localhost.key
 │
 ├── docs/
 │   └── illustrator2-1.0.0-resolved.json

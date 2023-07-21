@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 09 juin 2023 à 13:02
+-- Généré le : ven. 21 juil. 2023 à 11:47
 -- Version du serveur :  10.6.5-MariaDB
 -- Version de PHP : 5.6.40
 
@@ -21,9 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `illustrator2`
 --
+
 -- --------------------------------------------------------
-CREATE DATABASE IF NOT EXISTS `illustrator2`;
-USE `illustrator2`;
 
 --
 -- Structure de la table `categories`
@@ -35,56 +34,55 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `category` varchar(100) NOT NULL,
   `order` int(11) DEFAULT NULL,
   PRIMARY KEY (`category_id`),
-  UNIQUE `category` (`category`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4;
-
+  UNIQUE KEY `category` (`category`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `categories`
 --
 
 INSERT INTO `categories` (`category_id`, `category`, `order`) VALUES
-(5, 'Mécanique', 5),
-(6, 'Médical', 4),
-(7, 'Musique et son', 3),
-(8, 'Nature', 2),
-(9, 'Noël', 1),
-(10, 'Nourriture et Boisson', 6),
-(11, 'Objet', 7),
-(12, 'Photo - vidéo', 8),
-(13, 'Sécurité', 9),
-(14, 'Signe et Symbole', 10),
-(15, 'Sport', 11),
-(16, 'Symboles', 12),
-(17, 'Temps - météo', 13),
-(18, 'Transport', 14),
-(19, 'Vacances', 15),
-(20, 'Animal', 16),
-(21, 'Anniversaire', 17),
-(22, 'Arme', 18),
-(23, 'Bâtiment et pays', 19),
-(24, 'Boîte', 20),
-(25, 'Bulle de parole', 21),
-(26, 'Carte et localisation', 22),
-(27, 'Communication et Réseau', 23),
-(28, 'Doigt', 24),
-(29, 'École', 25),
-(30, 'Enfant', 26),
-(31, 'Entreprise et Finance', 27),
-(32, 'Espace', 28),
-(33, 'Événement', 29),
-(34, 'Fichier', 30),
-(35, 'Flèche', 31),
-(36, 'Format de fichier', 32),
-(37, 'Habille et accessoire', 33),
-(38, 'Humain', 34),
-(39, 'Illustrations pour gobelets', 35),
-(40, 'Industrie', 36),
-(41, 'Informatique', 37),
-(42, 'Insectes', 38),
-(43, 'Maison', 39),
-(44, 'Mariage', 40);
-
+(5, 'Mécanique', 11),
+(6, 'Médical', 10),
+(7, 'Musique et son', 4),
+(8, 'Nature', 8),
+(9, 'Noël', 40),
+(10, 'Nourriture et Boisson', 9),
+(11, 'Objet', 12),
+(12, 'Photo - vidéo', 5),
+(13, 'Sécurité', 13),
+(14, 'Signe et Symbole', 3),
+(15, 'Sport', 14),
+(16, 'Symboles', 2),
+(17, 'Temps - météo', 15),
+(18, 'Transport', 16),
+(19, 'Vacances', 17),
+(20, 'Animal', 6),
+(21, 'Anniversaire', 18),
+(22, 'Arme', 19),
+(23, 'Bâtiment et pays', 20),
+(24, 'Boîte', 21),
+(25, 'Bulle de parole', 22),
+(26, 'Carte et localisation', 23),
+(27, 'Communication et Réseau', 24),
+(28, 'Doigt', 25),
+(29, 'École', 27),
+(30, 'Enfant', 28),
+(31, 'Entreprise et Finance', 29),
+(32, 'Espace', 30),
+(33, 'Événement', 31),
+(34, 'Fichier', 32),
+(35, 'Flèche', 33),
+(36, 'Format de fichier', 34),
+(37, 'Habille et accessoire', 35),
+(38, 'Humain', 36),
+(39, 'Illustrations pour gobelets', 1),
+(40, 'Industrie', 37),
+(41, 'Informatique', 38),
+(42, 'Insectes', 39),
+(43, 'Maison', 26),
+(44, 'Mariage', 41),
+(66, 'pouette', 7);
 
 -- --------------------------------------------------------
 
@@ -97,20 +95,28 @@ CREATE TABLE IF NOT EXISTS `keywords` (
   `keyword_id` int(11) NOT NULL AUTO_INCREMENT,
   `keyword` varchar(100) NOT NULL,
   PRIMARY KEY (`keyword_id`),
-  UNIQUE `keyword` (`keyword`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+  UNIQUE KEY `keyword` (`keyword`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Déchargement des données de la table `keywords`
 --
 
 INSERT INTO `keywords` (`keyword_id`, `keyword`) VALUES
-(5, 'chien'),
-(6, 'mignon'),
+(28, 'amour'),
+(10, 'automobile'),
+(25, 'basket'),
 (7, 'berger allemand'),
 (8, 'BMW'),
-(9, 'voiture'),
-(10, 'automobile');
+(5, 'chien'),
+(29, 'couple'),
+(26, 'équipe'),
+(30, 'festivité'),
+(24, 'football'),
+(27, 'instrument de musique'),
+(6, 'mignon'),
+(23, 'sport'),
+(9, 'voiture');
 
 -- --------------------------------------------------------
 
@@ -123,8 +129,8 @@ CREATE TABLE IF NOT EXISTS `languages` (
   `language_code` varchar(2) NOT NULL,
   `language_name` varchar(50) NOT NULL,
   PRIMARY KEY (`language_code`),
-  UNIQUE `language_code` (`language_code`),
-  UNIQUE `language_name` (`language_name`)
+  UNIQUE KEY `language_code` (`language_code`),
+  UNIQUE KEY `language_name` (`language_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 --
@@ -155,18 +161,20 @@ CREATE TABLE IF NOT EXISTS `symbols` (
   `active` tinyint(1) DEFAULT 0,
   `deleted` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`symbol_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4;
-
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Déchargement des données de la table `symbols`
 --
 
 INSERT INTO `symbols` (`symbol_id`, `unique_id`, `file_name`, `symbol_name`, `size`, `active`, `deleted`) VALUES
-(3, 'f4ze6Sg7', 'f4ze6Sg7-3', 'Neuneu', 60, 0, 0),
-(5, 'Ma5q6ze7', 'Ma5q6ze7-5', 'img 5', 50, 1, 0),
-(22, '9S3alE0q', '9S3alE0q-22', 'illsutration22', 70, 0, 0),
-(27, 'la3S8zP6', 'la3S8zP6-27', 'Noel', 65, 1, 0);
+(107, 'c1fa784b', 'c1fa784b-107', 'guitare', 60, 0, 0),
+(108, '35616857', '35616857-108', 'basket', 80, 1, 0),
+(109, '5a50caf8', '5a50caf8-109', 'football', 70, 1, 0),
+(110, '1b96e26f', '1b96e26f-110', 'mariage', 50, 1, 0),
+(111, '81d80be0', '81d80be0-111', 'dj', 50, 0, 0),
+(112, '60d10c1f', '60d10c1f-112', 'fete musique', 50, 0, 0),
+(113, 'ede8b168', 'ede8b168-113', 'ecole', 100, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -187,18 +195,25 @@ CREATE TABLE IF NOT EXISTS `symbol_category` (
 --
 
 INSERT INTO `symbol_category` (`symbol_id`, `category_id`) VALUES
-(3, 20),
-(3, 8),
-(5, 5),
-(5, 8),
-(5, 15),
-(22, 12),
-(22, 40),
-(3, 21),
-(27, 5),
-(27, 8),
-(3, 23),
-(3, 22);
+(109, 15),
+(109, 39),
+(107, 39),
+(107, 7),
+(108, 39),
+(108, 15),
+(110, 39),
+(110, 44),
+(111, 39),
+(111, 7),
+(113, 39),
+(113, 38),
+(113, 30),
+(113, 29),
+(112, 39),
+(112, 16),
+(111, 38),
+(111, 33),
+(110, 33);
 
 -- --------------------------------------------------------
 
@@ -219,15 +234,17 @@ CREATE TABLE IF NOT EXISTS `symbol_keyword` (
 --
 
 INSERT INTO `symbol_keyword` (`symbol_id`, `keyword_id`) VALUES
-(3, 5),
-(3, 6),
-(5, 8),
-(5, 9),
-(5, 10),
-(22, 10),
-(27, 10),
-(3, 7),
-(22, 5);
+(109, 24),
+(109, 23),
+(107, 27),
+(109, 26),
+(108, 26),
+(108, 25),
+(108, 23),
+(110, 28),
+(110, 29),
+(111, 30),
+(112, 30);
 
 -- --------------------------------------------------------
 
@@ -240,30 +257,87 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `table_name` varchar(50) NOT NULL,
   `row_id` int(11) NOT NULL,
   `value` varchar(255) NOT NULL,
-  `language_code` varchar(2) NOT NULL
+  `language_code` varchar(2) NOT NULL,
+  KEY `translations_ibfk_1` (`language_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Structure de la table `users`
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE `email` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- Déchargement des données de la table `users`
-INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
-(1, 'admin', 'admin@example.com', 'admin');
-
 
 --
 -- Déchargement des données de la table `translations`
 --
 
 INSERT INTO `translations` (`table_name`, `row_id`, `value`, `language_code`) VALUES
+('keywords', 5, 'dog', 'EN'),
+('keywords', 5, 'Hund', 'DE'),
+('keywords', 5, 'perro', 'ES'),
+('keywords', 5, 'chien', 'FR'),
+('keywords', 5, 'cane', 'IT'),
+('keywords', 5, 'cão', 'PT'),
+('keywords', 6, 'cute', 'EN'),
+('keywords', 6, 'süß', 'DE'),
+('keywords', 6, 'bonito', 'ES'),
+('keywords', 6, 'mignon', 'FR'),
+('keywords', 6, 'carino', 'IT'),
+('keywords', 6, 'fofo', 'PT'),
+('keywords', 7, 'German Shepherd', 'EN'),
+('keywords', 7, 'Deutscher Schäferhund', 'DE'),
+('keywords', 7, 'Pastor Alemán', 'ES'),
+('keywords', 7, 'Berger allemand', 'FR'),
+('keywords', 7, 'Pastore tedesco', 'IT'),
+('keywords', 7, 'Pastor Alemão', 'PT'),
+('keywords', 8, 'BMW', 'EN'),
+('keywords', 8, 'BMW', 'DE'),
+('keywords', 8, 'BMW', 'ES'),
+('keywords', 8, 'BMW', 'FR'),
+('keywords', 8, 'BMW', 'IT'),
+('keywords', 8, 'BMW', 'PT'),
+('keywords', 9, 'car', 'EN'),
+('keywords', 9, 'Auto', 'DE'),
+('keywords', 9, 'coche', 'ES'),
+('keywords', 9, 'voiture', 'FR'),
+('keywords', 9, 'auto', 'IT'),
+('keywords', 9, 'carro', 'PT'),
+('keywords', 10, 'automobile', 'EN'),
+('keywords', 10, 'Automobil', 'DE'),
+('keywords', 10, 'automóvil', 'ES'),
+('keywords', 10, 'automobile', 'FR'),
+('keywords', 10, 'automobile', 'IT'),
+('keywords', 10, 'automóvel', 'PT'),
+('keywords', 5, 'dog', 'EN'),
+('keywords', 5, 'Hund', 'DE'),
+('keywords', 5, 'perro', 'ES'),
+('keywords', 5, 'chien', 'FR'),
+('keywords', 5, 'cane', 'IT'),
+('keywords', 5, 'cão', 'PT'),
+('keywords', 6, 'cute', 'EN'),
+('keywords', 6, 'süß', 'DE'),
+('keywords', 6, 'bonito', 'ES'),
+('keywords', 6, 'mignon', 'FR'),
+('keywords', 6, 'carino', 'IT'),
+('keywords', 6, 'fofo', 'PT'),
+('keywords', 7, 'German Shepherd', 'EN'),
+('keywords', 7, 'Deutscher Schäferhund', 'DE'),
+('keywords', 7, 'Pastor Alemán', 'ES'),
+('keywords', 7, 'Berger allemand', 'FR'),
+('keywords', 7, 'Pastore tedesco', 'IT'),
+('keywords', 7, 'Pastor Alemão', 'PT'),
+('keywords', 8, 'BMW', 'EN'),
+('keywords', 8, 'BMW', 'DE'),
+('keywords', 8, 'BMW', 'ES'),
+('keywords', 8, 'BMW', 'FR'),
+('keywords', 8, 'BMW', 'IT'),
+('keywords', 8, 'BMW', 'PT'),
+('keywords', 9, 'car', 'EN'),
+('keywords', 9, 'Auto', 'DE'),
+('keywords', 9, 'coche', 'ES'),
+('keywords', 9, 'voiture', 'FR'),
+('keywords', 9, 'auto', 'IT'),
+('keywords', 9, 'carro', 'PT'),
+('keywords', 10, 'automobile', 'EN'),
+('keywords', 10, 'Automobil', 'DE'),
+('keywords', 10, 'automóvil', 'ES'),
+('keywords', 10, 'automobile', 'FR'),
+('keywords', 10, 'automobile', 'IT'),
+('keywords', 10, 'automóvel', 'PT'),
 ('categories', 5, 'Mechanical', 'EN'),
 ('categories', 5, 'Mechanik', 'DE'),
 ('categories', 5, 'Mecánica', 'ES'),
@@ -504,43 +578,85 @@ INSERT INTO `translations` (`table_name`, `row_id`, `value`, `language_code`) VA
 ('categories', 44, 'Mariage', 'FR'),
 ('categories', 44, 'Matrimonio', 'IT'),
 ('categories', 44, 'Casamento', 'PT'),
-('keywords', 5, 'dog', 'EN'),
-('keywords', 5, 'Hund', 'DE'),
-('keywords', 5, 'perro', 'ES'),
-('keywords', 5, 'chien', 'FR'),
-('keywords', 5, 'cane', 'IT'),
-('keywords', 5, 'cão', 'PT'),
-('keywords', 6, 'cute', 'EN'),
-('keywords', 6, 'süß', 'DE'),
-('keywords', 6, 'bonito', 'ES'),
-('keywords', 6, 'mignon', 'FR'),
-('keywords', 6, 'carino', 'IT'),
-('keywords', 6, 'fofo', 'PT'),
-('keywords', 7, 'German Shepherd', 'EN'),
-('keywords', 7, 'Deutscher Schäferhund', 'DE'),
-('keywords', 7, 'Pastor Alemán', 'ES'),
-('keywords', 7, 'Berger allemand', 'FR'),
-('keywords', 7, 'Pastore tedesco', 'IT'),
-('keywords', 7, 'Pastor Alemão', 'PT'),
-('keywords', 8, 'BMW', 'EN'),
-('keywords', 8, 'BMW', 'DE'),
-('keywords', 8, 'BMW', 'ES'),
-('keywords', 8, 'BMW', 'FR'),
-('keywords', 8, 'BMW', 'IT'),
-('keywords', 8, 'BMW', 'PT'),
-('keywords', 9, 'car', 'EN'),
-('keywords', 9, 'Auto', 'DE'),
-('keywords', 9, 'coche', 'ES'),
-('keywords', 9, 'voiture', 'FR'),
-('keywords', 9, 'auto', 'IT'),
-('keywords', 9, 'carro', 'PT'),
-('keywords', 10, 'automobile', 'EN'),
-('keywords', 10, 'Automobil', 'DE'),
-('keywords', 10, 'automóvil', 'ES'),
-('keywords', 10, 'automobile', 'FR'),
-('keywords', 10, 'automobile', 'IT'),
-('keywords', 10, 'automóvel', 'PT');
+('categories', 66, 'anglais', 'EN'),
+('categories', 66, 'allemand', 'DE'),
+('categories', 66, 'espagne', 'ES'),
+('categories', 66, 'france', 'FR'),
+('categories', 66, 'italie', 'IT'),
+('categories', 66, 'portugal', 'PT'),
+('keywords', 23, 'sport', 'EN'),
+('keywords', 23, 'sport', 'DE'),
+('keywords', 23, 'sport', 'ES'),
+('keywords', 23, 'sport', 'FR'),
+('keywords', 23, 'sport', 'IT'),
+('keywords', 23, 'sport', 'PT'),
+('keywords', 24, 'football', 'EN'),
+('keywords', 24, 'football', 'DE'),
+('keywords', 24, 'football', 'ES'),
+('keywords', 24, 'football', 'FR'),
+('keywords', 24, 'football', 'IT'),
+('keywords', 24, 'football', 'PT'),
+('keywords', 25, 'basket', 'EN'),
+('keywords', 25, 'basket', 'DE'),
+('keywords', 25, 'basket', 'ES'),
+('keywords', 25, 'basket', 'FR'),
+('keywords', 25, 'basket', 'IT'),
+('keywords', 25, 'basket', 'PT'),
+('keywords', 26, 'équipe', 'EN'),
+('keywords', 26, 'équipe', 'DE'),
+('keywords', 26, 'équipe', 'ES'),
+('keywords', 26, 'équipe', 'FR'),
+('keywords', 26, 'équipe', 'IT'),
+('keywords', 26, 'équipe', 'PT'),
+('keywords', 27, 'instrument de musique', 'EN'),
+('keywords', 27, 'instrument de musique', 'DE'),
+('keywords', 27, 'instrument de musique', 'ES'),
+('keywords', 27, 'instrument de musique', 'FR'),
+('keywords', 27, 'instrument de musique', 'IT'),
+('keywords', 27, 'instrument de musique', 'PT'),
+('keywords', 28, 'amour', 'EN'),
+('keywords', 28, 'amour', 'DE'),
+('keywords', 28, 'amour', 'ES'),
+('keywords', 28, 'amour', 'FR'),
+('keywords', 28, 'amour', 'IT'),
+('keywords', 28, 'amour', 'PT'),
+('keywords', 29, 'couple', 'EN'),
+('keywords', 29, 'couple', 'DE'),
+('keywords', 29, 'couple', 'ES'),
+('keywords', 29, 'couple', 'FR'),
+('keywords', 29, 'couple', 'IT'),
+('keywords', 29, 'couple', 'PT'),
+('keywords', 30, 'festivité', 'EN'),
+('keywords', 30, 'festivité', 'DE'),
+('keywords', 30, 'festivité', 'ES'),
+('keywords', 30, 'festivité', 'FR'),
+('keywords', 30, 'festivité', 'IT'),
+('keywords', 30, 'festivité', 'PT');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password`) VALUES
+(1, 'admin', 'admin@example.com', 'admin'),
+(2, 'testuser', 'testuser@example.com', '$2y$10$dw2UG9P8MAvgWMEwk4AW6eFIh8yKuGmAmG57K7MUz0F47oK2ySPku'),
+(22, 'sukuna', 'j@j', '$2y$10$rmB6I8os7iquxiT8.AdDfO6b8fH2QnUPbYmpSkrPW0CBISkhhJ.Lm');
 
 --
 -- Contraintes pour les tables déchargées
@@ -550,16 +666,14 @@ INSERT INTO `translations` (`table_name`, `row_id`, `value`, `language_code`) VA
 -- Contraintes pour la table `symbol_category`
 --
 ALTER TABLE `symbol_category`
-  ADD CONSTRAINT `symbol_category_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`);
-ALTER TABLE `symbol_category`
+  ADD CONSTRAINT `symbol_category_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
   ADD CONSTRAINT `symbol_category_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `categories` (`category_id`);
 
 --
 -- Contraintes pour la table `symbol_keyword`
 --
 ALTER TABLE `symbol_keyword`
-  ADD CONSTRAINT `symbol_keyword_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`);
-ALTER TABLE `symbol_keyword`
+  ADD CONSTRAINT `symbol_keyword_ibfk_1` FOREIGN KEY (`symbol_id`) REFERENCES `symbols` (`symbol_id`),
   ADD CONSTRAINT `symbol_keyword_ibfk_2` FOREIGN KEY (`keyword_id`) REFERENCES `keywords` (`keyword_id`);
 
 --

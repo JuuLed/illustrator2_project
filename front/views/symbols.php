@@ -5,7 +5,7 @@
 		<h1>SYMBOLS</h1>
 
 
-		<button type="button" id="openUploadModal">AJOUTER SYMBOLES</button>
+		<!-- <button type="button" id="openUploadModal">AJOUTER SYMBOLES</button> -->
 
 
 
