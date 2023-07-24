@@ -35,7 +35,7 @@ Il permet de créer, modifier, supprimer et gérer facilement les symboles (illu
 	- Ouvrir terminal/console
 	- Naviguez jusqu'à la racine du projet (là où se trouve docker-compose.yml)
 	- Lancez la commande : 
-		```docker-compose up --build```
+		- ```docker-compose up --build```
 		
 		et laissez docker travailler 2 minutes.
 
@@ -67,8 +67,8 @@ ou sur le lien :
 ## Tests
 
 - Naviguez jusqu'au dossier back/tests/ à l'aide du terminal :
-```cd .\back\tests\```
+- ```cd .\back\tests\```
 
 - puis lancez, toujours dans le terminal : ..\vendor\bin\phpunit + LeNomDuFichierTest.php.
 exemple :
-```..\vendor\bin\phpunit UserControllerTest.php```
+- ```..\vendor\bin\phpunit UserControllerTest.php```
