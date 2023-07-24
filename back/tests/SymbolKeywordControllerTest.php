@@ -1,5 +1,7 @@
 <?php
 
+echo "Test Controller of Symbol-Keyword script is running...\n";
+
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../controllers/SymbolKeywordController.php';
 

@@ -83,18 +83,6 @@ class KeywordController
 		}
 	}
 
-	// Json d'ajout :
-	// {
-	// 	"keyword": "Keyword 1",
-	// 	"translations": {
-	// 		"EN": "Translation in English",
-	// 		"DE": "Translation in German",
-	// 		"ES": "Translation in Spanish",
-	// 		"FR": "Translation in French",
-	// 		"IT": "Translation in Italian",
-	// 		"PT": "Translation in Portuguese"
-	// 	}
-	// }	
 	public function createKeyword($data)
 	{
 		$keywordName = $data['keyword'];
@@ -131,10 +119,6 @@ class KeywordController
 		}
 	}
 
-	// json de modification :
-	// 	{
-	// 		"keyword": "Modif du mot-clé"
-	// 	  }
 	public function updateKeyword($id, $data)
 	{
 		$keyword = $this->keywordModel->getKeywordById($id);
@@ -153,8 +137,6 @@ class KeywordController
 			return ['error' => 'Keyword update failed'];
 		}
 	}
-
-
 
 	public function deleteKeyword($id)
 	{

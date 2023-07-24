@@ -36,6 +36,13 @@ illustrator2_project/
 │   │   ├── Translation.php
 │   │   └── User.php
 │   ├── tests/ 
+│   │   ├── CategoryControllerTest.php
+│   │   ├── KeywordControllerTest.php
+│   │   ├── LanguageControllerTest.php
+│   │   ├── SymbolCategoryControllerTest.php
+│   │   ├── SymbolControllerTest.php
+│   │   ├── SymbolKeywordControllerTest.php
+│   │   ├── TranslationControllerTest.php
 │   │   └── UserControllerTest.php
 │   ├── utils/
 │   │   └── SvgValidator.php

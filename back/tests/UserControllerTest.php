@@ -1,6 +1,6 @@
 <?php
 
-echo "Test script is running...\n";
+echo "Test Controller of User script is running...\n";
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../controllers/UserController.php';

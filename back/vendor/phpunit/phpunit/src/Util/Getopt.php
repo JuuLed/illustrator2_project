@@ -15,59 +15,60 @@
  */
 class PHPUnit_Util_Getopt
 {
-    public static function getopt(array $args, $short_options, $long_options = null)
-    {
-        if (empty($args)) {
-            return [[], []];
-        }
-
-        $opts     = [];
-        $non_opts = [];
-
-        if ($long_options) {
-            sort($long_options);
-        }
-
-        if (isset($args[0][0]) && $args[0][0] != '-') {
-            array_shift($args);
-        }
-
-        reset($args);
-        array_map('trim', $args);
-
-        while (list($i, $arg) = each($args)) {
-            if ($arg == '') {
-                continue;
-            }
-
-            if ($arg == '--') {
-                $non_opts = array_merge($non_opts, array_slice($args, $i + 1));
-                break;
-            }
-
-            if ($arg[0] != '-' ||
-                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
-                $non_opts[] = $args[$i];
-                continue;
-            } elseif (strlen($arg) > 1 && $arg[1] == '-') {
-                self::parseLongOption(
-                    substr($arg, 2),
-                    $long_options,
-                    $opts,
-                    $args
-                );
-            } else {
-                self::parseShortOption(
-                    substr($arg, 1),
-                    $short_options,
-                    $opts,
-                    $args
-                );
-            }
-        }
-
-        return [$opts, $non_opts];
-    }
+	public static function getopt(array $args, $short_options, $long_options = null)
+	{
+		if (empty($args)) {
+			return [[], []];
+		}
+	
+		$opts     = [];
+		$non_opts = [];
+	
+		if ($long_options) {
+			sort($long_options);
+		}
+	
+		if (isset($args[0][0]) && $args[0][0] != '-') {
+			array_shift($args);
+		}
+	
+		reset($args);
+		array_map('trim', $args);
+	
+		foreach ($args as $i => $arg) {
+			if ($arg == '') {
+				continue;
+			}
+	
+			if ($arg == '--') {
+				$non_opts = array_merge($non_opts, array_slice($args, $i + 1));
+				break;
+			}
+	
+			if ($arg[0] != '-' ||
+				(strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
+				$non_opts[] = $args[$i];
+				continue;
+			} elseif (strlen($arg) > 1 && $arg[1] == '-') {
+				self::parseLongOption(
+					substr($arg, 2),
+					$long_options,
+					$opts,
+					$args
+				);
+			} else {
+				self::parseShortOption(
+					substr($arg, 1),
+					$short_options,
+					$opts,
+					$args
+				);
+			}
+		}
+	
+		return [$opts, $non_opts];
+	}
+	
 
     protected static function parseShortOption($arg, $short_options, &$opts, &$args)
     {
