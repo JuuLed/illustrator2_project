@@ -37,33 +37,39 @@ Phase de maintenance :
 - Préparation d'un plan de maintenance pour les futures mises à jour ou améliorations du système.
 _________________________________________________________________________________________________________
 
-Analyse des besoins : 5 jours
-	Identification des acteurs et utilisateurs: 1 jour
-	Elicitation des besoins et attentes: 2 jours
-	Formalisation des besoins: 2 jours
+Préparation du projet
+Analyse de la demande de l'entreprise (1 jour)
+Rédaction du cahier des charges (1 jour)
+Rédaction des spécifications techniques (1 jour)
 
-Spécifications : 10 jours
-	Rédaction des spécifications fonctionnelles: 5 jours
-	Rédaction des spécifications techniques: 5 jours
+Conception de la base de données et du système
+Élaboration du MCD, MLD, MPD (2 jours)
+Conception du diagramme de classes (1 jour)
+Définition de l'architecture multicouche (1 jour)
 
-Conception : 7 jours
-	Définition de l'architecture du système: 3 jours
-	Modélisation et conception de la base de données: 2 jours
-	Conception des interfaces utilisateur: 2 jours
+Configuration et installation de l'environnement de développement
+Configuration initiale du Docker (1 jour)
+Installation de Docker et Compose (1 jour)
+Installation des dépendances avec Composer (1 jour)
+Configuration de la base de données MariaDB (1 jour)
 
-Implémentation : 15 jours
-	Codage des fonctionnalités principales: 5 jours
-	Intégration des API: 4 jours
-	Création de l'interface utilisateur: 4 jours
-	Finalisation et tests unitaires: 2 jours
+Développement
+Développement des modèles et des contrôleurs (3 jours)
+Intégration de l'authentification avec JWT (2 jours)
+Préparation des maquettes et du plan du site (2 jours)
+Conception des vues (2 jours)
+Développement des scripts JS pour l'interaction avec l'API (2 jours)
+Intégration du CSS et des illustrations SVG (1 jour)
+Intégration et test du système dans son ensemble avec docker (2 jours)
+Finalisation du code et revue (1 jour)
 
-Vérification : 5 jours
-	Exécution des tests fonctionnels: 3 jours
-	Exécution des tests non fonctionnels: 2 jours
+Tests
+Développement des tests pour les contrôleurs (2 jours)
+Préparation des tests pour la validation SVG (1 jour)
+Exécution des tests unitaires (1 jour)
+Analyse des résultats des tests et correction des erreurs (2 jours)
 
-Validation : 3 jours
-	Revue de code: 1 jour
-	Test d'acceptation par l'utilisateur: 2 jours
-
-Le total donnerait 45 jours de travail, ce qui semble raisonnable pour un projet de cette envergure.
-Cela peut être illustré sous forme de diagramme de Gantt en représentant chaque tâche et sa durée sur une ligne de temps.
+Documentation et livraison
+Rédaction du README et autres documentations techniques (1 jour)
+Test d'acceptation par l'utilisateur (1 jour)
+Préparation du package pour la livraison (1 jour)
