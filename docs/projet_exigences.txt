@@ -31,10 +31,6 @@ Les catégories doivent avoir un nom unique et pouvoir être ordonnées.
 - Symboles actifs/inactifs :
 Permettre d'activer ou de désactiver chaque symbole. Par défaut, les symboles sont inactifs.
 
-- Statistiques des symboles :
-Afficher les statistiques pour chaque symbole, notamment la liste des personnalisations contenant
-ce symbole et leur nombre, ainsi que la liste des commandes avec ce symbole et leur nombre.
-
 - Suppression d'un symbole :
 La suppression d'un symbole depuis l'interface d'administration ne doit pas entraîner la suppression du
 fichier ni son entrée dans la base de données.
@@ -65,3 +61,5 @@ L'outil doit être totalement indépendant du CDN CSS d'Imprim et com.
 Il est suggéré de communiquer principalement via GitHub pour les questions et les échanges liés au projet.
 
 De plus, un fichier ZIP contenant les fichiers SVG utilisés dans le configurateur V1 est disponible en téléchargement.
+_________________________________________________________________________________________________________
+

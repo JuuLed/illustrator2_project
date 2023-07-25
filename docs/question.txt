@@ -1,6 +1,0 @@
-- est que getById sur un symbol deleted est possible ? (getByid where deleted = 0?)
-- au update de quels champs le update créer un nouveau symbol ? :
-	symbol_name =
-	size =
-	active =
-	deleted =
