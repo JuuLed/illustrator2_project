@@ -5,7 +5,7 @@ illustrator2_project/
 ├── localhost.key
 │
 ├── docs/
-│   └── illustrator2-1.0.0-resolved.json
+│   └── swagger
 ├── back/
 │   ├── .htaccess
 │   ├── Dockerfile
