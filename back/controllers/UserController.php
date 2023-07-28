@@ -53,7 +53,7 @@ class UserController
 			// HTTPS =
 			//! setcookie('token', $token, $expire, '/', '', true, true);
 			// HTTP =
-			// setcookie('token', $token, $expire, '/', '', false, true);
+			setcookie('token', $token, $expire, '/', '', false, true);
 
 			$this->cookieSetter->set('token', $token, $expire, '/', '', false, true);
 
