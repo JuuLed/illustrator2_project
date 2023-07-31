@@ -60,10 +60,12 @@ class Symbol
 		return $symbol;
 	}
 
-	public function createSymbol($symbolName, $size = 50, $active = 0)
+	public function createSymbol($symbolName, $size = 50, $active = 0, $uniqueId = null)
 	{
-		// Générer unique_id pour le nouveau symbole
-		$uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+		// Si aucun unique_id n'est fourni, générer unique_id pour le nouveau symbole
+		if (!$uniqueId) {
+			$uniqueId = bin2hex(openssl_random_pseudo_bytes(4));
+		}
 
 		$query = "INSERT INTO 
 					".TABLE_SYMBOLS." (unique_id, symbol_name, size, active) 

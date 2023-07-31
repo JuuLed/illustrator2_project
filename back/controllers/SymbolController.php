@@ -15,12 +15,11 @@ class SymbolController
 	protected $symbolKeywordModel;
 
 	public function __construct(
-		Symbol $symbolModel = null, 
-		Translation $translationModel = null, 
-		SymbolCategory $symbolCategoryModel = null, 
+		Symbol $symbolModel = null,
+		Translation $translationModel = null,
+		SymbolCategory $symbolCategoryModel = null,
 		SymbolKeyword $symbolKeywordModel = null
-		)
-	{
+	) {
 		global $pdo;
 		$this->symbolModel = $symbolModel ? $symbolModel : new Symbol($pdo);
 		$this->translationModel = $translationModel ? $translationModel : new Translation($pdo);
@@ -58,11 +57,11 @@ class SymbolController
 				'symbol_name' => $symbol['symbol_name'],
 				'size' => $symbol['size'],
 				'active' => $symbol['active'] ? 1 : 0,
-				
-				'src' => (DB_HOST == "db") ? 
-					('http://localhost:8000/assets/' . $symbol['file_name'] . ".svg") : 
-					(str_replace("C:\\wamp64\\www\\", "http://".DB_HOST."/", SYMBOLS_PATH) . $symbol['file_name'] . ".svg"),
-				
+
+				'src' => (DB_HOST == "db") ?
+				('http://localhost:8000/assets/' . $symbol['file_name'] . ".svg") :
+				(str_replace("C:\\wamp64\\www\\", "http://" . DB_HOST . "/", SYMBOLS_PATH) . $symbol['file_name'] . ".svg"),
+
 				'categories' => [],
 				'keywords' => []
 			];
@@ -104,21 +103,22 @@ class SymbolController
 	}
 
 
-	public function createSymbol($file, $symbolName) {
+	public function createSymbol($file, $symbolName)
+	{
 		// Récupérez les informations du fichier
 		$fileName = $file['name'];
 		$fileTmpName = $file['tmp_name'];
 		$fileSize = $file['size'];
 		$fileError = $file['error'];
 		$fileType = $file['type'];
-	
+
 		// Validez les informations du fichier et le nom du symbole avant de les utiliser
-	
+
 		// Utilisez move_uploaded_file pour déplacer le fichier dans le dossier de destination
 		$fileDestination = SYMBOLS_PATH . $fileName;
 		if (move_uploaded_file($fileTmpName, $fileDestination)) {
 			// Enregistrez les informations du fichier et le nom du symbole dans votre base de données
-		
+
 			// Appel à la méthode du model pour créer le symbole
 			$symbolId = $this->symbolModel->createSymbol($symbolName);
 
@@ -126,7 +126,7 @@ class SymbolController
 
 			$newFileName = SYMBOLS_PATH . $symbolData['file_name'] . '.svg';
 			rename($fileDestination, $newFileName);
-		
+
 			// Retournez une réponse appropriée
 			$response = array(
 				"status" => "success",
@@ -142,10 +142,10 @@ class SymbolController
 				"message" => "Failed to upload file."
 			);
 		}
-	
+
 		return $response;
 	}
-	
+
 
 	public function updateSymbol($id, $data)
 	{
@@ -169,6 +169,49 @@ class SymbolController
 
 		return ['message' => 'Symbol updated successfully'];
 	}
+
+	public function updateSvg($id, $newSvgFile)
+	{
+		// Obtenez l'information du symbole existant
+		$existingSymbol = $this->symbolModel->getSymbolById($id);
+		
+		// Assurez-vous que le symbole existe sinon retourner erreur
+		if (!$existingSymbol) {
+			return ['error' => 'Symbol not found'];
+		}
+	
+		// Créez un nouveau symbole avec le même symbolName, size et 
+		// active status, et l'unique_id existant
+		$newSymbolId = $this->symbolModel->createSymbol(
+			$existingSymbol['symbolName'], 
+			$existingSymbol['size'], 
+			$existingSymbol['active'], 
+			$existingSymbol['unique_id']
+		);
+			
+		// Récupérez toutes les liaisons (relations) de l'ancien symbole
+		$categories = $this->symbolCategoryModel->getAllCategoriesBySymbolId($id);
+		$keywords = $this->symbolKeywordModel->getAllKeywordsBySymbolId($id);
+	
+		// Ajoutez les liaisons (relations) au nouveau symbole
+		foreach ($categories as $category) {
+			$this->symbolCategoryModel->addCategoryToSymbol(
+				$newSymbolId, 
+				$category['category_id']
+			);
+		}
+		foreach ($keywords as $keyword) {
+			$this->symbolKeywordModel->addKeywordToSymbol(
+				$newSymbolId, 
+				$keyword['keyword_id']
+			);
+		}
+	
+		// Supprimez l'ancien symbole 
+		$this->symbolModel->deleteSymbol($id);
+	}
+	
+
 
 	public function deleteSymbol($id)
 	{
