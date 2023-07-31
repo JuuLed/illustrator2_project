@@ -1,6 +1,14 @@
+# Limitation des adresse IP :
+Order deny,allow
+Deny from all
+Allow from 127.0.0.1
+# Remplacer cette adresse IP fictive par une adresse autorisé :
+# Allow from 123.123.123.123
+
+
+# redirection des requetes
 RewriteEngine On
 RewriteBase /back/
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
