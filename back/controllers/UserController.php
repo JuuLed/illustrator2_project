@@ -112,19 +112,16 @@ class UserController
 		}
 	}
 
-	public function logout() {
+	public function logout()
+	{
 		// Supprimez le cookie 'token' pour déconnecter l'utilisateur
 		if (isset($_COOKIE['token'])) {
-			setcookie('token', '', time() - 3600, '/', "", 0); 
+			setcookie('token', '', time() - 3600, '/', "", 0);
 			return ['status' => 'disconnected'];
 		} else {
 			return ['error' => 'No session to destroy'];
 		}
 	}
-	
-
-
-
 
 	// Gestion des TOKENS -----------------------------------------------
 	private function generateToken($userId)
@@ -151,7 +148,7 @@ class UserController
 			'exp' => $expire,
 			// Token expire à cette date
 			'data' => [
-				// Données supplémentaires que vous pouvez inclure dans le token
+				// Données supplémentaires que l'on peut inclure dans le token
 				'userId' => $userId,
 			],
 		];
@@ -171,7 +168,6 @@ class UserController
 			return ['error' => 'Invalid token: ' . $e->getMessage()];
 		}
 	}
-
 
 }
 

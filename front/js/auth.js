@@ -58,9 +58,6 @@ function login(email, password) {
 				console.error('Login failed:', result.error);
 				displayError('login', "Adresse mail ou mot de passe invalide.");
 			} else {
-				// Enregistrez le token dans le stockage local (LocalStorage ou SessionStorage)
-				// localStorage.setItem('token', result.token);
-				// localStorage.setItem('username', result.username);
 				console.log('Login success!');
 				// Redirigez l'utilisateur vers une autre page ou effectuez d'autres actions
 				window.location.href = 'index.php?page=symbols';
