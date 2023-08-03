@@ -3,41 +3,6 @@ function displayError(formId, message) {
     errorElement.textContent = message;
 }
 
-// Fonction pour envoyer une requête de connexion à l'API
-function login(email, password) {
-	const apiUrl = apiBaseURL + '/login'; // Remplacez par l'URL de votre API de connexion
-
-	const data = {
-		email: email,
-		password: password,
-	};
-
-	fetch(apiUrl, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	})
-		.then(response => response.json())
-		.then(result => {
-			if (result.error) {
-				console.error('Login failed:', result.error);
-				displayError('login', "Adresse mail ou mot de passe invalide.");
-			} else {
-				// Enregistrez le token dans le stockage local (LocalStorage ou SessionStorage)
-				localStorage.setItem('token', result.token);
-				localStorage.setItem('username', result.username);
-				console.log('Login success!');
-				// Redirigez l'utilisateur vers une autre page ou effectuez d'autres actions
-				window.location.href = 'index.php?page=symbols';
-			}
-		})
-		.catch(error => {
-			console.error('An error occurred:', error);
-		});
-}
-
 function register(username, email, password) {
 	const apiUrl = apiBaseURL + '/register'; // Remplacez par l'URL de votre API d'inscription
 
@@ -70,46 +35,128 @@ function register(username, email, password) {
 		});
 }
 
+// Fonction pour envoyer une requête de connexion à l'API
+function login(email, password) {
+	const apiUrl = apiBaseURL + '/login';
+
+	const data = {
+		email: email,
+		password: password,
+	};
+
+	fetch(apiUrl, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+		credentials: 'include',  // les cookies sont inclus avec la requête
+	})
+		.then(response => response.json())
+		.then(result => {
+			if (result.error) {
+				console.error('Login failed:', result.error);
+				displayError('login', "Adresse mail ou mot de passe invalide.");
+			} else {
+				// Enregistrez le token dans le stockage local (LocalStorage ou SessionStorage)
+				// localStorage.setItem('token', result.token);
+				// localStorage.setItem('username', result.username);
+				console.log('Login success!');
+				// Redirigez l'utilisateur vers une autre page ou effectuez d'autres actions
+				window.location.href = 'index.php?page=symbols';
+			}
+		})
+		.catch(error => {
+			console.error('An error occurred:', error);
+		});
+}
+
 // Fonction pour vérifier si l'utilisateur est connecté
 function isLoggedIn() {
-	const token = localStorage.getItem('token');
-	return !!token;
+    const apiUrl = apiBaseURL + '/auth/status';
+    return fetch(apiUrl, {
+        method: 'GET',
+        credentials: 'include',  // les cookies sont inclus avec la requête
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.error) {
+            console.error('Failed to check login status:', result.error);
+            return { isLoggedIn: false, username: null };
+        } else {
+			return { isLoggedIn: result.status === 'connected', username: result.username };
+        }
+    })
+    .catch(error => {
+        console.error('An error occurred:', error);
+        return { isLoggedIn: false, username: null };
+    });
 }
+
+isLoggedIn().then(isLoggedInStatus => {
+    if (isLoggedInStatus.isLoggedIn) {
+        console.log('User is logged in');
+    } else {
+        console.log('User is not logged in');
+    }
+});
+
+
 
 
 // Fonction pour gérer la déconnexion
 function logout() {
-	localStorage.removeItem('token');
-	localStorage.removeItem('username');
-	console.log('Logout success!');
-	// Redirection ou autres actions après la déconnexion
-	checkLoginState(); // ou toggleLogoutButton() si vous utilisez cette fonction
+    const apiUrl = apiBaseURL + '/logout';
+    fetch(apiUrl, {
+        method: 'GET',
+        credentials: 'include', // les cookies sont inclus avec la requête
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.error) {
+            console.error('Logout failed:', result.error);
+        } else {
+            console.log('Logout success!');
+            // Mettre à jour l'état de connexion
+            checkLoginState();
+            // Redirection ou autres actions après la déconnexion
+            window.location.href = 'index.php?page=login';
+        }
+    })
+    .catch(error => {
+        console.error('An error occurred:', error);
+    });
 }
 
-function checkLoginState() {
-	const logoutButton = document.getElementById('logout-button');
-	const loginLink = document.querySelector('a[href="index.php?page=login"]');
-	const registerLink = document.querySelector('a[href="index.php?page=register"]');
-	const usernameDisplay = document.getElementById('username-display');
-	const welcomeBlock = document.querySelector('.welcome');
 
-	if (isLoggedIn()) {
-		// L'utilisateur est connecté
-		const username = localStorage.getItem('username');
-		if (logoutButton) logoutButton.style.display = 'block';
-		if (loginLink) loginLink.style.display = 'none';
-		if (registerLink) registerLink.style.display = 'none';
-		if (usernameDisplay) usernameDisplay.textContent = username;
-		if (welcomeBlock) welcomeBlock.style.display = 'block';
-	} else {
-		// L'utilisateur n'est pas connecté
-		if (logoutButton) logoutButton.style.display = 'none';
-		if (loginLink) loginLink.style.display = 'block';
-		if (registerLink) registerLink.style.display = 'block';
-		if (usernameDisplay) usernameDisplay.textContent = '';
-		if (welcomeBlock) welcomeBlock.style.display = 'none';
-	}
+async function checkLoginState() {
+    const logoutButton = document.getElementById('logout-button');
+    const loginLink = document.querySelector('a[href="index.php?page=login"]');
+    const registerLink = document.querySelector('a[href="index.php?page=register"]');
+    const usernameDisplay = document.getElementById('username-display');
+    const welcomeBlock = document.querySelector('.welcome');
+
+    const loginStatus = await isLoggedIn();
+
+    if (loginStatus.isLoggedIn) {
+        // L'utilisateur est connecté
+        const username = loginStatus.username; // suppose que le serveur renvoie le nom d'utilisateur
+        if (logoutButton) logoutButton.style.display = 'block';
+        if (loginLink) loginLink.style.display = 'none';
+        if (registerLink) registerLink.style.display = 'none';
+        if (usernameDisplay) usernameDisplay.textContent = username;
+        if (welcomeBlock) welcomeBlock.style.display = 'block';
+    } else {
+        // L'utilisateur n'est pas connecté
+        if (logoutButton) logoutButton.style.display = 'none';
+        if (loginLink) loginLink.style.display = 'block';
+        if (registerLink) registerLink.style.display = 'block';
+        if (usernameDisplay) usernameDisplay.textContent = '';
+        if (welcomeBlock) welcomeBlock.style.display = 'none';
+    }
 }
+
+
 
 // Attachement des gestionnaires d'événements lors du chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
@@ -147,9 +194,9 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (logoutButton) {
 		logoutButton.addEventListener('click', () => {
 			logout();
-			window.location.href = 'index.php?page=login';
 		});
 	}
+	
 
 	// Obtenir l'élément .content
 	const contentElement = document.querySelector('.content');

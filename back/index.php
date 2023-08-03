@@ -287,6 +287,22 @@ switch ($route) {
 			http_response_code(405);
 		}
 	break;
+	case 'auth/status':
+		if ($method === 'GET') {
+			$response = $userController->getStatus();
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
+	case 'logout':
+		if ($method === 'GET') {
+			$response = $userController->logout();
+		} else {
+			$response = ['error' => 'Method not allowed'];
+			http_response_code(405);
+		}
+	break;
 	
 
     default:

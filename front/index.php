@@ -21,7 +21,7 @@ $currentPage = isset($_GET['page']) ? $_GET['page'] : 'login';
 
 if(!in_array($currentPage, $allowedPages)) {
     // La page demandée n'est pas dans la liste des pages autorisées
-    // Vous pouvez rediriger l'utilisateur vers une page 404 ou vers la page d'accueil
+    // Vous serez rediriger vers la page d'accueil
     header('Location: index.php?page=symbols');
     exit;
 }
