@@ -86,7 +86,7 @@ if(!in_array($currentPage, $allowedPages)) {
 					<a>Bienvenue </a>
 					<a id="username-display"></a>
 				</div>
-				<!-- <a id="username-display">Bienvenue </a> -->
+				
 				<a class="navbar-link" id="logout-button" style="display: none;">Déconnexion</a>
 			</div>
 		</ul>

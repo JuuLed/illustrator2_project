@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	}
 	
-
 	// Obtenir l'élément .content
 	const contentElement = document.querySelector('.content');
 
@@ -205,20 +204,21 @@ document.addEventListener('DOMContentLoaded', () => {
 	const currentPage = window.location.href.split('page=')[1];
 	const allowedPages = ['login', 'register'];
 
-	if (allowedPages.includes(currentPage) || isLoggedIn()) {
-		// Si vous êtes sur la page 'login', 'register', ou si l'utilisateur est connecté, alors rendre le contenu visible
-		contentElement.style.visibility = 'visible';
-	} else {
-		// Sinon, cacher le contenu
-		contentElement.style.visibility = 'hidden';
-	}
+	isLoggedIn().then(loginStatus => {
+		if (allowedPages.includes(currentPage) || loginStatus.isLoggedIn) {
+			// Si vous êtes sur la page 'login', 'register', ou si l'utilisateur est connecté, alors rendre le contenu visible
+			contentElement.style.visibility = 'visible';
+		} else {
+			// Sinon, cacher le contenu
+			contentElement.style.visibility = 'hidden';
 
-	// Gérer la redirection pour les utilisateurs non connectés
-	if (!isLoggedIn() && !allowedPages.includes(currentPage)) {
-		window.location.href = 'index.php?page=login';
-	}
+			// Gérer la redirection pour les utilisateurs non connectés
+			if (!allowedPages.includes(currentPage)) {
+				window.location.href = 'index.php?page=login';
+			}
+		}
 
-	// Verifier l'etat de la connexion à chaque chargement de la page
-	checkLoginState();
-
+		// Verifier l'etat de la connexion à chaque chargement de la page
+		checkLoginState();
+	});
 });
