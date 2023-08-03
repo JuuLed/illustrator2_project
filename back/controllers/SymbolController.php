@@ -172,6 +172,12 @@ class SymbolController
 
 	public function updateSvg($id, $newSvgFile)
 	{
+		// Vérifiez le fichier SVG
+		$isSvgValid = $this->checkSvgFile($newSvgFile);
+		if(!$isSvgValid){
+			return ['error' => 'Invalid SVG file.'];
+		}
+
 		// Obtenez l'information du symbole existant
 		$existingSymbol = $this->symbolModel->getSymbolById($id);
 		
@@ -209,6 +215,8 @@ class SymbolController
 	
 		// Supprimez l'ancien symbole 
 		$this->symbolModel->deleteSymbol($id);
+
+    	return ['message' => 'SVG file updated successfully'];
 	}
 	
 
