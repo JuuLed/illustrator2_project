@@ -77,4 +77,4 @@ exemple :
 
 ## Documentation API
 
-[![Swagger](https://img.shields.io/badge/-Swagger-%23Clover)](https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0.)
+[![Swagger](https://img.shields.io/badge/-Swagger-%23Clover)](https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0)
