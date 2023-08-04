@@ -115,6 +115,75 @@
         }
       }
     },
+    "/auth/status": {
+      "get": {
+        "summary": "Get the authentication status of a user",
+        "description": "This endpoint gets the authentication status of a user.",
+        "responses": {
+          "200": {
+            "description": "The authentication status of the user was retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_1"
+                },
+                "example": {
+                  "statut": "Authenticated",
+                  "username": "john_doe"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                },
+                "example": {
+                  "error": "Method not allowed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "summary": "Log out a user",
+        "description": "This endpoint logs out a user.",
+        "responses": {
+          "200": {
+            "description": "The user was logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_200_2"
+                },
+                "example": {
+                  "statut": "Logout success!"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/inline_response_400"
+                },
+                "example": {
+                  "error": "Method not allowed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Get all users",
@@ -127,7 +196,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/inline_response_200_1"
+                    "$ref": "#/components/schemas/inline_response_200_3"
                   }
                 },
                 "examples": {
@@ -194,7 +263,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_2"
+                  "$ref": "#/components/schemas/inline_response_200_4"
                 },
                 "examples": {
                   "SingleUser": {
@@ -355,7 +424,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -642,7 +711,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_4"
+                  "$ref": "#/components/schemas/inline_response_200_6"
                 }
               }
             }
@@ -684,7 +753,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -724,7 +793,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -756,7 +825,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_5"
+                  "$ref": "#/components/schemas/inline_response_200_7"
                 }
               }
             }
@@ -798,7 +867,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -838,7 +907,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -961,7 +1030,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -994,7 +1063,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/inline_response_200_3"
+                  "$ref": "#/components/schemas/inline_response_200_5"
                 }
               }
             }
@@ -1141,6 +1210,40 @@
   },
   "components": {
     "schemas": {
+      "Register": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "username": "john_doe",
+          "email": "john.doe@example.com",
+          "password": "password123"
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "email": "john.doe@example.com",
+          "password": "password123"
+        }
+      },
       "Symbol": {
         "type": "object",
         "properties": {
@@ -1355,6 +1458,25 @@
       "inline_response_200_1": {
         "type": "object",
         "properties": {
+          "statut": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_2": {
+        "type": "object",
+        "properties": {
+          "statut": {
+            "type": "string"
+          }
+        }
+      },
+      "inline_response_200_3": {
+        "type": "object",
+        "properties": {
           "user_id": {
             "type": "integer"
           },
@@ -1366,7 +1488,7 @@
           }
         }
       },
-      "inline_response_200_2": {
+      "inline_response_200_4": {
         "type": "object",
         "properties": {
           "user_id": {
@@ -1392,7 +1514,7 @@
           }
         }
       },
-      "inline_response_200_3": {
+      "inline_response_200_5": {
         "type": "object",
         "properties": {
           "message": {
@@ -1400,7 +1522,7 @@
           }
         }
       },
-      "inline_response_200_4": {
+      "inline_response_200_6": {
         "type": "object",
         "properties": {
           "categories": {
@@ -1411,7 +1533,7 @@
           }
         }
       },
-      "inline_response_200_5": {
+      "inline_response_200_7": {
         "type": "object",
         "properties": {
           "keywords": {
