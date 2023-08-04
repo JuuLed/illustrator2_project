@@ -11,7 +11,8 @@ Il permet de créer, modifier, supprimer et gérer facilement les symboles (illu
 Avant de pouvoir utiliser ou contribuer à ce projet, vous devrez installer et configurer certains outils sur votre machine locale.
 
 Docker et Docker Compose : 
-Docker est un outil qui permet de containeriser et d'exécuter des applications dans un environnement isolé. Docker Compose est un outil qui permet de définir et de gérer des applications multi-conteneurs avec Docker. Vous pouvez les installer avec les instructions ci-dessous ou les télécharger depuis le site officiel de Docker.
+Docker est un outil qui permet de containeriser et d'exécuter des applications dans un environnement isolé. Docker Compose est un outil qui permet de définir et de gérer des applications multi-conteneurs avec Docker. Vous pouvez les installer avec les instructions ci-dessous ou les télécharger depuis le site officiel de Docker.[le site officiel de Docker](https://www.docker.com/products/docker-desktop/)
+
 Sur Mac et Windows :
 
 - Téléchargez et installez Docker Desktop.
