@@ -45,9 +45,10 @@ Sur Linux :
 Composer : 
 Composer est un outil de gestion des dépendances pour PHP. Vous pouvez l'installer avec les instructions ci-dessous ou le télécharger depuis [le site officiel de Composer](https://getcomposer.org/download/).
 
-	```curl -sS https://getcomposer.org/installer | php```
-	```mv composer.phar /usr/local/bin/composer```
-	```composer --version```
+	```bash
+	curl -sS https://getcomposer.org/installer | php
+	mv composer.phar /usr/local/bin/composer
+	composer --version
 
 
 
