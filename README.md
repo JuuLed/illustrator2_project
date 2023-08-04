@@ -106,7 +106,7 @@ puis :
 ## Documentation API
 
 La documentation de l'API pour ce projet est disponible dans le fichier :
-- [`docs/illustrator2-1.0.0-resolved.json`](docs/illustrator2-1.0.0-resolved.json)
+- [`docs/illustrator2-1.0.0-resolved.json`](docs/swagger/JLED44_1-illustrator2-1.0.0-resolved.json)
 
 ou sur le lien :
 - https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0
