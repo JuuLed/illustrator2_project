@@ -11,11 +11,11 @@ Il permet de créer, modifier, supprimer et gérer facilement les symboles (illu
 Avant de pouvoir utiliser ou contribuer à ce projet, vous devrez installer et configurer certains outils sur votre machine locale.
 
 Docker et Docker Compose : 
-Docker est un outil qui permet de containeriser et d'exécuter des applications dans un environnement isolé. Docker Compose est un outil qui permet de définir et de gérer des applications multi-conteneurs avec Docker. Vous pouvez les installer avec les instructions ci-dessous ou les télécharger depuis le site officiel de Docker.[le site officiel de Docker](https://www.docker.com/products/docker-desktop/)
+Docker est un outil qui permet de containeriser et d'exécuter des applications dans un environnement isolé. Docker Compose est un outil qui permet de définir et de gérer des applications multi-conteneurs avec Docker. Vous pouvez les installer avec les instructions ci-dessous ou les télécharger depuis [le site officiel de Docker](https://www.docker.com/products/docker-desktop/).
 
 Sur Mac et Windows :
 
-- Téléchargez et installez Docker Desktop.
+- Téléchargez et installez [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
 Sur Linux :
 
@@ -42,7 +42,7 @@ Sur Linux :
 
 
 Composer : 
-Composer est un outil de gestion des dépendances pour PHP. Vous pouvez l'installer avec les instructions ci-dessous ou le télécharger depuis le site officiel de Composer.
+Composer est un outil de gestion des dépendances pour PHP. Vous pouvez l'installer avec les instructions ci-dessous ou le télécharger depuis [le site officiel de Composer](https://getcomposer.org/download/).
 
 	```curl -sS https://getcomposer.org/installer | php```
 	```mv composer.phar /usr/local/bin/composer```
