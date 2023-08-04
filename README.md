@@ -72,3 +72,9 @@ ou sur le lien :
 - puis lancez, toujours dans le terminal : ..\vendor\bin\phpunit + LeNomDuFichierTest.php.
 exemple :
     - ```..\vendor\bin\phpunit UserControllerTest.php```
+
+
+
+## Documentation API
+
+[![Swagger](https://img.shields.io/badge/-Swagger-%23Clover)](https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0.)
