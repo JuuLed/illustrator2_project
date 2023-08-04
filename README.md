@@ -51,7 +51,6 @@ Composer est un outil de gestion des dépendances pour PHP. Vous pouvez l'instal
 	composer --version
 
 
-
 ## Installation
 
 1. Clonez ce dépôt sur votre machine locale :
@@ -103,6 +102,7 @@ puis :
 
 ```docker-compose up```
 
+
 ## Documentation API
 
 La documentation de l'API pour ce projet est disponible dans le fichier :
@@ -114,6 +114,7 @@ ou sur le lien :
 ou en cliquant sur ce badge :
 
 [![Swagger](https://img.shields.io/badge/-Swagger-%23Clover)](https://app.swaggerhub.com/apis-docs/JLED44_1/illustrator2/1.0.0)
+
 
 ## Tests
 
