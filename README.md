@@ -5,6 +5,50 @@
 Un gestionnaire de symboles avancé pour le configurateur de gobelets V2.
 Il permet de créer, modifier, supprimer et gérer facilement les symboles (illustrations) utilisés pour personnaliser les gobelets.
 
+
+## Prérequis
+
+Avant de pouvoir utiliser ou contribuer à ce projet, vous devrez installer et configurer certains outils sur votre machine locale.
+
+Docker et Docker Compose : 
+Docker est un outil qui permet de containeriser et d'exécuter des applications dans un environnement isolé. Docker Compose est un outil qui permet de définir et de gérer des applications multi-conteneurs avec Docker. Vous pouvez les installer avec les instructions ci-dessous ou les télécharger depuis le site officiel de Docker.
+Sur Mac et Windows :
+
+- Téléchargez et installez Docker Desktop.
+
+Sur Linux :
+
+- Mettez à jour votre liste de paquets :
+
+	```sudo apt-get update```
+
+- Installez Docker :
+
+	```sudo apt-get install docker-ce```
+	
+- Vérifiez que Docker est bien installé :
+
+	```docker --version```
+
+- Téléchargez et installez Docker Compose :
+
+	```sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose```
+	```sudo chmod +x /usr/local/bin/docker-compose```
+
+- Vérifiez que Docker Compose est bien installé :
+
+	```docker-compose --version```
+
+
+Composer : 
+Composer est un outil de gestion des dépendances pour PHP. Vous pouvez l'installer avec les instructions ci-dessous ou le télécharger depuis le site officiel de Composer.
+
+	```curl -sS https://getcomposer.org/installer | php```
+	```mv composer.phar /usr/local/bin/composer```
+	```composer --version```
+
+
+
 ## Installation
 
 1. Clonez ce dépôt sur votre machine locale :
@@ -20,10 +64,10 @@ Il permet de créer, modifier, supprimer et gérer facilement les symboles (illu
 
 4. Pour passer de local à docker ou inversement, commentez/décommentez ces lignes dans ces fichiers :
 	- BACK :
-		- config/config.php : ligne 7 à 10
-		- index.php	 : ligne 28 à 32
+		- config/config.php : ligne 3 à 13
+		- index.php	 : ligne 34 à 37
 	- FRONT :
-		- js/api.js	 : ligne 3 à 7
+		- js/api.js	 : ligne 4 à 7
 
 5. Configurez les variables du fichier back/config/config.php selon vos besoins :
 	- le chemin d'upload des symboles
@@ -41,7 +85,7 @@ Il permet de créer, modifier, supprimer et gérer facilement les symboles (illu
 
 7. Accédez aux aperçus :
 	- front 
-		- http://localhost
+		- http://localhost/index.php
 	- back
 		- http://localhost:8000/index.php
 	- phpMyAdmin :
